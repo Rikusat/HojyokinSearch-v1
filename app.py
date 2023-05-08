@@ -31,7 +31,7 @@ def communicate():
 
 # ユーザーインターフェイスの構築
 st.title("AI司法書士 Assistant")
-st.write("任意後見チャットボットです。")
+st.write("勝司法書士法人の任意後見チャットボットです。")
 
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
