@@ -1,7 +1,6 @@
 
 import streamlit as st
 import openai
-import secret_keys  # 外部ファイルにAPI keyを保存
 
 # Streamlitのページ設定を変更
 st.set_page_config(page_title="My AI Assistant", page_icon="🤖", layout="centered", initial_sidebar_state="collapsed")
