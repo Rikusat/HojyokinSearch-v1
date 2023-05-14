@@ -13,7 +13,7 @@ h1 {
 }
 
 p {
-    color: #333333; /* 本文のテキスト色を設定 */
+    color: #708090; /* 本文のテキスト色を設定 */
 }
 """
 
@@ -59,7 +59,7 @@ st.markdown("""
     <style>
     @keyframes robot {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-5px); }
+        50% { transform: translateY(-15px); }
         100% { transform: translateY(0px); }
     }
     </style>
