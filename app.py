@@ -2,10 +2,8 @@
 import streamlit as st
 import openai
 
-# Streamlitのページ設定を変更
-st.set_page_config(page_title="My AI Assistant", page_icon="🤖", layout="centered", initial_sidebar_state="collapsed")
-
-openai.api_key = secret_keys.openai_api_key
+# Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
+openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
@@ -32,24 +30,8 @@ def communicate():
 
 
 # ユーザーインターフェイスの構築
-st.title("AI司法書士 アシスタント")
-st.write("勝司法書士法人の任意後見チャットボットです！")
-
-# 動的なエフェクトを追加するHTML要素
-st.markdown("""
-    <style>
-    @keyframes robot {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-5px); }
-        100% { transform: translateY(0px); }
-    }
-    </style>
-    <div style="display: flex; justify-content: center;">
-        <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">🤖</div>
-        <div style="font-size: 30px;">ロボットアシスタント</div>
-    </div>
-""", unsafe_allow_html=True)
-
+st.title("AI司法書士 Assistant")
+st.write("勝司法書士法人の任意後見チャットボットです。")
 
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
@@ -58,7 +40,7 @@ if st.session_state["messages"]:
 
     for message in reversed(messages[1:]):  # 直近のメッセージを上に
         speaker = "🙂"
-        if message["role"] == "assistant":
-            speaker = "🤖カツ！"  # AIが使う語尾の指示プロンプト
+        if message["role"]=="assistant":
+            speaker="🤖"
 
         st.write(speaker + ": " + message["content"])
