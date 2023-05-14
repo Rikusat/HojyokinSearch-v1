@@ -58,9 +58,9 @@ def communicate():
 st.markdown("""
     <style>
     @keyframes robot {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
-        100% { transform: translateY(0px); }
+        0% { transform: translateY(10px); }
+        50% { transform: translateY(-30px); }
+        100% { transform: translateY(40px); }
     }
     </style>
     <div style="display: flex; justify-content: center;">
