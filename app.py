@@ -30,8 +30,8 @@ def communicate():
 
 
 # ユーザーインターフェイスの構築
-st.title("AI司法書士 アシスタント")
-st.write("勝司法書士法人の任意後見チャットです！")
+st.title("AI司法書士")
+st.write("勝司法書士法人の任意後見チャットです")
 
 # 動的なエフェクトを追加するHTML要素
 st.markdown("""
@@ -44,7 +44,7 @@ st.markdown("""
     </style>
     <div style="display: flex; justify-content: center;">
         <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">🤖</div>
-        <div style="font-size: 30px;">AIアシスタントがお答えします</div>
+        <div style="font-size: 30px;">AIアシスタントがお答えします！</div>
     </div>
 """, unsafe_allow_html=True)
 
