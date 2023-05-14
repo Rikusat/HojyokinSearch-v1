@@ -25,10 +25,6 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 # ユーザーインターフェースの構築
 st.title("AI司法書士くん")
 st.write("勝司法書士法人の任意後見チャットです")
-st.header("Header Section")
-st.subheader("Subheader Section")
-st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis ultrices velit, at lobortis ligula. Nullam nec sem lacinia, sagittis odio eu, tempor elit. Suspendisse finibus mi at enim vehicula, nec viverra sem pulvinar. Cras id eros id nulla rutrum tincidunt. Sed aliquam, lacus at efficitur ultricies, metus sapien vulputate erat, non semper quam tellus sed augue. Suspendisse finibus tellus at neque eleifend, eu tempus nisi semper. Mauris id lacinia sapien, non varius elit.")
-
 
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
