@@ -70,49 +70,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-import random
-
-# ウィジェットのスタイルを定義
-custom_css = """
-input[type="text"]::-webkit-input-placeholder {
-    color: #999999;
-    opacity: 0.8;
-}
-
-input[type="text"]::-moz-placeholder {
-    color: #999999;
-    opacity: 0.8;
-}
-
-input[type="text"]:-ms-input-placeholder {
-    color: #999999;
-    opacity: 0.8;
-}
-
-input[type="text"]::placeholder {
-    color: #999999;
-    opacity: 0.8;
-}
-"""
-
-# スタイルを適用する
-st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
-
-# ユーザーインターフェースの構築
-st.title("Chat Box Demo")
-
-# ランダムなヒントのリスト
-hints = ["こんにちは！", "質問はなんですか？", "どうしたらお手伝いできますか？"]
-
-# ヒントを表示する
-st.write("ヒント: ", random.choice(hints))
-
-# ユーザーの入力を受け付けるチャットボックス
-user_input = st.text_input("メッセージを入力してください。", key="user_input")
-
-# ユーザーの入力を表示
-st.write("ユーザー入力:", user_input)
-
+user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
