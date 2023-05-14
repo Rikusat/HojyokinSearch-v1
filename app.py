@@ -2,6 +2,35 @@
 import streamlit as st
 import openai
 
+# スタイルをカスタマイズするCSSを定義
+custom_css = """
+body {
+    background-color: #f7f7f7; /* 背景色を設定 */
+}
+
+h1 {
+    color: #ff9900; /* 見出しのテキスト色を設定 */
+}
+
+p {
+    color: #333333; /* 本文のテキスト色を設定 */
+}
+"""
+
+# スタイルを適用する
+st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
+
+
+
+# ユーザーインターフェースの構築
+st.title("My Colorful Page")
+st.write("This is a sample page with colorful styles.")
+st.header("Header Section")
+st.subheader("Subheader Section")
+st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis ultrices velit, at lobortis ligula. Nullam nec sem lacinia, sagittis odio eu, tempor elit. Suspendisse finibus mi at enim vehicula, nec viverra sem pulvinar. Cras id eros id nulla rutrum tincidunt. Sed aliquam, lacus at efficitur ultricies, metus sapien vulputate erat, non semper quam tellus sed augue. Suspendisse finibus tellus at neque eleifend, eu tempus nisi semper. Mauris id lacinia sapien, non varius elit.")
+
+
+
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
