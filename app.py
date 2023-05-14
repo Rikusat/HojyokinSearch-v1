@@ -23,8 +23,8 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 
 
 # ユーザーインターフェースの構築
-st.title("My Colorful Page")
-st.write("This is a sample page with colorful styles.")
+st.title("AI司法書士くん")
+st.write("勝司法書士法人の任意後見チャットです")
 st.header("Header Section")
 st.subheader("Subheader Section")
 st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis ultrices velit, at lobortis ligula. Nullam nec sem lacinia, sagittis odio eu, tempor elit. Suspendisse finibus mi at enim vehicula, nec viverra sem pulvinar. Cras id eros id nulla rutrum tincidunt. Sed aliquam, lacus at efficitur ultricies, metus sapien vulputate erat, non semper quam tellus sed augue. Suspendisse finibus tellus at neque eleifend, eu tempus nisi semper. Mauris id lacinia sapien, non varius elit.")
@@ -56,11 +56,7 @@ def communicate():
     messages.append(bot_message)
 
     st.session_state["user_input"] = ""  # 入力欄を消去
-
-
-# ユーザーインターフェイスの構築
-st.title("AI司法書士くん")
-st.write("勝司法書士法人の任意後見チャットです")
+    
 
 # 動的なエフェクトを追加するHTML要素
 st.markdown("""
