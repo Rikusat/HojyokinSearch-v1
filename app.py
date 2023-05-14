@@ -21,6 +21,37 @@ p {
 st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 
 
+# スタイルをカスタマイズするCSSを定義
+custom_css = """
+.chat-box {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.chat-box p {
+    margin: 0;
+    padding: 5px;
+    color: #888888;
+    font-size: 14px;
+    line-height: 1.5;
+}
+"""
+
+# スタイルを適用する
+st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
+
+# ユーザーインターフェースの構築
+st.title("Chat Box Demo")
+
+# チャットボックスの表示
+st.markdown('<div class="chat-box"><p>ユーザー: こんにちは！</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="chat-box"><p>ボット: はい、こんにちは！</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="chat-box"><p>ユーザー: このチャットボックス、スタイリッシュですね。</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="chat-box"><p>ボット: ありがとうございます！</p></div>', unsafe_allow_html=True)
+
+
 
 # ユーザーインターフェースの構築
 st.title("AI司法書士くん")
