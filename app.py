@@ -65,7 +65,7 @@ st.markdown("""
     </style>
     <div style="display: flex; justify-content: center;">
         <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">🤖</div>
-        <div style="font-size: 30px;">AIがお答えします！</div>
+        <div style="font-size: 30px;">AIが質問にお答えします！</div>
     </div>
 """, unsafe_allow_html=True)
 
