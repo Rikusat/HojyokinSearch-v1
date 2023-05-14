@@ -17,37 +17,6 @@ p {
 }
 """
 
-
-# スタイルをカスタマイズするCSSを定義
-custom_css = """
-@keyframes robot-walk {
-    0% {
-        transform: translateX(-100px) rotate(0deg);
-    }
-    50% {
-        transform: translateX(100px) rotate(30deg);
-    }
-    100% {
-        transform: translateX(-100px) rotate(0deg);
-    }
-}
-
-.robot-body {
-    font-size: 60px;
-    animation: robot-walk 3s linear infinite;
-}
-"""
-
-# スタイルを適用する
-st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
-
-# ユーザーインターフェースの構築
-st.title("Robot Walking Effect")
-st.write("ロボットの胴体が歩き回るエフェクトを表示します。")
-
-# ロボットの胴体を表示
-st.markdown('<div class="robot-body">🤖</div>', unsafe_allow_html=True)
-
 # スタイルを適用する
 st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 
