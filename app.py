@@ -5,7 +5,7 @@ import openai
 # スタイルをカスタマイズするCSSを定義
 custom_css = """
 body {
-    background-color: #f0f8ff; /* 背景色を設定 */
+    background-color: #f5f5f5; /* 背景色を設定 */
 }
 
 h1 {
