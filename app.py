@@ -30,7 +30,7 @@ def communicate():
 
 
 # ユーザーインターフェイスの構築
-st.title("AI司法書士")
+st.title("AI司法書士くん")
 st.write("勝司法書士法人の任意後見チャットです")
 
 # 動的なエフェクトを追加するHTML要素
