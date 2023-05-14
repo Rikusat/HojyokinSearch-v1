@@ -33,6 +33,22 @@ def communicate():
 st.title("AI司法書士 Assistant")
 st.write("勝司法書士法人の任意後見チャットボットです。")
 
+# 動的なエフェクトを追加するHTML要素
+st.markdown("""
+    <style>
+    @keyframes robot {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+    }
+    </style>
+    <div style="display: flex; justify-content: center;">
+        <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">🤖</div>
+        <div style="font-size: 30px;">ロボットアシスタント</div>
+    </div>
+""", unsafe_allow_html=True)
+
+
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
 if st.session_state["messages"]:
