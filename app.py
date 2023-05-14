@@ -24,7 +24,7 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 
 # ユーザーインターフェースの構築
 st.title("AI司法書士くん")
-st.write("勝司法書士法人の任意後見チャットです")
+st.write("勝司法書士法人　任意後見チャット")
 
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
