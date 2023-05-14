@@ -80,4 +80,4 @@ if st.session_state["messages"]:
         if message["role"]=="assistant":
             speaker = "🤖カツ！"  # AIが使う語尾の指示プロンプト
 
-        st.write(speaker + ": " + message["content"])
+        st.write(speaker + " " + message["content"])
