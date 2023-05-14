@@ -5,15 +5,15 @@ import openai
 # スタイルをカスタマイズするCSSを定義
 custom_css = """
 body {
-    background-color: #778899; /* 背景色を設定 */
+    background-color: #f7f7f7; /* 背景色を設定 */
 }
 
 h1 {
-    color: #ffffff; /* 見出しのテキスト色を設定 */
+    color: #ff9900; /* 見出しのテキスト色を設定 */
 }
 
 p {
-    color: #f0f8ff; /* 本文のテキスト色を設定 */
+    color: #333333; /* 本文のテキスト色を設定 */
 }
 """
 
@@ -24,10 +24,10 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 
 # ユーザーインターフェースの構築
 st.title("AI司法書士くん")
-st.write("")
-st.header("")
-st.subheader("勝司法書士法人の任意後見チャットです")
-st.write("")
+st.write("勝司法書士法人の任意後見チャットです")
+st.header("Header Section")
+st.subheader("Subheader Section")
+st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis ultrices velit, at lobortis ligula. Nullam nec sem lacinia, sagittis odio eu, tempor elit. Suspendisse finibus mi at enim vehicula, nec viverra sem pulvinar. Cras id eros id nulla rutrum tincidunt. Sed aliquam, lacus at efficitur ultricies, metus sapien vulputate erat, non semper quam tellus sed augue. Suspendisse finibus tellus at neque eleifend, eu tempus nisi semper. Mauris id lacinia sapien, non varius elit.")
 
 
 
