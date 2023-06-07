@@ -82,6 +82,12 @@ options = st.multiselect(
 )
 
 
+
+    
+
+user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+
+
 import uuid
 
 if 'unique_id' not in st.session_state:
@@ -115,12 +121,6 @@ for unique_id in st.session_state["unique_id"]:
       st.write("")
       st.write(slider_value)
     
-    
-
-user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
-
-
-
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
