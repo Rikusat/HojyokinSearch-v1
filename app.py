@@ -59,7 +59,7 @@ def communicate():
     st.session_state["user_input"] = ""  # 入力欄を消去
     
     
-    user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+ 
 
     
 
@@ -78,6 +78,9 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+
+
+
 options = st.multiselect(
     '補助金の種類を選択してください',
     ['大企業', '中小企業', 'スタートアップ', '個人事業主', '地方自治体', '子ども家庭', '障がい者', '高齢者'],
@@ -87,7 +90,7 @@ options = st.multiselect(
 
 
     
-
+   user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
  
 
