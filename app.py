@@ -18,7 +18,7 @@ import streamlit as st
 import pandas as pd
 
 
-options = st..sidebar.multiselect(
+options = st.multiselect(
     'What are your favorite colors',
     ['Green', 'Yellow', 'Red', 'Blue'],
     default=['Yellow', 'Red'] # デフォルトの設定
