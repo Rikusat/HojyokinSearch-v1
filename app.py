@@ -87,6 +87,24 @@ user_input = st.text_input("メッセージを入力してください。", key=
 
 
 
-
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
+    
+    import streamlit as st
+import pandas as pd
+import numpy as np
+
+
+def main():
+    # 東京のランダムな経度・緯度を生成する
+    data = {
+        'lat': np.random.randn(100) / 100 + 35.68,
+        'lon': np.random.randn(100) / 100 + 139.75,
+    }
+    map_data = pd.DataFrame(data)
+    # 地図に散布図を描く
+    st.map(map_data)
+
+
+if __name__ == '__main__':
+    main()
