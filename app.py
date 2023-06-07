@@ -90,7 +90,7 @@ options = st.multiselect(
 
 
     
-   user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+ user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
  
 
