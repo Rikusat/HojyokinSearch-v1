@@ -61,7 +61,7 @@ options = st.multiselect(
 
 
 
-def main():
+def main1():
     # 東京のランダムな経度・緯度を生成する
     data = {
         'lat': np.random.randn(100) / 100 + 35.68,
