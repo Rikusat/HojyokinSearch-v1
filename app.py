@@ -44,7 +44,14 @@ options = st.multiselect(
     default=['Yellow', 'Red'] # デフォルトの設定
 )
 
-
+  selected_pos = st.sidebar.multiselect("品詞選択", pos_options, default=pos_options)
+        if st.sidebar.button("生成"):
+            st.markdown("## 出現頻度表")
+            with st.spinner("Generating..."):
+                io_string = io.StringIO(uploaded_file.getvalue().decode("shift-jis"))
+                text = io_string.read()
+                tagger = MeCab.Tagger()
+                node = tagger.parseToNode(text)
 
 
 
