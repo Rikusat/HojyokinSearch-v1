@@ -17,12 +17,6 @@ st.title("補助金検索くん")
 import streamlit as st
 import pandas as pd
 
-
-options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
-    default=['Yellow', 'Red'] # デフォルトの設定
-)
     
 
 # Sidebarの選択肢を定義する
@@ -83,6 +77,11 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+options = st.multiselect(
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    default=['Yellow', 'Red'] # デフォルトの設定
+)
 
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
