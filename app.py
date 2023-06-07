@@ -35,6 +35,21 @@ import streamlit as st
 options = ["北海道", "青森県", "岩手県"]
 choice = st.sidebar.selectbox("Select an option", options)
 
+ st.header("Chat with multiple PDFs :books:")
+    user_question = st.text_input("Ask a question about your documents:")
+    if user_question:
+        handle_userinput(user_question)
+
+    with st.sidebar:
+        st.subheader("Your documents")
+        pdf_docs = st.file_uploader(
+            "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
+        if st.button("Process"):
+            with st.spinner("Processing"):
+                # get pdf text
+                raw_text = get_pdf_text(pdf_docs)
+
+
 import streamlit as st
 
 options = st.multiselect(
