@@ -31,8 +31,6 @@ uploaded_file = st.sidebar.file_uploader(
 )
 
 
-
-def main():
     # サイドバーにリロードボタンをつける
     st.sidebar.button('Reload')
     # サイドバーにデータフレームを書き込む
