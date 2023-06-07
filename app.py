@@ -1,6 +1,8 @@
 
 import streamlit as st
 import openai
+import pandas as pd
+import uuid
 
 # ページのレイアウトを設定
 st.set_page_config(
@@ -13,9 +15,6 @@ st.set_page_config(
 # ユーザーインターフェースの構築
 st.title("補助金検索くん")
 
-
-import streamlit as st
-import pandas as pd
 
     
 
@@ -58,7 +57,7 @@ def communicate():
 
     st.session_state["user_input"] = ""  # 入力欄を消去
     
-    
+ user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
  
 
     
@@ -88,13 +87,6 @@ options = st.multiselect(
 )
 
 
-
-
- 
-
-    
-
-import uuid
 
 if 'unique_id' not in st.session_state:
   st.session_state["unique_id"] = []
@@ -147,7 +139,6 @@ def main():
     st.map(map_data)
 
     
-user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
    
 if __name__ == '__main__':
     main()
