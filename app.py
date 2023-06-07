@@ -41,9 +41,6 @@ def main():
     st.sidebar.dataframe(df)
 
 
-if __name__ == '__main__':
-    main()
-
   
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
