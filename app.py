@@ -61,16 +61,6 @@ options = st.multiselect(
 
 
 
-def main():
-    # 東京のランダムな経度・緯度を生成する
-    data = {
-        'lat': np.random.randn(100) / 100 + 35.68,
-        'lon': np.random.randn(100) / 100 + 139.75,
-    }
-    map_data = pd.DataFrame(data)
-    # 地図に散布図を描く
-    st.map(map_data)
-
     # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
