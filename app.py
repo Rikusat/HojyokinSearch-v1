@@ -30,7 +30,8 @@ st.write("勝司法書士法人　任意後見チャット")
 import streamlit as st
 import pandas as pd
 
- options = st.multiselect(
+
+options = st.multiselect(
     'What are your favorite colors',
     ['Green', 'Yellow', 'Red', 'Blue'],
     default=['Yellow', 'Red'] # デフォルトの設定
