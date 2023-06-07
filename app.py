@@ -77,8 +77,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
+    '補助金の種類を選択してください',
+    ['大企業', '中小企業', 'スタートアップ', '個人事業主', '地方自治体', '家庭', '障がい者', '高齢者'],
     default=['Yellow', 'Red'] # デフォルトの設定
 )
 
