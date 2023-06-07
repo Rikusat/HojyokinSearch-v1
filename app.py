@@ -26,6 +26,21 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 st.title("AI司法書士くん")
 st.write("勝司法書士法人　任意後見チャット")
 
+import streamlit as st
+import pandas as pd
+
+# ダミーデータの作成
+df = pd.DataFrame({
+    'name': ['Alice', 'Bob'],
+    'age': [25, 30],
+    'gender': ['female', 'male']
+})
+
+# DataFrameを表示
+st.write(df)
+# st.dataframe()でも表示可能
+st.dataframe(df)
+
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
