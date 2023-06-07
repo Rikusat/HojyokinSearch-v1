@@ -13,15 +13,6 @@ st.set_page_config(
 # ユーザーインターフェースの構築
 st.title("補助金検索くん")
 
-  #説明変数は複数選択式
-    st.multiselect("説明変数を選択してください（複数選択可）", df_columns)
-
-    #目的変数は一つ
-    st.selectbox("目的変数を選択してください", df_columns)
-
-    #機械学習のタイプを選択する。
-    st.selectbox("実施する機械学習のタイプを選択してください", ["重回帰分析","ロジスティック回帰分析"])
-
 
 import streamlit as st
 import pandas as pd
