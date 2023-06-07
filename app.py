@@ -32,7 +32,7 @@ import pandas as pd
 import streamlit as st
 
 # Sidebarの選択肢を定義する
-options = ["Option 1", "Option 2", "Option 3"]
+options = ["北海道", "青森県", "岩手県"]
 choice = st.sidebar.selectbox("Select an option", options)
 
 # Mainコンテンツの表示を変える
