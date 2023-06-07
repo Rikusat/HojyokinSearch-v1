@@ -45,19 +45,6 @@ options = st.multiselect(
 )
 
 
-uploaded_file = st.file_uploader("Choose a file")
-if uploaded_file is not None:
-    st.write(ファイルをアップロード)
-
-# Mainコンテンツの表示を変える
-if choice == "Option 1":
-    st.write("You selected Option 1")
-elif choice == "Option 2":
-    st.write("You selected Option 2")
-else:
-    st.write("You selected Option 3")
-
-
 
 
 
