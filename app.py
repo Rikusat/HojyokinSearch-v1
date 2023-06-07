@@ -38,12 +38,6 @@ choice = st.sidebar.selectbox("Select an option", options)
 
 import streamlit as st
 
-options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
-    default=['Yellow', 'Red'] # デフォルトの設定
-)
-
 
 
 
@@ -92,6 +86,15 @@ st.markdown("""
 
 
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+
+
+options = st.multiselect(
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    default=['Yellow', 'Red'] # デフォルトの設定
+)
+
+
 
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
