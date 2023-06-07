@@ -26,10 +26,16 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 st.title("AI司法書士くん")
 st.write("勝司法書士法人　任意後見チャット")
 
+
 import streamlit as st
 import pandas as pd
 
-import streamlit as st
+ options = st.multiselect(
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    default=['Yellow', 'Red'] # デフォルトの設定
+)
+    
 
 # Sidebarの選択肢を定義する
 options = ["北海道", "青森県", "岩手県"]
@@ -43,11 +49,7 @@ uploaded_file = st.sidebar.file_uploader(
 )
 
 
- options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
-    default=['Yellow', 'Red'] # デフォルトの設定
-)
+
 
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
