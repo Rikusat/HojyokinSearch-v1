@@ -70,7 +70,10 @@ def main1():
     map_data = pd.DataFrame(data)
     # 地図に散布図を描く
     st.map(map_data)
-
+    
+if __name__ == '__main__':
+    main1()
+    
     # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
@@ -104,6 +107,5 @@ user_input = st.text_input("メッセージを入力してください。", key=
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
     
-if __name__ == '__main__':
-    main1()
+
 
