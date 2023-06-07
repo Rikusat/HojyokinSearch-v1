@@ -29,7 +29,6 @@ st.write("勝司法書士法人　任意後見チャット")
 import streamlit as st
 import pandas as pd
 
-import streamlit as st
 
 # Sidebarの選択肢を定義する
 options = ["北海道", "青森県", "岩手県"]
@@ -42,6 +41,15 @@ elif choice == "Option 2":
     st.write("You selected Option 2")
 else:
     st.write("You selected Option 3")
+
+
+    
+options = st.multiselect(
+    choice = st.sidebar.selectbox("Select an option", options)
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    default=['Yellow', 'Red'] # デフォルトの設定
+)
 
 
 uploaded_file = st.file_uploader("Choose a file")
