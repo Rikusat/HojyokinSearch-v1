@@ -59,6 +59,9 @@ def communicate():
     st.session_state["user_input"] = ""  # 入力欄を消去
     
     
+    user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+
+    
 
 # 動的なエフェクトを追加するHTML要素
 st.markdown("""
@@ -85,8 +88,8 @@ options = st.multiselect(
 
     
 
-user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
+ 
 
     
 
