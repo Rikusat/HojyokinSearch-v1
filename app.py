@@ -36,7 +36,11 @@ options = ["北海道", "青森県", "岩手県"]
 choice = st.sidebar.selectbox("Select an option", options)
 
 
-import streamlit as st
+# サイドバーにアップロードファイルのウィジェットを表示
+st.sidebar.markdown("# ファイルアップロード")
+uploaded_file = st.sidebar.file_uploader(
+    "テキストファイルをアップロードしてください", type="txt"
+)
 
 
 
@@ -68,6 +72,12 @@ def communicate():
 
     st.session_state["user_input"] = ""  # 入力欄を消去
     
+    
+    options = st.multiselect(
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    default=['Yellow', 'Red'] # デフォルトの設定
+)
 
 # 動的なエフェクトを追加するHTML要素
 st.markdown("""
@@ -88,11 +98,6 @@ st.markdown("""
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
 
-options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
-    default=['Yellow', 'Red'] # デフォルトの設定
-)
 
 
 
