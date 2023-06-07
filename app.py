@@ -78,8 +78,8 @@ st.markdown("""
 
 options = st.multiselect(
     '補助金の種類を選択してください',
-    ['大企業', '中小企業', 'スタートアップ', '個人事業主', '地方自治体', '家庭', '障がい者', '高齢者'],
-    default=['Yellow', 'Red'] # デフォルトの設定
+    ['大企業', '中小企業', 'スタートアップ', '個人事業主', '地方自治体', '子ども家庭', '障がい者', '高齢者'],
+    default=['個人事業主', '子ども家庭'] # デフォルトの設定
 )
 
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
