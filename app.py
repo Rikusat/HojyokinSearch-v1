@@ -105,5 +105,5 @@ if st.session_state["messages"]:
     messages = st.session_state["messages"]
     
 if __name__ == '__main__':
-    main()
+    main1()
 
