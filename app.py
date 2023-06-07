@@ -31,6 +31,19 @@ uploaded_file = st.sidebar.file_uploader(
 )
 
 
+
+def main():
+    # サイドバーにリロードボタンをつける
+    st.sidebar.button('Reload')
+    # サイドバーにデータフレームを書き込む
+    data = np.random.randn(20, 3)
+    df = pd.DataFrame(data, columns=['x', 'y', 'z'])
+    st.sidebar.dataframe(df)
+
+
+if __name__ == '__main__':
+    main()
+
   
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
