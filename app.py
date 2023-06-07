@@ -35,6 +35,19 @@ import streamlit as st
 options = ["北海道", "青森県", "岩手県"]
 choice = st.sidebar.selectbox("Select an option", options)
 
+import streamlit as st
+
+options = st.multiselect(
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    default=['Yellow', 'Red'] # デフォルトの設定
+)
+
+
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+    st.write(uploaded_file)
+
 # Mainコンテンツの表示を変える
 if choice == "Option 1":
     st.write("You selected Option 1")
@@ -44,9 +57,6 @@ else:
     st.write("You selected Option 3")
 
 
-uploaded_file = st.file_uploader("Choose a file")
-if uploaded_file is not None:
-    st.write(uploaded_file)
 
 
 
