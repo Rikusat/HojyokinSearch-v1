@@ -36,10 +36,12 @@ df = pd.DataFrame({
     'gender': ['female', 'male']
 })
 
-# DataFrameを表示
-st.write(df)
-# st.dataframe()でも表示可能
-st.dataframe(df)
+import streamlit as st
+
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+    st.write(uploaded_file)
+
 
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
