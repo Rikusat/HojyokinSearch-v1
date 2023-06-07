@@ -23,7 +23,7 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 
 
 # ユーザーインターフェースの構築
-st.title("AI司法書士くん")
+st.title("補助金検索くん")
 
 
 import streamlit as st
