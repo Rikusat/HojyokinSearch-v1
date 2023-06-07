@@ -120,10 +120,6 @@ for unique_id in st.session_state["unique_id"]:
       st.write(slider_value)
     
 
-if st.session_state["messages"]:
-    messages = st.session_state["messages"]
-    
-
 
 def main():
     # 東京のランダムな経度・緯度を生成する
@@ -136,8 +132,11 @@ def main():
     st.map(map_data)
 
     
+if st.session_state["messages"]:
+    messages = st.session_state["messages"]
+    
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
-   
+    
 if __name__ == '__main__':
     main()
 
