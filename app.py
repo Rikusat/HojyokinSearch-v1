@@ -30,14 +30,6 @@ uploaded_file = st.sidebar.file_uploader(
     "AIに読み込ませたいファイルをアップロードしてください", type="txt"
 )
 
-
-
- # サイドバーにデータフレームを書き込む
-  data = np.random.randn(20, 3)
-  df = pd.DataFrame(data, columns=['x', 'y', 'z'])
-  st.sidebar.dataframe(df)
-
-
   
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
