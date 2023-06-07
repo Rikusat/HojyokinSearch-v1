@@ -89,8 +89,6 @@ options = st.multiselect(
 
 
 
-    
- user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
 
  
 
@@ -149,6 +147,7 @@ def main():
     st.map(map_data)
 
     
+    user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
    
 if __name__ == '__main__':
     main()
