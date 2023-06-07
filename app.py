@@ -3,6 +3,7 @@ import streamlit as st
 import openai
 import pandas as pd
 import uuid
+import numpy as np
 
 # ページのレイアウトを設定
 st.set_page_config(
@@ -57,7 +58,6 @@ def communicate():
 
     st.session_state["user_input"] = ""  # 入力欄を消去
     
- user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
  
 
     
@@ -123,9 +123,6 @@ for unique_id in st.session_state["unique_id"]:
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
     
-    import streamlit as st
-import pandas as pd
-import numpy as np
 
 
 def main():
@@ -139,6 +136,7 @@ def main():
     st.map(map_data)
 
     
+user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
    
 if __name__ == '__main__':
     main()
