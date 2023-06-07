@@ -29,14 +29,20 @@ st.write("勝司法書士法人　任意後見チャット")
 import streamlit as st
 import pandas as pd
 
-# ダミーデータの作成
-df = pd.DataFrame({
-    'name': ['Alice', 'Bob'],
-    'age': [25, 30],
-    'gender': ['female', 'male']
-})
-
 import streamlit as st
+
+# Sidebarの選択肢を定義する
+options = ["Option 1", "Option 2", "Option 3"]
+choice = st.sidebar.selectbox("Select an option", options)
+
+# Mainコンテンツの表示を変える
+if choice == "Option 1":
+    st.write("You selected Option 1")
+elif choice == "Option 2":
+    st.write("You selected Option 2")
+else:
+    st.write("You selected Option 3")
+
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
