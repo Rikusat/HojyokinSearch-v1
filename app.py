@@ -24,7 +24,6 @@ st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
 
 # ユーザーインターフェースの構築
 st.title("AI司法書士くん")
-st.write("勝司法書士法人　任意後見チャット")
 
 
 import streamlit as st
