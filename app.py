@@ -2,24 +2,12 @@
 import streamlit as st
 import openai
 
-# スタイルをカスタマイズするCSSを定義
-custom_css = """
-body {
-    background-color: #696969; /* 背景色を設定 */
-}
-
-h1 {
-    color: #ff9900; /* 見出しのテキスト色を設定 */
-}
-
-p {
-    color: #708090; /* 本文のテキスト色を設定 */
-}
-"""
-
-# スタイルを適用する
-st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
-
+# ページのレイアウトを設定
+st.set_page_config(
+    page_title="テキスト可視化",
+    layout="wide", # wideにすると横長なレイアウトに
+    initial_sidebar_state="expanded"
+)
 
 
 # ユーザーインターフェースの構築
