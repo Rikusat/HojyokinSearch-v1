@@ -43,7 +43,11 @@ uploaded_file = st.sidebar.file_uploader(
 )
 
 
-
+ options = st.multiselect(
+    'What are your favorite colors',
+    ['Green', 'Yellow', 'Red', 'Blue'],
+    default=['Yellow', 'Red'] # デフォルトの設定
+)
 
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
@@ -73,11 +77,6 @@ def communicate():
     st.session_state["user_input"] = ""  # 入力欄を消去
     
     
-    options = st.multiselect(
-    'What are your favorite colors',
-    ['Green', 'Yellow', 'Red', 'Blue'],
-    default=['Yellow', 'Red'] # デフォルトの設定
-)
 
 # 動的なエフェクトを追加するHTML要素
 st.markdown("""
