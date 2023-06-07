@@ -96,7 +96,7 @@ if 'unique_id' not in st.session_state:
 col5, col6 = st.columns(2)
 
 with col5:
-  if st.button("追加", key=6):
+  if st.button("保存", key=6):
     st.session_state["unique_id"].append(uuid.uuid1())
 
 with col6:
