@@ -77,13 +77,6 @@ if __name__ == '__main__':
     # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
-
-
-# st.session_stateを使いメッセージのやりとりを保存
-if "messages" not in st.session_state:
-    st.session_state["messages"] = [
-        {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
-        ]
     
 # チャットボットとやりとりする関数
 def communicate():
@@ -118,7 +111,11 @@ if st.session_state["messages"]:
         st.write(speaker + ": " + message["content"])
 
     
-
+# st.session_stateを使いメッセージのやりとりを保存
+if "messages" not in st.session_state:
+    st.session_state["messages"] = [
+        {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
+        ]
     
 
 
