@@ -9,7 +9,7 @@ st.title("AI補助金検索くん2.0")
 st.markdown("""
     <style>
     @keyframes robot {
-        0% { transform: translateY(100px); }
+        0% { transform: translateY(0px); }
         50% { transform: translateY(-100px); }
         100% { transform: translateY(-30px); }
     }
