@@ -23,3 +23,21 @@ df_search = df[m1 | m2]
 # Show the results, if you have a text_search
 if text_search:
     st.write(df_search)
+
+# Another way to show the filtered results
+# Show the cards
+N_cards_per_row = 3
+if text_search:
+    for n_row, row in df_search.reset_index().iterrows():
+        i = n_row % N_cards_per_row
+        if i == 0:
+            st.write("---")
+            cols = st.columns(N_cards_per_row, gap="large")
+        # draw the card
+        with cols[n_row % N_cards_per_row]:
+            st.caption(f"{row['氏名'].strip()} - {row['氏名（ひらがな）'].strip()} - {row['年齢'].strip()} - {row['生年月日'].strip()} - {row['性別'].strip()}")
+            st.markdown(f"**氏名: {row['氏名'].strip()}**")
+            st.markdown(f"*氏名（ひらがな）: {row['氏名（ひらがな）'].strip()}*")
+            st.markdown(f"年齢: {row['年齢'].strip()}")
+            st.markdown(f"生年月日: {row['生年月日'].strip()}")
+            st.markdown(f"性別: {row['性別'].strip()}")
