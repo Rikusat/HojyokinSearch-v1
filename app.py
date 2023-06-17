@@ -15,7 +15,7 @@ st.markdown("""
     }
     </style>
     <div style="display: flex; justify-content: center;">
-        <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">🤖</div>
+        <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">  🤖</div>
         <div style="font-size: 30px;"></div>
     </div>
 """, unsafe_allow_html=True)
