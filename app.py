@@ -13,7 +13,7 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 df = pd.read_csv(url, dtype=str).fillna("")
 
 # Use a text_input to get the keywords to filter the dataframe
-text_search = st.text_input("Search videos by title or speaker", value="")
+text_search = st.text_input("地域または対象事業者を入力してください", value="")
 
 # Filter the dataframe using masks
 m1 = df["地域"].str.contains(text_search)
