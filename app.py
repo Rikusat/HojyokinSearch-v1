@@ -24,7 +24,23 @@ df_search = df[m1 | m2]
 if text_search:
     st.write(df_search)
 
-# Another way to show the filtered results
+
+# Check if df_search is a DataFrame
+if not isinstance(df_search, pd.DataFrame):
+    st.error("df_search is not a DataFrame. Please check your data.")
+    return
+
+# Check if text_search is a string
+if not isinstance(text_search, str):
+    st.error("text_search is not a string. Please check your input.")
+    return
+
+# Check if the necessary columns are in df_search
+necessary_columns = ['補助金名', '対象事業者', '申請期間', '上限金額・助成額', '補助率', '目的', '対象経費', 'リンク']
+if not all(item in df_search.columns for item in necessary_columns):
+    st.error(f"Your dataframe is missing one or more necessary columns: {necessary_columns}")
+    return
+
 # Show the cards
 N_cards_per_row = 3
 if text_search:
@@ -35,11 +51,12 @@ if text_search:
             cols = st.columns(N_cards_per_row, gap="large")
         # draw the card
         with cols[n_row % N_cards_per_row]:
-            st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
+            st.caption(f"{row['補助金名'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
             st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
             st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
             st.markdown(f"補助率: {row['補助率'].strip()}")
             st.markdown(f"目的: {row['目的'].strip()}")
             st.markdown(f"対象経費: {row['対象経費'].strip()}")
             st.markdown(f"**[リンク]({row['リンク'].strip()})**")
+
 
