@@ -21,11 +21,11 @@ m1 = df["地域"].str.contains(text_search)
 m2 = df["対象事業者"].str.contains(text_search)
 df_search = df[m1 | m2]
 
-# Show the results, if you have a text_search
+# Show the results and balloons, if you have a text_search
 if text_search:
     st.write(df_search)
-
-# Another way to show the filtered results
+    st.balloons()
+    
 # Show the cards
 N_cards_per_row = 3
 if text_search:
