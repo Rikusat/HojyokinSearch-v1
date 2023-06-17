@@ -35,9 +35,11 @@ if text_search:
             cols = st.columns(N_cards_per_row, gap="large")
         # draw the card
         with cols[n_row % N_cards_per_row]:
-            st.caption(f"{row['氏名'].strip()} - {row['氏名（ひらがな）'].strip()} - {row['年齢'].strip()} - {row['生年月日'].strip()} - {row['性別'].strip()}")
-            st.markdown(f"**氏名: {row['氏名'].strip()}**")
-            st.markdown(f"*氏名（ひらがな）: {row['氏名（ひらがな）'].strip()}*")
-            st.markdown(f"年齢: {row['年齢'].strip()}")
-            st.markdown(f"生年月日: {row['生年月日'].strip()}")
-            st.markdown(f"性別: {row['性別'].strip()}")
+            st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
+            st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
+            st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
+            st.markdown(f"補助率: {row['補助率'].strip()}")
+            st.markdown(f"目的: {row['目的'].strip()}")
+            st.markdown(f"対象経費: {row['対象経費'].strip()}")
+            st.markdown(f"**[リンク]({row['リンク'].strip()})**")
+
