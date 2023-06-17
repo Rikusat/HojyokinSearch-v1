@@ -9,9 +9,9 @@ st.title("AI補助金検索くん2.0")
 st.markdown("""
     <style>
     @keyframes robot {
-        0% { transform: translateY(50px); }
-        50% { transform: translateY(-130px); }
-        100% { transform: translateY(50px); }
+        0% { transform: translateY(30px); }
+        50% { transform: translateY(-100px); }
+        100% { transform: translateY(30px); }
     }
     </style>
     <div style="display: flex; justify-content: center;">
