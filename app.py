@@ -6,11 +6,8 @@ import pandas as pd
 st.set_page_config(page_title="Python Talks Search Engine", page_icon="🐍", layout="wide")
 st.title("Python Talks Search Engine")
 
-# Connect to the Google Sheet
+# Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
-url = f"<https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}>"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
-
-# Show the dataframe (we'll delete this later)
-st.write(df)
