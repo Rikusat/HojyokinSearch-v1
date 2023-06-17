@@ -10,7 +10,7 @@ st.markdown("""
     <style>
     @keyframes robot {
         0% { transform: translateY(50px); }
-        50% { transform: translateY(-150px); }
+        50% { transform: translateY(-130px); }
         100% { transform: translateY(50px); }
     }
     </style>
