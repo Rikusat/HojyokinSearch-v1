@@ -14,3 +14,8 @@ df = pd.read_csv(url, dtype=str).fillna("")
 
 # Use a text_input to get the keywords to filter the dataframe
 text_search = st.text_input("Search videos by title or speaker", value="")
+
+# Filter the dataframe using masks
+m1 = df["氏名"].str.contains(text_search)
+m2 = df["年齢"].str.contains(text_search)
+df_search = df[m1 | m2]
