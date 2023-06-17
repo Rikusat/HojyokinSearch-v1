@@ -11,7 +11,7 @@ st.markdown("""
     @keyframes robot {
         0% { transform: translateY(30px); }
         50% { transform: translateY(-100px); }
-        100% { transform: translateY(30px); }
+        100% { transform: translateY(-30px); }
     }
     </style>
     <div style="display: flex; justify-content: center;">
