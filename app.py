@@ -19,3 +19,7 @@ text_search = st.text_input("Search videos by title or speaker", value="")
 m1 = df["氏名"].str.contains(text_search)
 m2 = df["年齢"].str.contains(text_search)
 df_search = df[m1 | m2]
+
+# Show the results, if you have a text_search
+if text_search:
+    st.write(df_search)
