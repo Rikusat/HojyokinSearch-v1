@@ -48,7 +48,7 @@ if st.sidebar.button("送信"):
     
     # テンプレートにメッセージを組み込んで送信
     message = message_template.format(message_input, info_to_ask)
-    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
     st.write(result)
 
 else:
