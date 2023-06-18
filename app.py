@@ -2,6 +2,9 @@
 import streamlit as st
 import pandas as pd
 import openai
+import requests
+import json
+
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
@@ -36,23 +39,6 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 st.write(df_search)
 st.balloons()
 
-# Get the information to ask OpenAI
-info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
-
-# Define the message input for OpenAI
-message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
-
-if st.button("送信"):
-    # Use OpenAI API
-    response = openai.ChatCompletion.create(
-      model="gpt-3.5-turbo",
-      messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": message}
-        ]
-    )
-    # Show OpenAI's response
-    st.write(response['choices'][0]['message']['content'])
 
 # Show the cards
 N_cards_per_row = 3
@@ -70,3 +56,36 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"目的: {row['目的'].strip()}")
         st.markdown(f"対象経費: {row['対象経費'].strip()}")
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
+
+def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
+    # URLを構築
+    url = f"https://api.docsbot.ai/teams/{team_id}/bots/{bot_id}/chat"
+
+    # 送信するメッセージをJSON形式に変換
+    data = json.dumps({"content": message})
+
+    # ヘッダーを定義
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': '91bf12c215628496ca68904f8c5f8352f55206c5de10e6e0d979c7c7633a427d',  # replace 'your_token' with your actual token
+    }
+
+    # POSTリクエストを実行
+    response = requests.post(url, headers=headers, data=data)
+
+    # レスポンスをチェック
+    if response.status_code == 200:
+        return response.json()  # success
+    else:
+        return response.status_code, response.text  # return error information
+
+# サイト上でのテキスト入力を取得
+message_input = st.text_input("メッセージを入力してください")
+
+if st.button("送信"):
+    # メッセージをボットに送信
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
+    st.write(result)
+
+result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
+
