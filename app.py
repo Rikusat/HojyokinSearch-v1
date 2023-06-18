@@ -58,9 +58,6 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
 
-import streamlit as st
-import streamlit.components.v1 as components
-
 # Custom text input widget that prevents form submission on Enter key press
 class NoSubmitTextInput:
     def __init__(self, initial_value="", key=None):
@@ -71,34 +68,24 @@ class NoSubmitTextInput:
     def __call__(self, label, value="", **kwargs):
         value = self._current_value if value == "" else value
         input_id = st.get_session_id() + "-" + self._key if self._key else None
-        components.declare_component(
-            "no_submit_text_input",
-            input_id=input_id,
-            label=label,
-            value=value,
-            key=self._key,
-            assigned_placeholder=self._assigned_placeholder,
-            **kwargs,
+        components.html(
+            """
+            <input
+                id="%s"
+                type="text"
+                value="%s"
+                placeholder="%s"
+                data-bypass="true"
+                data-key="%s"
+            >
+            """
+            % (input_id, value, label, self._key),
+            scrolling=False,
         )
         result = st._get_widget_value(input_id, "no_submit_text_input", self._key)
         self._current_value = result["value"]
         self._assigned_placeholder = result["assigned_placeholder"]
         return result["value"]
-
-# Custom Streamlit component JavaScript code
-no_submit_text_input_js = """
-const textField = document.getElementById("no_submit_text_input");
-
-textField.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        return false;
-    }
-});
-"""
-
-# Custom Streamlit component registration
-components.register_component("no_submit_text_input", no_submit_text_input_js)
 
 # サイドバーにテキストボックスを表示
 phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
@@ -112,9 +99,6 @@ with st.sidebar.form("katsu-form"):
 
     # Display the submit button
     submit_button = st.form_submit_button("送信")
-
-# Custom component JavaScript code injection
-components.html(no_submit_text_input_js)
 
 
 def send_message_to_bot(team_id, bot_id, message):
