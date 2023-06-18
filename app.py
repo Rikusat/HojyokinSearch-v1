@@ -41,7 +41,7 @@ st.write(df_search)
 st.balloons()
 
 # ページにテキストボックスを表示
-email_input = st.text_input("メールアドレスを入力してください")
+email_input = st.sidebar.text_input("メールアドレスを入力してください")
 message_input = st.text_input("申請を行う場合、メールアドレスを入力し送信してください:", value=f" {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
 
 if st.button("送信"):
