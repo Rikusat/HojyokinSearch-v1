@@ -1,10 +1,7 @@
-import base64
 import json
 import requests
 import streamlit as st
 import pandas as pd
-import pyperclip
-import streamlit.components.v1 as components
 
 # データフレームの例として空のデータフレームを作成
 df = pd.DataFrame(columns=["地域", "対象事業者", "補助金名", "申請期間", "上限金額・助成額", "補助率", "目的", "対象経費", "リンク"])
@@ -34,29 +31,7 @@ class NoSubmitTextInput:
 
     def __call__(self, label, value="", **kwargs):
         value = self._current_value if value == "" else value
-        input_id = st.get_session_id() + "-" + self._key if self._key else None
-        components.html(
-            """
-            <input
-                id="%s"
-                type="text"
-                value="%s"
-                placeholder="%s"
-                data-bypass="true"
-                data-key="%s"
-            >
-            """
-            % (input_id, value, label, self._key),
-            scrolling=False,
-        )
-        result = st._get_widget_value(input_id, "no_submit_text_input", self._key)
-        self._current_value = result["value"]
-        self._assigned_placeholder = result["assigned_placeholder"]
-        return result["value"]
-
-# Function to copy text to clipboard
-def copy_to_clipboard(text):
-    pyperclip.copy(text)
+        return st.text_input(label, value, key=self._key, **kwargs)
 
 # サイドバーにテキストボックスを表示
 email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
@@ -69,8 +44,7 @@ with st.sidebar.form("katsu-form"):
 
     # Display the copy button
     if st.button("コピー"):
-        copy_to_clipboard(message_input._current_value)
-        st.success("メッセージがクリップボードにコピーされました。")
+        st.text_area("コピーしたメッセージ", value=message_input._current_value)
 
 # 送信ボタンの処理は変更なし
 if st.sidebar.button("送信"):
@@ -112,3 +86,4 @@ def send_message_to_bot(team_id, bot_id, message):
         return response.status_code, response.text  # return error information
 
 result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
+
