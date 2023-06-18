@@ -52,7 +52,7 @@ if st.sidebar.button("送信"):
     st.write(result)
 
 # Show the results and balloons
-st.write("送信")
+st.write(df_search)
 st.balloons()
 
 
