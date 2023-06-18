@@ -39,7 +39,7 @@ st.write(df_search)
 st.balloons()
 
 # サイト上でのテキスト入力を取得
-message_input = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
+message_input = st.text_input("ユーザーからのメッセージ:", value="")
 
 if st.button("送信"):
     # テンプレートの作成
