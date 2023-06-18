@@ -89,12 +89,11 @@ def copy_to_clipboard(text):
     )
 
 # サイドバーにテキストボックスを表示
-phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
 email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
 
 # Display the form and input fields
 with st.sidebar.form("katsu-form"):
-    message_input = NoSubmitTextInput(initial_value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました", key="message_input")
+    message_input = NoSubmitTextInput(initial_value=f"{email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました", key="message_input")
     st.write("申請を行う場合、以下のメッセージを送信してください:")
     st.write(message_input("メッセージを入力してください"))
 
