@@ -65,8 +65,21 @@ email_input = st.sidebar.text_input("メールアドレスを入力してくだ�
 # Form submission handling JavaScript code
 form_submit_code = """
 <script>
-    document.getElementById("katsu-form").addEventListener("submit", function(event) {
+    const form = document.getElementById("katsu-form");
+    const input = document.getElementById("message-input");
+
+    input.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    form.addEventListener("submit", function(event) {
         event.preventDefault();
+
+        // Perform form submission here or call a function to handle it
+
         return false;
     });
 </script>
@@ -75,24 +88,14 @@ form_submit_code = """
 # Display the form and input fields
 with st.sidebar.form(key="katsu-form"):
     message_input = st.text_input("申請を行う場合、電話番号またはメールアドレスを入力してください:",
-                                  value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
+                                  value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました",
+                                  key="message-input")
 
-    # エンターキーの入力を検知して処理を行わない
-    message_input = message_input if message_input != '\n' else ""
-
-    if st.form_submit_button("送信") and message_input:
-        # テンプレートの作成
-        info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
-        message_template = "ユーザーからのメッセージ: {}\n\n{}"
-
-        # テンプレートにメッセージを組み込んで送信
-        message = message_template.format(message_input, info_to_ask)
-        result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
-        st.write(result)
+    # Display the submit button
+    submit_button = st.form_submit_button("送信")
 
 # Display the form submission JavaScript code
 components.html(form_submit_code)
-
 
 def send_message_to_bot(team_id, bot_id, message):
     # URLを構築
