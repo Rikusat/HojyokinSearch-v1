@@ -47,9 +47,10 @@ if st.button("送信"):
     message_template = "ユーザーからのメッセージ: {}\n\n{}"
     
     # テンプレートにメッセージを組み込んで送信
-    message = message_template.format(info_to_ask, message_input)
+    message = message_template.format(message_input, info_to_ask)
     result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
+
 
 
 # Show the cards
