@@ -33,7 +33,7 @@ selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択して�
 df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
 # Show the results and balloons
-st.write(df_search)
+st.button("送信")
 st.balloons()
 
 # Get the information to ask OpenAI
