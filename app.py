@@ -13,7 +13,7 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
-text_search = st.text_input('検索したいテキストを入力してください')
+text_search = st.text_input('検索したい地域を入力してください')
 
 # Get a list of unique 対象事業者
 unique_対象事業者 = df["対象事業者"].unique()
