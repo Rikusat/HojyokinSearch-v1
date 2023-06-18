@@ -58,7 +58,9 @@ for n_row, row in df_search.reset_index().iterrows():
         
 
 # サイドバーにテキストボックスを表示
-message_input = st.sidebar.text_input("申請を行う場合、電話番号またはメールアドレスを入力してください:", value=f"(電話番号)(メールアドレス) {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
+phone_input = st.sidebar.text_input("電話番号を入力してください")
+email_input = st.sidebar.text_input("メールアドレスを入力してください")
+message_input = st.sidebar.text_input("申請を行う:", value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
 
 if st.sidebar.button("送信"):
     # テンプレートの作成
@@ -69,6 +71,7 @@ if st.sidebar.button("送信"):
     message = message_template.format(message_input, info_to_ask)
     result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
+
 
 
 def send_message_to_bot(team_id, bot_id, message):
