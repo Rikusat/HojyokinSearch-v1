@@ -58,11 +58,14 @@ for n_row, row in df_search.reset_index().iterrows():
         
 
 # サイドバーにテキストボックスを表示
-phone_input = st.sidebar.text_input("電話番号を入力してください")
-email_input = st.sidebar.text_input("メールアドレスを入力してください")
-message_input = st.sidebar.text_input("申請を行う:", value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
+phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
+email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
+message_input = st.sidebar.text_input("申請を行う場合、電話番号またはメールアドレスを入力してください:", value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました", key="message_input")
 
-if st.sidebar.button("送信"):
+# エンターキーの入力を検知して処理を行わない
+message_input = message_input if message_input != '\n' else ""
+
+if st.sidebar.button("送信") and message_input:
     # テンプレートの作成
     info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
     message_template = "ユーザーからのメッセージ: {}\n\n{}"
@@ -71,6 +74,7 @@ if st.sidebar.button("送信"):
     message = message_template.format(message_input, info_to_ask)
     result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
+
 
 
 
