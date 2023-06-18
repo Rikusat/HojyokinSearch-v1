@@ -36,7 +36,7 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 
 
 # サイドバーにテキストボックスを表示
-message_input = st.sidebar.text_input("ユーザーからのメッセージ:", value=f" {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました.")
+message_input = st.sidebar.text_input("電話番号またはメールアドレスを入力してください:", value=f"(電話番号)(メールアドレス) {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
 
 if st.sidebar.button("送信"):
     # テンプレートの作成
