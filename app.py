@@ -55,8 +55,8 @@ if st.button("送信"):
     st.write(response['choices'][0]['message']['content'])
 
 # Write the message on the page
-st.write(message)
-
+message_placeholder = st.empty()
+message_placeholder.write(message)
 
 # Show the cards
 N_cards_per_row = 3
