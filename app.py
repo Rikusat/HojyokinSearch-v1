@@ -34,13 +34,9 @@ selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択して�
 # Filter the dataframe using selected 地域 and 対象事業者
 df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
-# Show the results and balloons
-st.write(df_search)
-st.balloons()
 
 # サイドバーにテキストボックスを表示
 message_input = st.sidebar.text_input("ユーザーからのメッセージ:", value=f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list.")
-
 
 else:
     # ボタンが押されなかった場合のデフォルトの表示
