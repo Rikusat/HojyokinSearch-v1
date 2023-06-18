@@ -35,6 +35,24 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 st.write(df_search)
 st.balloons()
 
+# Get the information to ask OpenAI
+info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+
+# Define the message input for OpenAI
+message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
+
+if st.button("送信"):
+    # Use OpenAI API
+    response = openai.ChatCompletion.create(
+      model="gpt-3.5-turbo",
+      messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": message}
+        ]
+    )
+    # Show OpenAI's response
+    st.write(response['choices'][0]['message']['content'])
+    
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.reset_index().iterrows():
