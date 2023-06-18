@@ -34,6 +34,9 @@ selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択して�
 # Filter the dataframe using selected 地域 and 対象事業者
 df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
+# Show the results and balloons
+st.write(df_search)
+st.balloons()
 
 # Show the cards
 N_cards_per_row = 3
