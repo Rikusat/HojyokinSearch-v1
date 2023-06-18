@@ -35,18 +35,9 @@ selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択して�
 # Filter the dataframe using selected 地域 and 対象事業者
 df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
-# サイト上でのテキスト入力を取得
-message_input = st.text_input("メッセージを入力してください")
-
-if st.button("送信"):
-    # テンプレートの作成
-    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
-    message_template = "ユーザーからのメッセージ: {}\n\n{}"
-    
-    # テンプレートにセレクトボックスの選択結果とメッセージを組み込んで送信
-    message = message_template.format(info_to_ask, message_input)
-    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
-    st.write(result)
+# Show the results and balloons
+st.write(df_search)
+st.balloons()
 
 
 # Show the cards
@@ -88,4 +79,15 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
     else:
         return response.status_code, response.text  # return error information
 
+# サイト上でのテキスト入力を取得
+message_input = st.text_input("メッセージを入力してください")
 
+if st.button("送信"):
+    # テンプレートの作成
+    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+    message_template = "ユーザーからのメッセージ: {}\n\n{}"
+    
+    # テンプレートにセレクトボックスの選択結果とメッセージを組み込んで送信
+    message = message_template.format(info_to_ask, message_input)
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+    st.write(result)
