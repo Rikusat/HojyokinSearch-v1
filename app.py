@@ -5,6 +5,7 @@ import openai
 import requests
 import json
 import streamlit.components.v1 as components
+import time
 
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
@@ -57,45 +58,114 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
 
-# サイドバーにテキストボックスを表示
-phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
-email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
+# Custom text input widget that prevents form submission on Enter key press
+class NoSubmitTextInput:
+    def __init__(self, initial_value="", key=None):
+        self._key = key
+        self._current_value = initial_value
+        self._assigned_placeholder = 
+        self._key = key
+        self._current_value = initial_value
 
+        self._key = key
+        self._current_value = initial
+False
 
-# Form submission handling JavaScript code
-form_submit_code = """
-<script>
-    const form = document.getElementById("katsu-form");
-    const input = document.getElementById("message-input");
+    def __call__(self, label, value="", **kwargs):
+        value = self._current_value if value == "" else value
+        input_id = st.get_session_id() + 
+        input_id = st.get_session_id() +
 
-    input.addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            return false;
-        }
-    });
+        input_id = st.get
+"-" + self._key if self._key else None
+        components.declare_component(
+            
+        components.declare_component(
+           
+"no_submit_text_input",
+            input_id=input_id,
+            label=label,
+            value=value,
+            key=self._key,
+            assigned_placeholder=self._assigned_placeholder,
+            **kwargs,
+        )
+        result = st._get_widget_value(input_id, 
+            input_id=input_id,
+            label=label,
+            value=value,
+            key=self._key,
+            assigned_placeholder=self._assigned_placeholder,
+            **kwargs,
+        )
+        result = st._get_widget_value
 
-    form.addEventListener("submit", function(event) {
+            input_id=input_id,
+            label=label,
+            value=value,
+            key=self._key,
+            assigned_placeholder=self._assigned_placeholder,
+            **kwargs,
+        )
+        result = st._get_widget
+
+            input_id=input_id,
+            label=label,
+            value=value,
+            key=self._key,
+            assigned_placeholder=self._assigned_placeholder,
+            **kwargs,
+        )
+        result
+"no_submit_text_input", self._key)
+        self._current_value = result["value"]
+        self._assigned_placeholder = result["assigned_placeholder"]
+        return result["value"]
+
+# Custom Streamlit component JavaScript code
+no_submit_text_input_js = 
+no
+"""
+const textField = document.getElementById("no_submit_text_input");
+
+textField.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
         event.preventDefault();
-
-        // Perform form submission here or call a function to handle it
-
         return false;
-    });
-</script>
+    }
+});
 """
 
+# Custom Streamlit component registration
+components.register_component(
+components
+"no_submit_text_input", no_submit_text_input_js)
+
+# サイドバーにテキストボックスを表示
+phone_input = st.sidebar.text_input(
+phone
+"電話番号を入力してください", key="phone_input")
+email_input = st.sidebar.text_input(
+email_input = st.sidebar.text
+
+email_input = st.sidebar
+
+email_input =
+"メールアドレスを入力してください", key="email_input")
+
 # Display the form and input fields
-with st.sidebar.form(key="katsu-form"):
-    message_input = st.text_input("申請を行う場合、電話番号またはメールアドレスを入力してください:",
-                                  value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました",
-                                  key="message-input")
+with st.sidebar.form("katsu-form"):
+    message_input = NoSubmitTextInput(initial_value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました", key="message_input")
+    st.write("申請を行う場合、以下のメッセージを送信してください:")
+    st.write(message_input("メッセージを入力してください"))
 
     # Display the submit button
     submit_button = st.form_submit_button("送信")
 
-# Display the form submission JavaScript code
-components.html(form_submit_code)
+# Custom component JavaScript code injection
+components.html(no_submit_text_input_js)
+
+components
 
 def send_message_to_bot(team_id, bot_id, message):
     # URLを構築
