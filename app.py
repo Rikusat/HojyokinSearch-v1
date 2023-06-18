@@ -6,7 +6,8 @@ import requests
 import json
 import streamlit.components.v1 as components
 import time
-import pyperclip
+import base64
+
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
@@ -66,6 +67,27 @@ class NoSubmitTextInput:
         self._assigned_placeholder = result["assigned_placeholder"]
         return result["value"]
 
+# Function to copy text to clipboard
+def copy_to_clipboard(text):
+    data = f"data:text/plain;charset=utf-8;base64,{base64.b64encode(text.encode()).decode()}"
+    button_id = st.get_session_id() + "-copy-button"
+    components.html(
+        f"""
+        <button id="{button_id}" onclick="copyToClipboard('{data}')">Copy to Clipboard</button>
+        <script>
+        function copyToClipboard(data) {{
+            const el = document.createElement('textarea');
+            el.value = data;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }}
+        </script>
+        """,
+        scrolling=False,
+    )
+
 # サイドバーにテキストボックスを表示
 phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
 email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
@@ -77,23 +99,14 @@ with st.sidebar.form("katsu-form"):
     st.write(message_input("メッセージを入力してください"))
 
     # Display the copy button
-    copy_button = st.form_submit_button("コピー")
-
-# Copy the message to clipboard when the copy button is clicked
-if copy_button:
-    pyperclip.copy(message_input._current_value)
-    st.success("メッセージがクリップボードにコピーされました。")
+    if st.button("コピー"):
+        copy_to_clipboard(message_input._current_value)
+        st.success("メッセージがクリップボードにコピーされました。")
 
 # 送信ボタンの処理は変更なし
 if st.sidebar.button("送信"):
     # テンプレートの作成
-    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
-    message_template = "ユーザーからのメッセージ: {}\n\n{}"
-    
-    # テンプレートにメッセージを組み込んで送信
-    message = message_template.format(message_input._current_value, info_to_ask)
-    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
-    st.write(result)
+    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象
 
 
 # Show the results and balloons
