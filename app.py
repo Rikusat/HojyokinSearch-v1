@@ -38,9 +38,7 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 # サイドバーにテキストボックスを表示
 message_input = st.sidebar.text_input("ユーザーからのメッセージ:", value=f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list.")
 
-else:
-    # ボタンが押されなかった場合のデフォルトの表示
-    st.write("ボタンをクリックしてメッセージを送信してください。")
+
     
 # Show the cards
 N_cards_per_row = 3
