@@ -39,7 +39,7 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 
 # ページにテキストボックスを表示
 email_input = st.sidebar.text_input("メールアドレスを入力してください")
-message_input = st.text_input("申請を行う場合、メールアドレスを入力し送信してください:", value=f" {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
+message_input = st.sidebar.text_input("申請を行う場合、メールアドレスを入力し送信してください:", value=f" {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
 
 if st.button("送信"):
     # テンプレートの作成
@@ -50,6 +50,10 @@ if st.button("送信"):
     message = message_template.format(message_input, info_to_ask)
     result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
+
+# Show the results and balloons
+st.write(df_search)
+st.balloons()
 
 
 def send_message_to_bot(team_id, bot_id, message):
