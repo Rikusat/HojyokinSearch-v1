@@ -55,24 +55,6 @@ else:
     # ボタンが押されなかった場合のデフォルトの表示
     st.write("ボタンをクリックしてメッセージを送信してください。")
 
-
-# Show the cards
-N_cards_per_row = 3
-for n_row, row in df_search.reset_index().iterrows():
-    i = n_row % N_cards_per_row
-    if i == 0:
-        st.write("---")
-        cols = st.columns(N_cards_per_row, gap="large")
-    # draw the card
-    with cols[n_row % N_cards_per_row]:
-        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
-        st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
-        st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
-        st.markdown(f"補助率: {row['補助率'].strip()}")
-        st.markdown(f"目的: {row['目的'].strip()}")
-        st.markdown(f"対象経費: {row['対象経費'].strip()}")
-        st.markdown(f"**[リンク]({row['リンク'].strip()})**")
-
 def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
     # URLを構築
     url = f"https://api.docsbot.ai/teams/{tI6OSbQdwZIbdANCJpO9}/bots/{LDbjERuQV2kJtkDozNIX}/chat"
@@ -96,3 +78,22 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
         return response.status_code, response.text  # return error information
 
 result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+
+
+# Show the cards
+N_cards_per_row = 3
+for n_row, row in df_search.reset_index().iterrows():
+    i = n_row % N_cards_per_row
+    if i == 0:
+        st.write("---")
+        cols = st.columns(N_cards_per_row, gap="large")
+    # draw the card
+    with cols[n_row % N_cards_per_row]:
+        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
+        st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
+        st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
+        st.markdown(f"補助率: {row['補助率'].strip()}")
+        st.markdown(f"目的: {row['目的'].strip()}")
+        st.markdown(f"対象経費: {row['対象経費'].strip()}")
+        st.markdown(f"**[リンク]({row['リンク'].strip()})**")
+
