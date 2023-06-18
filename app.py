@@ -54,6 +54,8 @@ if st.button("送信"):
     # Show OpenAI's response
     st.write(response['choices'][0]['message']['content'])
 
+st.session_state["user_input"] = ""  # 入力欄を消去
+
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.reset_index().iterrows():
