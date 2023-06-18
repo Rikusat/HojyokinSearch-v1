@@ -1,6 +1,7 @@
 # Import libraries
 import streamlit as st
 import pandas as pd
+import openai
 
 # OpenAI API key
 openai.api_key = 'your-api-key'
