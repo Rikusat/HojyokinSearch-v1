@@ -83,9 +83,12 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
 message_input = st.text_input("メッセージを入力してください")
 
 if st.button("送信"):
-    # メッセージをボットに送信
-    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
+    # テンプレートの作成
+    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+    message_template = "ユーザーからのメッセージ: {}"
+    
+    # テンプレートにメッセージを組み込んで送信
+    message = message_template.format(info_to_ask)
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
-
-result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
 
