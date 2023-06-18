@@ -79,10 +79,10 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
         return response.status_code, response.text  # return error information
 
 
-# Get the information to ask OpenAI
+# Get the information to ask Docsbot
 info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
 
-# Define the message input for OpenAI
+# Define the message input for Docsbot
 message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
 
 if st.button("送信"):
