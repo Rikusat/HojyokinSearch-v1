@@ -73,7 +73,7 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
 
-def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message_input):
+def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
     # URLを構築
     url = f"https://api.docsbot.ai/teams/{tI6OSbQdwZIbdANCJpO9}/bots/{LDbjERuQV2kJtkDozNIX}/chat"
 
