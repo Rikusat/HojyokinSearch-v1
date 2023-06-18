@@ -89,19 +89,3 @@ if st.button("送信"):
 
 result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
 
-
-# 返答文を表示
-answer = response["answer"]
-print("回答:")
-print(answer)
-
-# ソース情報を表示
-sources = response["sources"]
-print("\nソース情報:")
-for idx, source in enumerate(sources):
-    title = source["title"]
-    url = source["url"]
-    print(f"{idx+1}. {title}")
-    print(f"   URL: {url}")
-
-
