@@ -51,6 +51,11 @@ if st.button("送信"):
     result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
 
+else:
+    # ボタンが押されなかった場合のデフォルトの表示
+    st.write("ボタンをクリックしてメッセージを送信してください。")
+
+
 
 
 # Show the cards
