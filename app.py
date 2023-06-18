@@ -89,3 +89,53 @@ if st.button("送信"):
 
 result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
 
+
+response = {
+    "answer": "川口市が出している補助金は以下の通りです： - 川口市DX推進補助金（上乗せ支援型）- スマート補助金 - 商店改修事業補助金- スマート補助金 - 川口市創業支援事業- スマート補助金 - 狭あい道路拡幅整備助成金- スマート補助金 - 建築物の耐震診断・改修補助金制度 - スマート補助金 スマート補助金というサイトで詳細を確認することができます。",
+    "sources": [
+        {
+            "type": "url",
+            "title": "川口市DX推進補助金（上乗せ支援型） | スマート補助金",
+            "url": "https://www.smart-hojokin.jp/subsidies/27704",
+            "page": None,
+            "content": None
+        },
+        {
+            "type": "url",
+            "title": "商店改修事業補助金 | スマート補助金",
+            "url": "https://www.smart-hojokin.jp/subsidies/24011",
+            "page": None,
+            "content": None
+        },
+        {
+            "type": "url",
+            "title": "川口市創業支援事業 | スマート補助金",
+            "url": "https://www.smart-hojokin.jp/subsidies/27886",
+            "page": None,
+            "content": None
+        }
+    ],
+    "history": [
+        [
+            "川口市が出している補助金を教えてください",
+            "川口市が出している補助金は以下の通りです： - 川口市DX推進補助金（上乗せ支援型）- スマート補助金 - 商店改修事業補助金- スマート補助金 - 川口市創業支援事業- スマート補助金 - 狭あい道路拡幅整備助成金- スマート補助金 - 建築物の耐震診断・改修補助金制度 - スマート補助金 スマート補助金というサイトで詳細を確認することができます。"
+        ]
+    ],
+    "id": "i99SssTzNDtfHVImhWsU"
+}
+
+# 返答文を表示
+answer = response["answer"]
+print("回答:")
+print(answer)
+
+# ソース情報を表示
+sources = response["sources"]
+print("\nソース情報:")
+for idx, source in enumerate(sources):
+    title = source["title"]
+    url = source["url"]
+    print(f"{idx+1}. {title}")
+    print(f"   URL: {url}")
+
+
