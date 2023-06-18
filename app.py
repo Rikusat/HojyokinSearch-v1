@@ -1,26 +1,13 @@
-# Import libraries
+import base64
+import json
+import requests
 import streamlit as st
 import pandas as pd
-import openai
-import requests
-import json
+import pyperclip
 import streamlit.components.v1 as components
-import time
-import base64
 
-
-# Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets.OpenAIAPI.openai_api_key
-
-# Page setup
-st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
-st.title("補助金検索くん🎈")
-
-# Correct the formation of the URL
-sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
-sheet_name = "charlas"
-url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-df = pd.read_csv(url, dtype=str).fillna("")
+# データフレームの例として空のデータフレームを作成
+df = pd.DataFrame(columns=["地域", "対象事業者", "補助金名", "申請期間", "上限金額・助成額", "補助率", "目的", "対象経費", "リンク"])
 
 # Get a list of unique 地域
 unique_地域 = df["地域"].unique()
@@ -69,24 +56,7 @@ class NoSubmitTextInput:
 
 # Function to copy text to clipboard
 def copy_to_clipboard(text):
-    data = f"data:text/plain;charset=utf-8;base64,{base64.b64encode(text.encode()).decode()}"
-    button_id = st.get_session_id() + "-copy-button"
-    components.html(
-        f"""
-        <button id="{button_id}" onclick="copyToClipboard('{data}')">Copy to Clipboard</button>
-        <script>
-        function copyToClipboard(data) {{
-            const el = document.createElement('textarea');
-            el.value = data;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-        }}
-        </script>
-        """,
-        scrolling=False,
-    )
+    pyperclip.copy(text)
 
 # サイドバーにテキストボックスを表示
 email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
@@ -107,21 +77,11 @@ if st.sidebar.button("送信"):
     # テンプレートの作成
     info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
     message_template = "ユーザーからのメッセージ: {}\n\n{}"
-    
-# ページにテキストボックスを表示
-message_input = st.sidebar.empty()
-input_value = message_input.text_input("メッセージを入力してください")
-
-if st.sidebar.button("送信"):
-    # テンプレートの作成
-    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
-    message_template = "ユーザーからのメッセージ: {}\n\n{}"
 
     # テンプレートにメッセージを組み込んで送信
-    message = message_template.format(input_value, info_to_ask)
+    message = message_template.format(message_input._current_value, info_to_ask)
     result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
-
 
 
 # Show the results and balloons
@@ -152,22 +112,3 @@ def send_message_to_bot(team_id, bot_id, message):
         return response.status_code, response.text  # return error information
 
 result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
-
-
-# Show the cards
-N_cards_per_row = 3
-for n_row, row in df_search.reset_index().iterrows():
-    i = n_row % N_cards_per_row
-    if i == 0:
-        st.write("---")
-        cols = st.columns(N_cards_per_row, gap="large")
-    # draw the card
-    with cols[n_row % N_cards_per_row]:
-        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
-        st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
-        st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
-        st.markdown(f"補助率: {row['補助率'].strip()}")
-        st.markdown(f"目的: {row['目的'].strip()}")
-        st.markdown(f"対象経費: {row['対象経費'].strip()}")
-        st.markdown(f"**[リンク]({row['リンク'].strip()})**")
-
