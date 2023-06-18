@@ -41,7 +41,7 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 email_input = st.sidebar.text_input("メールアドレスを入力してください")
 message_input = st.sidebar.text_input("申請を行う場合、メールアドレスを入力し送信してください:", value=f" {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
 
-if st.button("送信"):
+if st..sidebar.button("送信"):
     # テンプレートの作成
     info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
     message_template = "ユーザーからのメッセージ: {}\n\n{}"
