@@ -38,8 +38,17 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 # サイドバーにテキストボックスを表示
 message_input = st.sidebar.text_input("ユーザーからのメッセージ:", value=f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list.")
 
-
+if st.sidebar.button("送信"):
+    # テンプレートの作成
+    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+    message_template = "ユーザーからのメッセージ: {}\n\n{}"
     
+    # テンプレートにメッセージを組み込んで送信
+    message = message_template.format(message_input, info_to_ask)
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+    st.write(result)
+
+
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.reset_index().iterrows():
