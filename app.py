@@ -38,7 +38,23 @@ df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == sel
 st.write(df_search)
 st.balloons()
 
+# サイドバーにテキストボックスを表示
+message_input = st.sidebar.text_input("ユーザーからのメッセージ:", value=f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list.")
 
+if st.sidebar.button("送信"):
+    # テンプレートの作成
+    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+    message_template = "ユーザーからのメッセージ: {}\n\n{}"
+    
+    # テンプレートにメッセージを組み込んで送信
+    message = message_template.format(message_input, info_to_ask)
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+    st.write(result)
+
+else:
+    # ボタンが押されなかった場合のデフォルトの表示
+    st.write("ボタンをクリックしてメッセージを送信してください。")
+    
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.reset_index().iterrows():
@@ -56,23 +72,6 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"対象経費: {row['対象経費'].strip()}")
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
-
-# サイト上でのテキスト入力を取得
-message_input = st.text_input("ユーザーからのメッセージ:", value=f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list.")
-
-if st.button("送信"):
-    # テンプレートの作成
-    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
-    message_template = "ユーザーからのメッセージ: {}\n\n{}"
-    
-    # テンプレートにメッセージを組み込んで送信
-    message = message_template.format(message_input, info_to_ask)
-    result = send_message_to_bot('your_team_id', 'your_bot_id', message)
-    st.write(result)
-
-else:
-    # ボタンが押されなかった場合のデフォルトの表示
-    st.write("ボタンをクリックしてメッセージを送信してください。")
 
 def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
     # URLを構築
