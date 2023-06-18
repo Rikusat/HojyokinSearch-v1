@@ -61,8 +61,8 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
     # URLを構築
     url = f"https://api.docsbot.ai/teams/{tI6OSbQdwZIbdANCJpO9}/bots/{LDbjERuQV2kJtkDozNIX}/chat"
 
-    # 送信するメッセージをJSON形式に変換
-    data = json.dumps({"content": message})
+  # 送信するメッセージをJSON形式に変換
+    data = json.dumps({"question": message})  # 'content'ではなく'question'に変更する
 
     # ヘッダーを定義
     headers = {
