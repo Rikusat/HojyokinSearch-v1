@@ -58,31 +58,21 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
 
+import streamlit as st
+import streamlit.components.v1 as components
+
 # Custom text input widget that prevents form submission on Enter key press
 class NoSubmitTextInput:
     def __init__(self, initial_value="", key=None):
         self._key = key
         self._current_value = initial_value
-        self._assigned_placeholder = 
-        self._key = key
-        self._current_value = initial_value
-
-        self._key = key
-        self._current_value = initial
-False
+        self._assigned_placeholder = False
 
     def __call__(self, label, value="", **kwargs):
         value = self._current_value if value == "" else value
-        input_id = st.get_session_id() + 
-        input_id = st.get_session_id() +
-
-        input_id = st.get
-"-" + self._key if self._key else None
+        input_id = st.get_session_id() + "-" + self._key if self._key else None
         components.declare_component(
-            
-        components.declare_component(
-           
-"no_submit_text_input",
+            "no_submit_text_input",
             input_id=input_id,
             label=label,
             value=value,
@@ -90,42 +80,13 @@ False
             assigned_placeholder=self._assigned_placeholder,
             **kwargs,
         )
-        result = st._get_widget_value(input_id, 
-            input_id=input_id,
-            label=label,
-            value=value,
-            key=self._key,
-            assigned_placeholder=self._assigned_placeholder,
-            **kwargs,
-        )
-        result = st._get_widget_value
-
-            input_id=input_id,
-            label=label,
-            value=value,
-            key=self._key,
-            assigned_placeholder=self._assigned_placeholder,
-            **kwargs,
-        )
-        result = st._get_widget
-
-            input_id=input_id,
-            label=label,
-            value=value,
-            key=self._key,
-            assigned_placeholder=self._assigned_placeholder,
-            **kwargs,
-        )
-        result
-"no_submit_text_input", self._key)
+        result = st._get_widget_value(input_id, "no_submit_text_input", self._key)
         self._current_value = result["value"]
         self._assigned_placeholder = result["assigned_placeholder"]
         return result["value"]
 
 # Custom Streamlit component JavaScript code
-no_submit_text_input_js = 
-no
-"""
+no_submit_text_input_js = """
 const textField = document.getElementById("no_submit_text_input");
 
 textField.addEventListener("keydown", function(event) {
@@ -137,21 +98,11 @@ textField.addEventListener("keydown", function(event) {
 """
 
 # Custom Streamlit component registration
-components.register_component(
-components
-"no_submit_text_input", no_submit_text_input_js)
+components.register_component("no_submit_text_input", no_submit_text_input_js)
 
 # サイドバーにテキストボックスを表示
-phone_input = st.sidebar.text_input(
-phone
-"電話番号を入力してください", key="phone_input")
-email_input = st.sidebar.text_input(
-email_input = st.sidebar.text
-
-email_input = st.sidebar
-
-email_input =
-"メールアドレスを入力してください", key="email_input")
+phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
+email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
 
 # Display the form and input fields
 with st.sidebar.form("katsu-form"):
@@ -165,7 +116,6 @@ with st.sidebar.form("katsu-form"):
 # Custom component JavaScript code injection
 components.html(no_submit_text_input_js)
 
-components
 
 def send_message_to_bot(team_id, bot_id, message):
     # URLを構築
