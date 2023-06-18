@@ -39,7 +39,7 @@ st.write(df_search)
 st.balloons()
 
 # サイト上でのテキスト入力を取得
-message_input = st.text_input("ユーザーからのメッセージ:", value="")
+message_input = st.text_input("ユーザーからのメッセージ:", value=f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list.")
 
 if st.button("送信"):
     # テンプレートの作成
