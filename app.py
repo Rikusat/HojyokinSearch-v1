@@ -48,7 +48,7 @@ if st.button("送信"):
     
     # テンプレートにメッセージを組み込んで送信
     message = message_template.format(message_input, info_to_ask)
-    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+    result = send_message_to_bot('your_team_id', 'your_bot_id', message)
     st.write(result)
 
 else:
@@ -73,12 +73,12 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"対象経費: {row['対象経費'].strip()}")
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
-def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
+def send_message_to_bot((tI6OSbQdwZIbdANCJpO9, , LDbjERuQV2kJtkDozNIX, , message):
     # URLを構築
-    url = f"https://api.docsbot.ai/teams/{team_id}/bots/{bot_id}/chat"
+    url = f"https://api.docsbot.ai/teams/{tI6OSbQdwZIbdANCJpO9}/bots/{LDbjERuQV2kJtkDozNIX}/chat"
 
     # 送信するメッセージをJSON形式に変換
-    data = json.dumps({"question": message})
+    data = json.dumps({"question": message})  # 'content'ではなく'question'に変更する
 
     # ヘッダーを定義
     headers = {
