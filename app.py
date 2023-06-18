@@ -52,6 +52,7 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"対象経費: {row['対象経費'].strip()}")
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
+        ）
 
 # サイドバーにテキストボックスを表示
 message_input = st.sidebar.text_input("申請を行う場合、電話番号またはメールアドレスを入力してください:", value=f"(電話番号)(メールアドレス) {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
