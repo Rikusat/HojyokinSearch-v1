@@ -3,8 +3,8 @@ import streamlit as st
 import pandas as pd
 
 # Page setup
-st.set_page_config(page_title="補助金検索くん", page_icon="🐍", layout="wide")
-st.title("補助金検索くん🐍")
+st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
+st.title("補助金検索くん🎈")
 
 
 # Correct the formation of the URL
