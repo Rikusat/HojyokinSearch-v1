@@ -73,9 +73,9 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
 
-def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
+def send_message_to_bot(team_id, bot_id, message):
     # URLを構築
-    url = f"https://api.docsbot.ai/teams/{tI6OSbQdwZIbdANCJpO9}/bots/{LDbjERuQV2kJtkDozNIX}/chat"
+    url = f"https://api.docsbot.ai/teams/{team_id}/bots/{bot_id}/chat"
 
     # 送信するメッセージをJSON形式に変換
     data = json.dumps({"question": message})  # 'content'ではなく'question'に変更する
@@ -96,3 +96,4 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
         return response.status_code, response.text  # return error information
 
 result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message_input)
+
