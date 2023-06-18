@@ -32,15 +32,12 @@ selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択して�
 # Filter the dataframe using selected 地域 and 対象事業者
 df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
+# Write the message on the page
+st.write(message)
+
 # Show the results and balloons
 st.write(df_search)
 st.balloons()
-
-# Define the message input for OpenAI
-message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
-
-# Write the message on the page
-st.write(message)
 
 # Show the cards
 N_cards_per_row = 3
