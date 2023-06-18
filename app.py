@@ -56,8 +56,6 @@ else:
     st.write("ボタンをクリックしてメッセージを送信してください。")
 
 
-
-
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.reset_index().iterrows():
@@ -77,15 +75,15 @@ for n_row, row in df_search.reset_index().iterrows():
 
 def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
     # URLを構築
-    url = f"https://api.docsbot.ai/teams/{tI6OSbQdwZIbdANCJpO9}/bots/{LDbjERuQV2kJtkDozNIX}/chat"
+    url = f"https://api.docsbot.ai/teams/{team_id}/bots/{bot_id}/chat"
 
-  # 送信するメッセージをJSON形式に変換
-    data = json.dumps({"question": message})  # 'content'ではなく'question'に変更する
+    # 送信するメッセージをJSON形式に変換
+    data = json.dumps({"question": message})
 
     # ヘッダーを定義
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': '91bf12c215628496ca68904f8c5f8352f55206c5de10e6e0d979c7c7633a427d',  # replace 'your_token' with your actual token
+        'Authorization': '9d7e3da1547d23fb4a8193c72d036bf6b2cd799999590fc6ae3176ab9c2703d6',  # replace 'your_token' with your actual token
     }
 
     # POSTリクエストを実行
@@ -96,5 +94,3 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
         return response.json()  # success
     else:
         return response.status_code, response.text  # return error information
-
-
