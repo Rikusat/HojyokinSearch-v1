@@ -45,7 +45,7 @@ message = st.text_input("ユーザーからのメッセージ:", value=info_to_a
 if st.button("送信"):
     # Use OpenAI API
     response = openai.ChatCompletion.create(
-      model="gpt-4.0-turbo",
+      model="gpt-3.5-turbo",
       messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": message}
