@@ -106,7 +106,13 @@ with st.sidebar.form("katsu-form"):
 # 送信ボタンの処理は変更なし
 if st.sidebar.button("送信"):
     # テンプレートの作成
-    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象
+    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+    message_template = "ユーザーからのメッセージ: {}\n\n{}"
+    
+    # テンプレートにメッセージを組み込んで送信
+    message = message_template.format(message_input._current_value, info_to_ask)
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+    st.write(result)
 
 
 # Show the results and balloons
