@@ -13,31 +13,27 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
-# Use a text_input to get the keywords to filter the dataframe
-text_search = st.text_input("地域または対象事業者を入力してください", value="")
-
-# Filter the dataframe using masks
-m1 = df["地域"].str.contains(text_search)
-m2 = df["対象事業者"].str.contains(text_search)
-df_search = df[m1 | m2]
+text_search = st.text_input('検索したいテキストを入力してください')
 
 # Get a list of unique 対象事業者
-unique_対象事業者 = df_search["対象事業者"].unique()
+unique_対象事業者 = df["対象事業者"].unique()
 
 # Create a selectbox for 対象事業者
 selected_対象事業者 = st.selectbox('対象事業者を選択してください', unique_対象事業者)
 
-# Filter the dataframe for the selected 対象事業者
-df_selected = df_search[df_search["対象事業者"] == selected_対象事業者]
+# Filter the dataframe using masks and selected 対象事業者
+m1 = df["地域"].str.contains(text_search) if text_search else True
+m2 = df["対象事業者"] == selected_対象事業者
+df_search = df[(m1 | m2) & m2]
 
 # Show the results and balloons, if you have a text_search
 if text_search:
-    st.write(df_selected)
+    st.write(df_search)
     st.balloons()
 
     # Show the cards
     N_cards_per_row = 3
-    for n_row, row in df_selected.reset_index().iterrows():
+    for n_row, row in df_search.reset_index().iterrows():
         i = n_row % N_cards_per_row
         if i == 0:
             st.write("---")
