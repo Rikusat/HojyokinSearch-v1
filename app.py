@@ -6,7 +6,7 @@ import requests
 import json
 import streamlit.components.v1 as components
 import time
-
+import pyperclip
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
@@ -37,18 +37,64 @@ selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択して�
 df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
 
-# ページにテキストボックスを表示
-message_input = st.sidebar.text_input("申請を行う場合、( )内にメールアドレスを入力し送信してください:", value=f"( ) {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
+# Custom text input widget that prevents form submission on Enter key press
+class NoSubmitTextInput:
+    def __init__(self, initial_value="", key=None):
+        self._key = key
+        self._current_value = initial_value
+        self._assigned_placeholder = False
 
+    def __call__(self, label, value="", **kwargs):
+        value = self._current_value if value == "" else value
+        input_id = st.get_session_id() + "-" + self._key if self._key else None
+        components.html(
+            """
+            <input
+                id="%s"
+                type="text"
+                value="%s"
+                placeholder="%s"
+                data-bypass="true"
+                data-key="%s"
+            >
+            """
+            % (input_id, value, label, self._key),
+            scrolling=False,
+        )
+        result = st._get_widget_value(input_id, "no_submit_text_input", self._key)
+        self._current_value = result["value"]
+        self._assigned_placeholder = result["assigned_placeholder"]
+        return result["value"]
+
+# サイドバーにテキストボックスを表示
+phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
+email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
+
+# Display the form and input fields
+with st.sidebar.form("katsu-form"):
+    message_input = NoSubmitTextInput(initial_value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました", key="message_input")
+    st.write("申請を行う場合、以下のメッセージを送信してください:")
+    st.write(message_input("メッセージを入力してください"))
+
+    # Display the copy button
+    copy_button = st.form_submit_button("コピー")
+
+# Copy the message to clipboard when the copy button is clicked
+if copy_button:
+    pyperclip.copy(message_input._current_value)
+    st.success("メッセージがクリップボードにコピーされました。")
+
+# 送信ボタンの処理は変更なし
 if st.sidebar.button("送信"):
     # テンプレートの作成
     info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
     message_template = "ユーザーからのメッセージ: {}\n\n{}"
     
     # テンプレートにメッセージを組み込んで送信
-    message = message_template.format(message_input, info_to_ask)
+    message = message_template.format(message_input._current_value, info_to_ask)
     result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
     st.write(result)
+
 
 # Show the results and balloons
 st.write(df_search)
