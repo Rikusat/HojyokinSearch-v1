@@ -54,6 +54,10 @@ if st.button("送信"):
     # Show OpenAI's response
     st.write(response['choices'][0]['message']['content'])
 
+# Write the message on the page
+st.write(message)
+
+
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.reset_index().iterrows():
