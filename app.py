@@ -78,8 +78,6 @@ def send_message_to_bot(tI6OSbQdwZIbdANCJpO9, LDbjERuQV2kJtkDozNIX, message):
     else:
         return response.status_code, response.text  # return error information
 
-# サイト上でのテキスト入力を取得
-message_input = st.text_input("メッセージを入力してください")
 
 # Get the information to ask OpenAI
 info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
