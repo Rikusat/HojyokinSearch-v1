@@ -58,47 +58,20 @@ for n_row, row in df_search.reset_index().iterrows():
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
 
 
-# Custom text input widget that prevents form submission on Enter key press
-class NoSubmitTextInput:
-    def __init__(self, initial_value="", key=None):
-        self._key = key
-        self._current_value = initial_value
-        self._assigned_placeholder = False
-
-    def __call__(self, label, value="", **kwargs):
-        value = self._current_value if value == "" else value
-        input_id = st.get_session_id() + "-" + self._key if self._key else None
-        components.html(
-            """
-            <input
-                id="%s"
-                type="text"
-                value="%s"
-                placeholder="%s"
-                data-bypass="true"
-                data-key="%s"
-            >
-            """
-            % (input_id, value, label, self._key),
-            scrolling=False,
-        )
-        result = st._get_widget_value(input_id, "no_submit_text_input", self._key)
-        self._current_value = result["value"]
-        self._assigned_placeholder = result["assigned_placeholder"]
-        return result["value"]
-
 # サイドバーにテキストボックスを表示
-phone_input = st.sidebar.text_input("電話番号を入力してください", key="phone_input")
-email_input = st.sidebar.text_input("メールアドレスを入力してください", key="email_input")
+phone_input = st.sidebar.text_input("電話番号を入力してください")
+email_input = st.sidebar.text_input("メールアドレスを入力してください")
+message_input = st.sidebar.text_input("申請を行う場合、電話番号またはメールアドレスを入力してください:", value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました")
 
-# Display the form and input fields
-with st.sidebar.form("katsu-form"):
-    message_input = NoSubmitTextInput(initial_value=f"{phone_input} {email_input} {selected_地域} の {selected_対象事業者} の {len(df_search)} 個のリストを取得しました", key="message_input")
-    st.write("申請を行う場合、以下のメッセージを送信してください:")
-    st.write(message_input("メッセージを入力してください"))
-
-    # Display the submit button
-    submit_button = st.form_submit_button("送信")
+if st.sidebar.button("送信"):
+    # テンプレートの作成
+    info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+    message_template = "ユーザーからのメッセージ: {}\n\n{}"
+    
+    # テンプレートにメッセージを組み込んで送信
+    message = message_template.format(message_input, info_to_ask)
+    result = send_message_to_bot('tI6OSbQdwZIbdANCJpO9', 'LDbjERuQV2kJtkDozNIX', message)
+    st.write(result)
 
 
 def send_message_to_bot(team_id, bot_id, message):
