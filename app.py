@@ -57,7 +57,7 @@ if st.button("送信"):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-16k-0613",
             messages=[
-                {"role": "system", "content": "あなたは優秀なデータ参照のスペシャリストです。全て日本語で返答してください."},
+                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
                 {"role": "user", "content": message}
             ]
         )
