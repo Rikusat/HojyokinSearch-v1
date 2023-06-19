@@ -10,6 +10,21 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
 st.title("補助金検索くん🎈")
 
+st.markdown("""
+    <style>
+    @keyframes robot {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    </style>
+    <div style="display: flex; justify-content: center;">
+        <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">🎈</div>
+        <div style="font-size: 30px;"></div>
+    </div>
+""", unsafe_allow_html=True)
+
+
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
