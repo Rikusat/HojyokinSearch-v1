@@ -36,7 +36,7 @@ st.write(df_search)
 st.balloons()
 
 # Get the information to ask OpenAI
-info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+info_to_ask = f"次の地域 {selected_地域} の対象事業者 の {selected_対象事業者}の {len(df_search)} 個のリストの中から探してください"
 
 # Define the message input for OpenAI
 message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
