@@ -41,17 +41,35 @@ info_to_ask = f"地域は {selected_地域} で、 {selected_対象事業者}が
 # Define the message input for OpenAI
 message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
 
-if st.button("送信"):
-    # Use OpenAI API
-    response = openai.ChatCompletion.create(
-      model="gpt-3.5-turbo",
-      messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": message}
-        ]
-    )
-    # Show OpenAI's response
-    st.write(response['choices'][0]['message']['content'])
+# Load the data
+df = pd.read_csv(url)
+
+# Get user's input
+user_input = st.text_input("Please enter your question")
+
+# Assuming that the user's input is a column name in the data
+# You might need to process the user's input further to match it to the data in your Google spreadsheet
+if user_input in df.columns:
+    # Get the unique values in the selected column
+    unique_values = df[user_input].unique()
+
+    # Convert the unique values to a string
+    unique_values_str = ', '.join([str(val) for val in unique_values])
+
+    # Prepare the message for the model
+    message = f"The unique values in the {user_input} column are: {unique_values_str}. Can you provide more details?"
+
+    if st.button("送信"):
+        # Use OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": message}
+            ]
+        )
+        # Show OpenAI's response
+        st.write(response['choices'][0]['message']['content'])
     
 # Show the cards
 N_cards_per_row = 3
