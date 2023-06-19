@@ -38,14 +38,13 @@ st.balloons()
 # Get the information to ask OpenAI
 info_to_ask = f"地域は {selected_地域} で、 {selected_対象事業者}が受けれる補助金を {len(df_search)} 個のリストの中から探してください"
 
-# Define the message input for OpenAI
-message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
 
 # Load the data
 df = pd.read_csv(url)
 
+
 # Get user's input
-user_input = st.text_input("Please enter your question")
+user_input = st.text_input("Please enter your question", value=info_to_ask)
 
 # Assuming that the user's input is a column name in the data
 # You might need to process the user's input further to match it to the data in your Google spreadsheet
