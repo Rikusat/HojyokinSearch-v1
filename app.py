@@ -39,20 +39,31 @@ st.balloons()
 info_to_ask = f"地域は {selected_地域} で、 {selected_対象事業者}が受けれる補助金を {len(df_search)} 個のリストの中から探してください"
 
 # Get user's input
-user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
+user_input = st.text_input("あなたの質問を入力してください")
 
 if st.button("送信"):
-    # Use OpenAI API
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-0613",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": user_input}
-        ]
-    )
-    # Show OpenAI's response
-    st.write(response['choices'][0]['message']['content'])
+    # Here we assume that the user's input corresponds to a 地域 in the dataframe
+    # Filter the dataframe using the user's input
+    df_search = df[df["地域"] == user_input]
 
+    # Check if the dataframe is empty
+    if df_search.empty:
+        st.write("No matching data found.")
+    else:
+        # If not, use the data to generate a message for GPT-3
+        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+
+        # Use OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": message}
+            ]
+        )
+        # Show OpenAI's response
+        st.write(response['choices'][0]['message']['content'])
+        
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.reset_index().iterrows():
