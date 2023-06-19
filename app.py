@@ -1,91 +1,82 @@
-
+# Import libraries
 import streamlit as st
+import pandas as pd
 import openai
-
-# スタイルをカスタマイズするCSSを定義
-custom_css = """
-body {
-    background-color: #f7f7f7; /* 背景色を設定 */
-}
-
-h1 {
-    color: #ff9900; /* 見出しのテキスト色を設定 */
-}
-
-p {
-    color: #333333; /* 本文のテキスト色を設定 */
-}
-"""
-
-# スタイルを適用する
-st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
-
-
-
-# ユーザーインターフェースの構築
-st.title("My Colorful Page")
-st.write("This is a sample page with colorful styles.")
-st.header("Header Section")
-st.subheader("Subheader Section")
-st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis ultrices velit, at lobortis ligula. Nullam nec sem lacinia, sagittis odio eu, tempor elit. Suspendisse finibus mi at enim vehicula, nec viverra sem pulvinar. Cras id eros id nulla rutrum tincidunt. Sed aliquam, lacus at efficitur ultricies, metus sapien vulputate erat, non semper quam tellus sed augue. Suspendisse finibus tellus at neque eleifend, eu tempus nisi semper. Mauris id lacinia sapien, non varius elit.")
-
-
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
-# st.session_stateを使いメッセージのやりとりを保存
-if "messages" not in st.session_state:
-    st.session_state["messages"] = [
-        {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
-        ]
+# Page setup
+st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
+st.title("補助金検索くん🎈")
 
-# チャットボットとやりとりする関数
-def communicate():
-    messages = st.session_state["messages"]
+# Correct the formation of the URL
+sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
+sheet_name = "charlas"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+df = pd.read_csv(url, dtype=str).fillna("")
 
-    user_message = {"role": "user", "content": st.session_state["user_input"]}
-    messages.append(user_message)
+# Get a list of unique 地域
+unique_地域 = df["地域"].unique()
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages
-    )  
+# Create a selectbox for 地域 in the sidebar
+selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
 
-    bot_message = response["choices"][0]["message"]
-    messages.append(bot_message)
+# Filter the 対象事業者 based on selected 地域
+unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique()
 
-    st.session_state["user_input"] = ""  # 入力欄を消去
+# Create a selectbox for 対象事業者 in the sidebar
+selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
 
+# Filter the dataframe using selected 地域 and 対象事業者
+df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
-# ユーザーインターフェイスの構築
-st.title("AI司法書士くん")
-st.write("勝司法書士法人の任意後見チャットです")
+# Show the results and balloons
+st.write(df_search)
+st.balloons()
 
-# 動的なエフェクトを追加するHTML要素
-st.markdown("""
-    <style>
-    @keyframes robot {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-5px); }
-        100% { transform: translateY(0px); }
-    }
-    </style>
-    <div style="display: flex; justify-content: center;">
-        <div style="font-size: 40px; animation: robot 2s infinite; padding-right: 10px;">🤖</div>
-        <div style="font-size: 30px;">AIアシスタントがお答えします！</div>
-    </div>
-""", unsafe_allow_html=True)
+# Prepare the initial question
+info_to_ask = f"地域は {selected_地域} で {selected_対象事業者} への補助金 {len(df_search)} 個と一致するリスト"
+
+# Get user's input
+user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
+
+if st.button("送信"):
+    # Filter the dataframe using the user's input
+    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
 
-user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
+    # Check if the dataframe is empty
+    if df_search.empty:
+        st.write("No matching data found.")
+    else:
+        # If not, use the data to generate a message for GPT-3
+        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
 
-if st.session_state["messages"]:
-    messages = st.session_state["messages"]
-
-    for message in reversed(messages[1:]):  # 直近のメッセージを上に
-        speaker = "🙂"
-        if message["role"]=="assistant":
-            speaker = "🤖カツ！"  # AIが使う語尾の指示プロンプト
-
-        st.write(speaker + ": " + message["content"])
+        # Use OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k-0613",
+            messages=[
+                {"role": "system", "content": "あなたは優秀なデータ参照のスペシャリストです。全て日本語で返答してください."},
+                {"role": "user", "content": message}
+            ]
+        )
+        # Show OpenAI's response
+        st.write(response['choices'][0]['message']['content'])
+        
+# Show the cards
+N_cards_per_row = 3
+for n_row, row in df_search.reset_index().iterrows():
+    i = n_row % N_cards_per_row
+    if i == 0:
+        st.write("---")
+        cols = st.columns(N_cards_per_row, gap="large")
+    # draw the card
+    with cols[n_row % N_cards_per_row]:
+        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
+        st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
+        st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
+        st.markdown(f"補助率: {row['補助率'].strip()}")
+        st.markdown(f"目的: {row['目的'].strip()}")
+        st.markdown(f"対象経費: {row['対象経費'].strip()}")
+        st.markdown(f"**[リンク]({row['リンク'].strip()})**")
