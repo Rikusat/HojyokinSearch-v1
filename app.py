@@ -22,11 +22,11 @@ unique_地域 = df["地域"].unique()
 # Create a selectbox for 地域 in the sidebar
 selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
 
-# Create a selectbox for 対象事業者 in the sidebar
-selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
-
 # Filter the 対象事業者 based on selected 地域
 unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique()
+
+# Create a selectbox for 対象事業者 in the sidebar
+selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
 
 # Filter the dataframe using selected 地域 and 対象事業者
 df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
