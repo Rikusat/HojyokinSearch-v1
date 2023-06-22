@@ -16,17 +16,31 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
-# Filter the dataframe based on selected 地域
-filtered_df = df[df["地域"] == selected_地域]
+# Check if "地域" column exists in the dataframe
+if "地域" in df.columns:
+    # Get a list of unique 地域
+    unique_地域 = df["地域"].unique()
 
-# Get a list of unique 対象事業者 from the filtered dataframe
-unique_対象事業者 = filtered_df["対象事業者"].unique()
+    # Create a selectbox for 地域 in the sidebar
+    selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
 
-# Create a selectbox for 対象事業者 in the sidebar
-selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
+    # Filter the dataframe based on selected 地域
+    filtered_df = df[df["地域"] == selected_地域]
 
-# Filter the dataframe using selected 地域 and 対象事業者
-df_search = filtered_df[filtered_df["対象事業者"] == selected_対象事業者]
+    # Check if "対象事業者" column exists in the filtered dataframe
+    if "対象事業者" in filtered_df.columns:
+        # Get a list of unique 対象事業者 from the filtered dataframe
+        unique_対象事業者 = filtered_df["対象事業者"].unique()
+
+        # Create a selectbox for 対象事業者 in the sidebar
+        selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
+
+        # Filter the dataframe using selected 地域 and 対象事業者
+        df_search = filtered_df[filtered_df["対象事業者"] == selected_対象事業者]
+    else:
+        st.sidebar.write("対象事業者のデータがありません。")
+else:
+    st.sidebar.write("地域のデータがありません。")
 
 # Show the results and balloons
 st.write(df_search)
