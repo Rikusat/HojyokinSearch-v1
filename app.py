@@ -16,9 +16,6 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
-# Create a selectbox for 地域 in the sidebar
-selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
-
 # Check if "地域" column exists in the dataframe
 if "地域" in df.columns:
     # Get a list of unique 地域
@@ -44,6 +41,7 @@ if "地域" in df.columns:
         st.sidebar.write("実施機関のデータがありません。")
 else:
     st.sidebar.write("地域のデータがありません。")
+
 
 # Show the results and balloons
 st.write(df_search)
