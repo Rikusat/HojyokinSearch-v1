@@ -19,8 +19,6 @@ df = pd.read_csv(url, dtype=str).fillna("")
 # Check if "地域" column exists in the dataframe and if df_search is not empty
 if "地域" in df.columns and not df_search.empty:
     # Rest of the code...
-else:
-    st.write("該当するデータがありません。")
 
 
     # Create a selectbox for 地域 in the sidebar
