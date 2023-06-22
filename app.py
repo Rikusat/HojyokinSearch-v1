@@ -24,6 +24,9 @@ if "地域" in df.columns:
     # Get a list of unique 地域
     unique_地域 = df["地域"].unique()
 
+    # Create a selectbox for 地域 in the sidebar
+    selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
+
     # Filter the dataframe based on selected 地域
     filtered_df = df[df["地域"] == selected_地域]
 
