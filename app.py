@@ -17,20 +17,35 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 df = pd.read_csv(url, dtype=str, keep_default_na=False, na_values=[]).fillna("")
 
 
-# Get a list of unique 地域
-unique_地域 = df["地域"].unique() if "地域" in df.columns else []
+import pandas as pd
+import streamlit as st
+
+# Check if "地域" column exists in the dataframe
+if "地域" in df.columns:
+    # Get a list of unique 地域
+    unique_地域 = df["地域"].unique()
+else:
+    unique_地域 = []
 
 # Create a selectbox for 地域 in the sidebar
 selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
 
-# Filter the 対象事業者 based on selected 地域
-unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique() if "地域" in df.columns else []
+# Check if "地域" column exists in the dataframe
+if "地域" in df.columns:
+    # Filter the 対象事業者 based on selected 地域
+    unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique()
+else:
+    unique_対象事業者 = []
 
 # Create a selectbox for 対象事業者 in the sidebar
 selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
 
-# Filter the dataframe using selected 地域 and 対象事業者
-df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)] if "地域" in df.columns else pd.DataFrame()
+# Check if "地域" column exists in the dataframe
+if "地域" in df.columns:
+    # Filter the dataframe using selected 地域 and 対象事業者
+    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
+else:
+    df_search = pd.DataFrame()
 
 # Show the results and balloons
 st.write(df_search)
