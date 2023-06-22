@@ -14,7 +14,8 @@ st.title("補助金検索くん🎈")
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-df = pd.read_csv(url, dtype=str).fillna("")
+df = pd.read_csv(url, dtype=str, keep_default_na=False, na_values=[]).fillna("")
+
 
 # Get a list of unique 地域
 unique_地域 = df["地域"].unique()
