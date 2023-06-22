@@ -10,43 +10,26 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
 st.title("補助金検索くん🎈")
 
-import pandas as pd
-import streamlit as st
-
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-df = pd.read_csv(url, dtype=str, keep_default_na=False, na_values=[]).fillna("")
+df = pd.read_csv(url, dtype=str).fillna("")
 
-# Check if "地域" column exists in the dataframe
-if "地域" in df.columns:
-    # Get a list of unique 地域
-    unique_地域 = df["地域"].unique()
-else:
-    unique_地域 = []
+# Get a list of unique 地域
+unique_地域 = df["地域"].unique()
 
 # Create a selectbox for 地域 in the sidebar
 selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
 
-# Check if "地域" column exists in the dataframe
-if "地域" in df.columns:
-    # Filter the 対象事業者 based on selected 地域
-    unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique()
-else:
-    unique_対象事業者 = []
+# Filter the 対象事業者 based on selected 地域
+unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique()
 
 # Create a selectbox for 対象事業者 in the sidebar
 selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
 
-# Check if "地域" column exists in the dataframe
-if "地域" in df.columns:
-    # Filter the dataframe using selected 地域 and 対象事業者
-    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
-else:
-    df_search = pd.DataFrame()
-
-
+# Filter the dataframe using selected 地域 and 対象事業者
+df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
 # Show the results and balloons
 st.write(df_search)
@@ -60,7 +43,7 @@ user_input = st.text_input("あなたの質問を入力してください", valu
 
 if st.button("送信"):
     # Filter the dataframe using the user's input
-    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)] if "地域" in df.columns else pd.DataFrame()
+    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 
 
     # Check if the dataframe is empty
@@ -102,4 +85,3 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"対象経費: {row['対象経費'].strip()}")
         st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
         st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
-
