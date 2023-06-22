@@ -20,9 +20,6 @@ df = pd.read_csv(url, dtype=str).fillna("")
 if not df.empty and "地域" in df.columns:
     # Get a list of unique 地域
     unique_地域 = df["地域"].unique()
-    # Rest of the code...
-else:
-    st.sidebar.write("データが存在しないか、地域のデータがありません。")
 
     # Create a selectbox for 地域 in the sidebar
     selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
@@ -40,10 +37,45 @@ else:
 
         # Filter the dataframe using selected 地域 and 対象事業者
         df_search = filtered_df[filtered_df["対象事業者"] == selected_対象事業者]
+
+        # Show the results and balloons
+        st.write(df_search)
+        st.balloons()
+
+        # Prepare the initial question
+        info_to_ask = f"地域は {selected_地域} で {selected_対象事業者} への補助金 {len(df_search)} 個と一致するリスト"
+
+        # Get user's input
+        user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
+
+        if st.button("送信"):
+            # Filter the dataframe using the user's input
+            df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
+
+            # Check if the dataframe is empty
+            if df_search.empty:
+                st.write("No matching data found.")
+            else:
+                # If not, use the data to generate a message for GPT-3
+                message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+
+                # Use OpenAI API
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo-16k-0613",
+                    messages=[
+                        {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
+                        {"role": "user", "content": message}
+                    ]
+                )
+                # Show OpenAI's response
+                st.write(response['choices'][0]['message']['content'])
+
     else:
         st.sidebar.write("対象事業者のデータがありません。")
+
 else:
     st.sidebar.write("地域のデータがありません。")
+
 
 # Show the results and balloons
 if "df_search" in locals():
