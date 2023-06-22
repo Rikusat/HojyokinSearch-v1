@@ -43,8 +43,15 @@ else:
     st.sidebar.write("地域のデータがありません。")
 
 
-# Prepare the initial question
-info_to_ask = f"地域は {selected_地域} で {selected_実施機関} への補助金 {len(df_search)} 個と一致するリスト"
+info_to_ask = ""
+if selected_地域 and selected_実施機関:
+    info_to_ask = f"地域は {selected_地域} で {selected_実施機関} への補助金 {len(df_search)} 個と一致するリスト"
+else:
+    info_to_ask = "地域と実施機関を選択してください。"
+
+# Get user's input
+user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
+
 
 # Get user's input
 user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
