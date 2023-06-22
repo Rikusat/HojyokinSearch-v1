@@ -35,14 +35,6 @@ user_input = st.text_input("あなたの質問を入力してください", valu
 
 
 
-
-    # Check if the dataframe is empty
-    if df_search.empty:
-        st.write("No matching data found.")
-    else:
-        # If not, use the data to generate a message for GPT-3
-        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
-
         # Use OpenAI API
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-16k-0613",
