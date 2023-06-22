@@ -24,10 +24,6 @@ selected_地域 = st.sidebar.selectbox('地域を選択してください', uniq
 
 
 
-# Show the results and balloons
-st.write(df_search)
-st.balloons()
-
 # Prepare the initial question
 info_to_ask = f"地域は {selected_地域} で への補助金一致するリスト"
 
