@@ -17,19 +17,19 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 df = pd.read_csv(url, dtype=str).fillna("")
 
 # Get a list of unique 地域
-unique_地域 = df["地域"].unique()
+unique_実施機関 = df["実施機関"].unique()
 
 # Create a selectbox for 地域 in the sidebar
-selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
+selected_実施機関 = st.sidebar.selectbox('実施機関を選択してください', unique_実施機関)
 
 # Filter the 対象事業者 based on selected 地域
-unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique()
+unique_対象事業者 = df[df["実施機関"] == selected_実施機関]["対象事業者"].unique()
 
 # Create a selectbox for 対象事業者 in the sidebar
 selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
 
 # Filter the dataframe using selected 地域 and 対象事業者
-df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
+df_search = df[(df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
 
 # Show the results and balloons
 st.write(df_search)
