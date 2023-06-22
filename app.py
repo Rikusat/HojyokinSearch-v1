@@ -10,15 +10,14 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
 st.title("補助金検索くん🎈")
 
+import pandas as pd
+import streamlit as st
+
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str, keep_default_na=False, na_values=[]).fillna("")
-
-
-import pandas as pd
-import streamlit as st
 
 # Check if "地域" column exists in the dataframe
 if "地域" in df.columns:
@@ -46,6 +45,7 @@ if "地域" in df.columns:
     df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
 else:
     df_search = pd.DataFrame()
+
 
 # Show the results and balloons
 st.write(df_search)
