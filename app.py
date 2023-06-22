@@ -73,12 +73,10 @@ for n_row, row in df_search.iterrows():
         cols = st.columns(N_cards_per_row, gap="large")
     # draw the card
     with cols[i]:
-        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['タイトル'].strip()}")
+        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
         st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
         st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
-        st.markdown(f"補助率: {row['補助率'].strip()}")
-        st.markdown(f"目的: {row['目的'].strip()}")
-        st.markdown(f"対象経費: {row['対象経費'].strip()}")
+        st.markdown(f"詳細: {row['詳細'].strip()}")
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
         st.markdown(f"地域: {row['地域'].strip()}")
         st.markdown(f"実施機関: {row['実施機関'].strip()}")
