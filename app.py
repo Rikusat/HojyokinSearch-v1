@@ -43,8 +43,9 @@ else:
     st.sidebar.write("地域のデータがありません。")
 
 # Show the results and balloons
-st.write(df_search)
-st.balloons()
+if "df_search" in locals():
+    st.write(df_search)
+    st.balloons()
 
 # Prepare the initial question
 info_to_ask = f"地域は {selected_地域} で {selected_対象事業者} への補助金 {len(df_search)} 個と一致するリスト"
@@ -55,7 +56,6 @@ user_input = st.text_input("あなたの質問を入力してください", valu
 if st.button("送信"):
     # Filter the dataframe using the user's input
     df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
-
 
     # Check if the dataframe is empty
     if df_search.empty:
@@ -74,7 +74,7 @@ if st.button("送信"):
         )
         # Show OpenAI's response
         st.write(response['choices'][0]['message']['content'])
-        
+
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.iterrows():
