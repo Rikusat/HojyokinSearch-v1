@@ -33,7 +33,7 @@ user_input = st.text_input("あなたの質問を入力してください", valu
 
 # Show the cards
 N_cards_per_row = 3
-for n_row, row in df_search.iterrows():
+for n_row, row in df .iterrows():
     i = n_row % N_cards_per_row
     if i == 0:
         st.write("---")
