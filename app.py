@@ -20,7 +20,7 @@ df = pd.read_csv(url, dtype=str).fillna("")
 unique_実施機関 = df["実施機関"].unique()
 
 # Create a selectbox for 実施機関 in the sidebar
-selected_地域 = st.sidebar.selectbox('実施機関を選択してください', unique_実施機関)
+selected_実施機関 = st.sidebar.selectbox('実施機関を選択してください', unique_実施機関)
 
 # Filter the 対象事業者 based on selected 地域
 unique_対象事業者 = df[df["実施機関"] == selected_実施機関]["対象事業者"].unique()
