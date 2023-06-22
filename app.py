@@ -23,7 +23,7 @@ unique_地域 = df["地域"].unique()
 selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
 
 # Filter the 対象事業者 based on selected 地域
-unique_対象事業者 = df[df["地域"] == selected_地域]["実施機関"].unique()
+unique_実施機関 = df[df["地域"] == selected_地域]["実施機関"].unique()
 
 # Create a selectbox for 対象事業者 in the sidebar
 selected_実施機関 = st.sidebar.selectbox('実施機関を選択してください', unique_実施機関)
