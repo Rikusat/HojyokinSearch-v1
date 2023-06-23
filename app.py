@@ -72,11 +72,12 @@ else:
     
 # Show the cards
 N_cards_per_row = 3
+cols = st.columns(N_cards_per_row, gap="large")  # Initialize columns
 for n_row, row in df_search.iterrows():
     i = n_row % N_cards_per_row
-    if i == 0:
+    if i == 0 and n_row > 0:
         st.write("---")
-        cols = st.columns(N_cards_per_row, gap="large")
+        cols = st.columns(N_cards_per_row, gap="large")  # Create new set of columns after every N_cards_per_row
     # draw the card
     with cols[i]:
         st.caption(f"{row['実施機関'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
