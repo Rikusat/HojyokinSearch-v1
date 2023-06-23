@@ -53,23 +53,23 @@ if st.button("送信"):
 
 
     # Check if the dataframe is empty
-    if df_search.empty:
-        st.write("No matching data found.")
-    else:
-        # If not, use the data to generate a message for GPT-3
-        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+if df_search.empty:
+    st.write("該当するデータは見つかりませんでした。")
+else:
+    # If not, use the data to generate a message for GPT-3
+    message = f"地域 '{user_input}' に対して {len(df_search)} 件の一致を見つけました。以下がその一つです: {df_search.iloc[0].to_dict()}"
 
-        # Use OpenAI API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k-0613",
-            messages=[
-                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
-                {"role": "user", "content": message}
-            ]
-        )
-        # Show OpenAI's response
-        st.write(response['choices'][0]['message']['content'])
-        
+    # Use OpenAI API
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-16k-0613",
+        messages=[
+            {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
+            {"role": "user", "content": message}
+        ]
+    )
+    # Show OpenAI's response
+    st.write(response['choices'][0]['message']['content'])
+    
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.iterrows():
@@ -86,7 +86,6 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"**[リンク]({row['リンク'].strip()})**")
         st.markdown(f"地域: {row['地域'].strip()}")
         st.markdown(f"実施機関: {row['実施機関'].strip()}")
-        st.markdown(f"補助率: {row['補助率'].strip()}")
         st.markdown(f"目的: {row['目的'].strip()}")
         st.markdown(f"対象経費: {row['対象経費'].strip()}")
         st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
