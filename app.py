@@ -17,13 +17,13 @@ url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sh
 df = pd.read_csv(url, dtype=str).fillna("")
 
 # Get a list of unique 地域
-unique_地域 = df["地域"].unique()
+unique_実施機関 = df["実施機関"].unique()
 
 # Create a selectbox for 地域 in the sidebar
-selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
+selected_実施機関 = st.sidebar.selectbox('実施機関を選択してください', unique_実施機関)
 
 # Filter the dataframe based on selected 地域
-filtered_df = df[df["地域"] == selected_地域]
+filtered_df = df[df["実施機関"] == selected_実施機関]
 
 # Get a list of unique 対象事業者 from the filtered dataframe
 unique_対象事業者 = filtered_df["対象事業者"].unique()
@@ -40,14 +40,14 @@ st.write(df_search)
 st.balloons()
 
 # Prepare the initial question
-info_to_ask = f"地域は {selected_地域} で {selected_対象事業者} への補助金 {len(df_search)} 個と一致するリスト"
+info_to_ask = f"地域は {selected_実施機関} で {selected_対象事業者} への補助金 {len(df_search)} 個と一致するリスト"
 
 # Get user's input
 user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
 
 if st.button("送信"):
     # Filter the dataframe using the user's input
-    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
+    df_search = df[(df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
 
 
     # Check if the dataframe is empty
@@ -77,7 +77,7 @@ for n_row, row in df_search.iterrows():
         cols = st.columns(N_cards_per_row, gap="large")
     # draw the card
     with cols[i]:
-        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
+        st.caption(f"{row['実施機関'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
         st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
         st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
         st.markdown(f"詳細: {row['詳細'].strip()}")
