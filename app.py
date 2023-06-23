@@ -1,3 +1,7 @@
+# Import libraries
+import streamlit as st
+import pandas as pd
+import openai
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
