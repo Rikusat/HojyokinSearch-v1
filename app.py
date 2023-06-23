@@ -71,7 +71,7 @@ if st.button("送信"):
 
     
 # Show the cards
-N_cards_per_row = 3
+N_cards_per_row = 4
 cols = st.columns(N_cards_per_row, gap="large")  # Define cols outside the loop
 for n_row, row in df_search.iterrows():
     i = n_row % N_cards_per_row
