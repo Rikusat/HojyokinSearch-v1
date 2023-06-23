@@ -72,13 +72,12 @@ if st.button("送信"):
     
 # Show the cards
 N_cards_per_row = 3
-cols = st.columns(N_cards_per_row, gap=10)  # This will set the gap to 10 pixels
+cols = st.columns(N_cards_per_row, gap="large")  # Define cols outside the loop
 for n_row, row in df_search.iterrows():
     i = n_row % N_cards_per_row
     if i == 0:
         st.write("---")
-        cols = st.columns(N_cards_per_row, gap=10)  # This will set the gap to 10 pixels
-
+        cols = st.columns(N_cards_per_row, gap="large")  # Redefine cols for every new row
     # draw the card
     with cols[i]:
         st.caption(f"{row['実施機関'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
