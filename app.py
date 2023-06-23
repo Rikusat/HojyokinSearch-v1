@@ -37,38 +37,6 @@ selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択して�
 # Filter the dataframe using selected 地域, 実施機関, and 対象事業者
 df_search = df[(df["地域"] == selected_地域) & (df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
 
-# Show the results and balloons
-st.write(df_search)
-st.balloons()
-
-# Prepare the initial question
-info_to_ask = f"地域は {selected_地域}、実施機関は {selected_実施機関}、対象事業者は {selected_対象事業者} で補助金 {len(df_search)} 個と一致するリスト"
-
-# Get user's input
-user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
-
-if st.button("送信"):
-    # Filter the dataframe using the user's input
-    df_search = df[(df["地域"] == selected_地域) & (df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
-
-    # Check if the dataframe is empty
-    if df_search.empty:
-        st.write("該当するデータは見つかりませんでした。")
-    else:
-        # If not, use the data to generate a message for GPT-3
-        message = f"地域 '{user_input}' に対して {len(df_search)} 件の一致を見つけました。以下がその一つです: {df_search.iloc[0].to_dict()}"
-
-        # Use OpenAI API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k-0613",
-            messages=[
-                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
-                {"role": "user", "content": message}
-            ]
-        )
-        # Show OpenAI's response
-        st.write(response['choices'][0]['message']['content'])
-
     
 # Show the cards
 N_cards_per_row = 3
