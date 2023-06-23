@@ -52,22 +52,6 @@ if st.button("送信"):
     df_search = df[(df["地域"] == selected_地域) & (df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
 
 
-
-# Show the results and balloons
-st.write(df_search)
-st.balloons()
-
-# Prepare the initial question
-info_to_ask = f"地域は {selected_実施機関} で {selected_対象事業者} への補助金 {len(df_search)} 個と一致するリスト"
-
-# Get user's input
-user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
-
-if st.button("送信"):
-    # Filter the dataframe using the user's input
-    df_search = df[(df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
-
-
     # Check if the dataframe is empty
     if df_search.empty:
         st.write("No matching data found.")
