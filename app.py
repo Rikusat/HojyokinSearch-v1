@@ -52,6 +52,7 @@ df_search = df_filtered[df_filtered["対象事業者"].str.contains("|".join(sel
 st.write(df_search)
 st.balloons()
 
+
 # Show the cards
 N_cards_per_row = 3
 cols = st.columns(N_cards_per_row, gap="large")
