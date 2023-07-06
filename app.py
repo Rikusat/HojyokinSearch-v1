@@ -34,7 +34,8 @@ unique_対象事業者 = df[(df["地域"] == selected_地域) & (df["実施機�
 # Create a selectbox for 対象事業者 in the sidebar
 selected_対象事業者 = st.selectbox('対象事業者を選択してください', unique_対象事業者)
 
-
+# Filter the dataframe using selected 地域, 実施機関, and 対象事業者
+df_search = df[(df["地域"] == selected_地域) & (df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
 
 # Show the results and balloons
 st.write(df_search)
