@@ -22,25 +22,31 @@ unique_地域 = df["地域"].unique()
 # Create a selectbox for 地域
 selected_地域 = st.selectbox('地域を選択してください', unique_地域)
 
+# Filter the dataframe based on selected 地域
+df_filtered = df[df["地域"] == selected_地域]
+
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
-for item in df["対象事業者"]:
+for item in df_filtered["対象事業者"]:
     options = item.split("／")
     filter_options.update(options)
 
 # フィルタリング用の選択ボックスを作成
 cols = 4  # 1行に表示するチェックボックスの数
 selected_options = []
+checkboxes = []
 for i, option in enumerate(filter_options):
     if i % cols == 0:
         col = st.beta_columns(cols)
     selected = col[i % cols].checkbox(option)
-    if selected:
-        selected_options.append(option)
+    checkboxes.append(selected)
+    if len(checkboxes) == cols or i == len(filter_options) - 1:
+        selected = [option for option, checkbox in zip(filter_options, checkboxes) if checkbox]
+        selected_options.extend(selected)
+        checkboxes = []
 
 # フィルタリング
-df_search = df[df["地域"] == selected_地域]
-df_search = df_search[df_search["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
+df_search = df_filtered[df_filtered["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
 
 
 # Show the results and balloons
