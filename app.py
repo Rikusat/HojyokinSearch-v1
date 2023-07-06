@@ -16,7 +16,7 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
- 対象事業者の各文字列を取得して一意の値を生成
+# 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
 for item in df["対象事業者"]:
     options = item.split("／")
