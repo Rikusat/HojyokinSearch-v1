@@ -16,26 +16,38 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
-# Get a list of unique 地域
-unique_地域 = df["地域"].unique()
+import pandas as pd
+import streamlit as st
+import requests
 
-# Create a selectbox for 地域 in the sidebar
-selected_地域 = st.selectbox('地域を選択してください', unique_地域)
+# Google スプレッドシートの設定
+sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
+sheet_name = "charlas"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
-# Filter the 実施機関 based on selected 地域
-unique_実施機関 = df[df["地域"] == selected_地域]["実施機関"].unique()
+# スプレッドシートからデータフレームを取得
+response = requests.get(url)
+df = pd.read_csv(pd.compat.StringIO(response.text), dtype=str).fillna("")
 
-# Create a selectbox for 実施機関 in the sidebar
-selected_実施機関 = st.selectbox('実施機関を選択してください', unique_実施機関)
+# 対象事業者の各文字列を取得して一意の値を生成
+filter_options = set()
+for item in df["対象事業者"]:
+    options = item.split("／")
+    filter_options.update(options)
 
-# Filter the 対象事業者 based on selected 地域 and 実施機関
-unique_対象事業者 = df[(df["地域"] == selected_地域) & (df["実施機関"] == selected_実施機関)]["対象事業者"].unique()
+# フィルタリング用の選択ボックスを作成
+selected_options = []
+for option in filter_options:
+    selected = st.checkbox(option)
+    if selected:
+        selected_options.append(option)
 
-# Create a selectbox for 対象事業者 in the sidebar
-selected_対象事業者 = st.selectbox('対象事業者を選択してください', unique_対象事業者)
+# フィルタリング
+df_search = df[df["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
 
-# Filter the dataframe using selected 地域, 実施機関, and 対象事業者
-df_search = df[(df["地域"] == selected_地域) & (df["実施機関"] == selected_実施機関) & (df["対象事業者"] == selected_対象事業者)]
+# 結果の表示
+st.write(df_search)
+
 
 # Show the results and balloons
 st.write(df_search)
