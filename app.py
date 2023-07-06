@@ -25,15 +25,22 @@ for item in df["対象事業者"]:
 # フィルタリング用の選択ボックスを作成
 cols = 4  # 1行に表示するチェックボックスの数
 selected_options = []
+checkboxes = []
 for i, option in enumerate(filter_options):
-    if i % cols == 0:
-        col = st.beta_columns(cols)
-    selected = col[i % cols].checkbox(option)
-    if selected:
-        selected_options.append(option)
+    checkbox = st.checkbox(option)
+    checkboxes.append(checkbox)
+    if len(checkboxes) == cols or i == len(filter_options) - 1:
+        selected = [option for option, checkbox in zip(filter_options, checkboxes) if checkbox]
+        selected_options.extend(selected)
+        checkboxes = []
+    if i == len(filter_options) - 1 and len(selected_options) == 0:
+        selected_options.extend(filter_options)  # 何も選択されなかった場合はすべてのオプションを選択
 
 # フィルタリング
 df_search = df[df["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
+
+# 結果の表示
+st.write(df_search)
 
 
 
