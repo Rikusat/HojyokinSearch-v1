@@ -24,7 +24,8 @@ for item in df["対象事業者"]:
 
 # フィルタリング用の選択ボックスを作成
 cols = 4  # 1行に表示するチェックボックスの数
-rows = math.ceil(len(filter_options) / cols)
+rows = (len(filter_options) + cols - 1) // cols  # 行数を計算する修正
+
 selected_options = []
 checkboxes = []
 for i, option in enumerate(filter_options):
