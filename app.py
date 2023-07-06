@@ -46,8 +46,7 @@ for i, option in enumerate(filter_options):
         checkboxes = []
 
 # フィルタリング
-df_search = df_filtered[df_filtered["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
-
+df_search = df_filtered[df_filtered["対象事業者"].str.contains("|".join(selected_options))]
 
 # Show the results and balloons
 st.write(df_search)
