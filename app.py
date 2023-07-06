@@ -48,8 +48,8 @@ for n_row, row in df_search.iterrows():
         st.write("---")
     # draw the card
     with cols[i]:
-        st.caption(f"{row['補助金名'].strip()}")
-        st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
+        st.caption(f"{row['申請期間'].strip()}")
+        st.markdown(f"**補助金名: {row['補助金名'].strip()}**")
         st.markdown(f"詳細: {row['詳細'].strip()}")
         st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
         st.markdown(f"地域: {row['地域'].strip()}")
