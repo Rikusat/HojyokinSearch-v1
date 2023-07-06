@@ -32,6 +32,9 @@ for i, option in enumerate(filter_options):
     if selected:
         selected_options.append(option)
 
+# フィルタリング
+df_search = df[df["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
+
 
 # Show the results and balloons
 st.write(df_search)
@@ -55,5 +58,4 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
         st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
 
-# フィルタリング
-df_search = df[df["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
+
