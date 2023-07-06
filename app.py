@@ -1,21 +1,3 @@
-# Import libraries
-import streamlit as st
-import pandas as pd
-import openai
-
-# Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets.OpenAIAPI.openai_api_key
-
-# Page setup
-st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
-st.title("補助金検索くん🎈")
-
-# Correct the formation of the URL
-sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
-sheet_name = "charlas"
-url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-df = pd.read_csv(url, dtype=str).fillna("")
-
 import pandas as pd
 import streamlit as st
 import requests
