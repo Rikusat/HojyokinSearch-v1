@@ -51,6 +51,7 @@ for n_row, row in df_search.iterrows():
     with cols[i]:
         st.markdown(f"**{row['補助金名'].strip()}**")
         st.caption(f"{row['申請期間'].strip()}")
+        st.markdown(f {row['上限金額・助成額'].strip()}*")
         st.markdown(f"{row['詳細'].strip()}")
         st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
         st.markdown(f"地域: {row['地域'].strip()}")
