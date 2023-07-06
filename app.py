@@ -33,9 +33,6 @@ for option in filter_options:
 # フィルタリング
 df_search = df[df["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
 
-# 結果の表示
-st.write(df_search)
-
 # Show the results and balloons
 st.write(df_search)
 st.balloons()
