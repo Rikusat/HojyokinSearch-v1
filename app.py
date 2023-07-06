@@ -39,6 +39,14 @@ df_search = df[df["対象事業者"].apply(lambda x: all(opt in x.split("／") f
 st.write(df_search)
 st.balloons()
 
+
+# Correct the formation of the URL
+sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
+sheet_name = "charlas"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+df = pd.read_csv(url, dtype=str).fillna("")
+
+
 # Show the cards
 N_cards_per_row = 3
 for n_row, row in df_search.iterrows():
@@ -50,7 +58,8 @@ for n_row, row in df_search.iterrows():
     with cols[i]:
         st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
         st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
-        st.markdown(f"詳細: {row['詳細'].strip()}"
+        st.markdown(f"詳細: {row['詳細'].strip()}")
+        st.markdown(f"**[リンク]({row['リンク'].strip()})**")
         st.markdown(f"地域: {row['地域'].strip()}")
         st.markdown(f"実施機関: {row['実施機関'].strip()}")
         st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
