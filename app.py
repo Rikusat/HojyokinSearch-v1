@@ -16,6 +16,18 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
+# Get a list of unique 地域
+unique_地域 = df["地域"].unique()
+
+# Create a selectbox for 地域
+selected_地域 = st.selectbox('地域を選択してください', unique_地域)
+
+# Filter the dataframe based on selected 地域
+df_filtered = df[df["地域"] == selected_地域]
+
+# Show the filtered data
+st.write(df_filtered)
+
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
 for item in df["対象事業者"]:
