@@ -2,14 +2,11 @@ import pandas as pd
 import streamlit as st
 import requests
 
-# Google スプレッドシートの設定
+# Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-
-# スプレッドシートからデータフレームを取得
-response = requests.get(url)
-df = pd.read_csv(pd.compat.StringIO(response.text), dtype=str).fillna("")
+df = pd.read_csv(url, dtype=str).fillna("")
 
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
@@ -30,8 +27,6 @@ for i, option in enumerate(filter_options):
 # フィルタリング
 df_search = df[df["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
 
-# 結果の表示
-st.write(df_search)
 
 
 # Show the results and balloons
