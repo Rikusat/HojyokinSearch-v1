@@ -57,5 +57,4 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"実施機関: {row['実施機関'].strip()}")
         st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
         st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
-        st.markdown(f"上限金額・助成額: {row['上限金額・助成額'].strip()}")
 
