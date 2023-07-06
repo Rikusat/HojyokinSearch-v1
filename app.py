@@ -16,6 +16,9 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
+# Get a list of unique 地域
+unique_地域 = df["地域"].unique()
+
 # Create a selectbox for 地域
 selected_地域 = st.selectbox('地域を選択してください', unique_地域)
 
@@ -41,7 +44,6 @@ df_search = df_search[df_search["対象事業者"].apply(lambda x: all(opt in x.
 
 # Show the filtered data
 st.write(df_search)
-
 
 # Show the results and balloons
 st.write(df_search)
