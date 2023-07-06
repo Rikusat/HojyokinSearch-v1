@@ -42,8 +42,6 @@ for i, option in enumerate(filter_options):
 df_search = df[df["地域"] == selected_地域]
 df_search = df_search[df_search["対象事業者"].apply(lambda x: all(opt in x.split("／") for opt in selected_options))]
 
-# Show the filtered data
-st.write(df_search)
 
 # Show the results and balloons
 st.write(df_search)
