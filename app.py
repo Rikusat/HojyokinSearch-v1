@@ -23,9 +23,12 @@ for item in df["対象事業者"]:
     filter_options.update(options)
 
 # フィルタリング用の選択ボックスを作成
+cols = 4  # 1行に表示するチェックボックスの数
 selected_options = []
-for option in filter_options:
-    selected = st.checkbox(option)
+for i, option in enumerate(filter_options):
+    if i % cols == 0:
+        col = st.beta_columns(cols)
+    selected = col[i % cols].checkbox(option)
     if selected:
         selected_options.append(option)
 
