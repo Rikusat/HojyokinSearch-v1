@@ -54,6 +54,12 @@ for i, option in enumerate(filter_options):
         selected_options.extend(selected)
         checkboxes = []
 
+# フィルタリング
+df_search = df_filtered[df_filtered["対象事業者"].str.contains("|".join(selected_options))]
+
+# Show the results and balloons
+st.write(df_search)
+st.balloons()
 
 # Show the cards
 N_cards_per_row = 3
