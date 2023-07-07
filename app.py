@@ -38,7 +38,7 @@ checkboxes = []
 for i, option in enumerate(filter_options):
     if i % cols == 0:
         col = st.beta_columns(cols)
-    selected = col[i % cols].checkbox(option, key=option)  # チェックボックスにキーを設定
+    selected = col[i % cols].checkbox(option, key=f"checkbox_{option}")  # チェックボックスにキーを設定
     checkboxes.append(selected)
     if len(checkboxes) == cols or i == len(filter_options) - 1:
         selected = [option for option, checkbox in zip(filter_options, checkboxes) if checkbox]
@@ -46,6 +46,7 @@ for i, option in enumerate(filter_options):
         checkboxes = []
 
 # 選択されたオプションを表示
+selected_options = list(set(selected_options))  # 重複を削除
 st.write("選択されたオプション:", selected_options)
 
 # フィルタリング
