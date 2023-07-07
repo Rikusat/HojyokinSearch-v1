@@ -38,15 +38,15 @@ checkboxes = []
 for i, option in enumerate(filter_options):
     if i % cols == 0:
         col = st.beta_columns(cols)
-    selected = col[i % cols].checkbox(option, key=option)  # チェックボックスにキーを設定
+    selected = col[i % cols].checkbox(option)
     checkboxes.append(selected)
     if len(checkboxes) == cols or i == len(filter_options) - 1:
         selected = [option for option, checkbox in zip(filter_options, checkboxes) if checkbox]
         selected_options.extend(selected)
         checkboxes = []
 
-# 選択されたオプションを表示
-st.write("選択されたオプション:", selected_options)
+# フィルタリング
+df_search = df_filtered[df_filtered["対象事業者"].apply(lambda x: any(opt in x for opt in selected_options))]
 
 # Show the results and balloons
 st.write(df_search)
