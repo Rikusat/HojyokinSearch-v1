@@ -59,7 +59,7 @@ st.write(df_search)
 st.balloons()
 
 # Prepare the initial question
-info_to_ask = f"地域は {selected_地域} で "
+info_to_ask = f" {selected_地域} の補助金リストの中から〇〇市へ出ている補助金を挙げてください "
 
 # Get user's input
 user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
