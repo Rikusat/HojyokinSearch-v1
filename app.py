@@ -10,6 +10,9 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
 st.title("補助金検索くん🎈")
 
+# Add additional text above the title
+st.markdown("**補助金を効率的に検索するツールです**")
+
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
