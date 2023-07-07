@@ -16,6 +16,15 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
+import pandas as pd
+import streamlit as st
+
+# Correct the formation of the URL
+sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
+sheet_name = "charlas"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+df = pd.read_csv(url, dtype=str).fillna("")
+
 # Get a list of unique 地域
 unique_地域 = df["地域"].unique()
 
@@ -38,19 +47,16 @@ checkboxes = []
 for i, option in enumerate(filter_options):
     if i % cols == 0:
         col = st.beta_columns(cols)
-    selected = col[i % cols].checkbox(option)
+    selected = col[i % cols].checkbox(option, key=option)  # チェックボックスにキーを設定
     checkboxes.append(selected)
     if len(checkboxes) == cols or i == len(filter_options) - 1:
         selected = [option for option, checkbox in zip(filter_options, checkboxes) if checkbox]
         selected_options.extend(selected)
         checkboxes = []
 
-# フィルタリング
-df_search = df_filtered[df_filtered["対象事業者"].apply(lambda x: any(opt in x for opt in selected_options))]
+# 選択されたオプションを表示
+st.write("選択されたオプション:", selected_options)
 
-# Show the results and balloons
-st.write(df_search)
-st.balloons()
 
 
 # Show the cards
