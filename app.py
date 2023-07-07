@@ -48,7 +48,8 @@ for i, option in enumerate(filter_options):
 selected_options = list(set(selected_options))  # 重複を削除
 st.write("選択されたオプション:", selected_options)
 
-
+# フィルタリング
+df_search = df_filtered[df_filtered["対象事業者"].str.contains("|".join(selected_options))]
 
 # Show the results and balloons
 st.write(df_search)
