@@ -14,8 +14,8 @@ st.title("補助金検索くん🎈")
 st.markdown("**補助金を効率的に検索するツールです**")
 
 # Correct the formation of the URL
-sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
-sheet_name = "charlas"
+sheet_id = "1NGjKJrVZUtcm9V1yiQjDaR4qbr5pqkHfSsZPWqqvA9Y"
+sheet_name = "神奈川DB"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 df = pd.read_csv(url, dtype=str).fillna("")
 
