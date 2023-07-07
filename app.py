@@ -45,6 +45,9 @@ for i, option in enumerate(filter_options):
         selected_options.extend(selected)
         checkboxes = []
 
+# 選択されたオプションを表示
+st.write("選択されたオプション:", selected_options)
+
 # フィルタリング
 df_search = df_filtered[df_filtered["対象事業者"].str.contains("|".join(selected_options))]
 
