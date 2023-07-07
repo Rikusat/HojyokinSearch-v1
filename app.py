@@ -58,6 +58,33 @@ df_search = df_filtered[df_filtered["対象事業者"].str.contains("|".join(sel
 st.write(df_search)
 st.balloons()
 
+# Prepare the initial question
+info_to_ask = f"地域は {selected_地域} で "
+
+# Get user's input
+user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
+
+if st.button("送信"):
+    # Filter the dataframe using the user's input
+    df_search = df[(df["地域"] == selected_地域)]
+
+    # Check if the dataframe is empty
+    if df_search.empty:
+        st.write("No matching data found.")
+    else:
+        # If not, use the data to generate a message for GPT-3
+        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+
+        # Use OpenAI API
+        response = openai.Completion.create(
+            engine="davinci-codex",
+            prompt=message,
+            max_tokens=50,
+            temperature=0.5
+        )
+        # Show OpenAI's response
+        st.write(response.choices[0].text)
+
 # Show the cards
 N_cards_per_row = 3
 cols = st.columns(N_cards_per_row, gap="large")
