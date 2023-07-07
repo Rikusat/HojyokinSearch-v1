@@ -72,24 +72,24 @@ if st.button("送信"):
     if df_search.empty:
         st.write("No matching data found.")
     else:
-        
-     # If not, use the data to generate a message for GPT-3
-message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+        # If not, use the data to generate a message for GPT-3
+        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
 
-# Add AI instruction prompt
-instruction_prompt = "AIに対して追加の指示を入力してください。"
-message_with_prompt = f"{instruction_prompt}\n{message}"
+        # Add AI instruction prompt
+        instruction_prompt = "AIに対して追加の指示を入力してください。"
+        message_with_prompt = f"{instruction_prompt}\n{message}"
 
-# Use OpenAI API
-response = openai.Completion.create(
-    engine="davinci-codex",
-    prompt=message_with_prompt,
-    max_tokens=50,
-    temperature=0.5
-)
+        # Use OpenAI API
+        response = openai.Completion.create(
+            engine="davinci-codex",
+            prompt=message_with_prompt,
+            max_tokens=50,
+            temperature=0.5
+        )
 
-# Show OpenAI's response
-st.write(response.choices[0].text)
+        # Show OpenAI's response
+        st.write(response.choices[0].text)
+
 
 
 # Show the cards
