@@ -72,7 +72,8 @@ if st.button("送信"):
     if df_search.empty:
         st.write("No matching data found.")
     else:
-      # If not, use the data to generate a message for GPT-3
+        
+     # If not, use the data to generate a message for GPT-3
 message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
 
 # Add AI instruction prompt
