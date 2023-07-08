@@ -3,25 +3,29 @@ import streamlit as st
 import openai
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets.OpenAIAPI.openai_api_key
+openai.api_key = st.secrets["OpenAIAPI"]
+
+# スプレッドシートからデータをフェッチする関数
+def fetch_data_from_spreadsheet(sheet_id, sheet_name):
+    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+    df = pd.read_csv(url, dtype=str).fillna("")
+    return df
+
+# スプレッドシートの情報をフェッチ
+sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
+sheet_name = "charlas"
+df = fetch_data_from_spreadsheet(sheet_id, sheet_name)
 
 # Page setup
 st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
 st.title("補助金検索くん🎈")
 
-# Correct the formation of the URL
-sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
-sheet_name = "charlas"
-url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-
 # Function to filter data based on selected 地域 and selected_options
 def filter_data(selected_地域, selected_options):
-    df = pd.read_csv(url, dtype=str).fillna("")
     df_filtered = df[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options)))]
     return df_filtered
 
 # Get a list of unique 地域
-df = pd.read_csv(url, dtype=str).fillna("")
 unique_地域 = df["地域"].unique()
 
 # Create a selectbox for 地域
@@ -39,33 +43,27 @@ selected_options = st.multiselect("対象事業者を選択してください", 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
 
-# Prepare the initial question
-info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} の対象事業者に交付している補助金を教えてください"
+# AIによる回答生成
+def generate_answer(query):
+    response = openai.Completion.create(
+        model="gpt-3.5-turbo-0613",  # 使用するモデルを指定
+        prompt=query,
+        max_tokens=50
+    )
+    return response.choices[0].text.strip()
 
-# Get user's input
-user_input = st.text_input("AIに与える補足情報を入力してください", value=info_to_ask)
+# ユーザーからの質問入力
+user_question = st.text_input("ご質問を入力してください")
 
-if st.button("送信"):
-    # Check if the dataframe is empty
-    if df_search.empty:
-        st.write("No matching data found.")
-    else:
-        # If not, use the data to generate a message for GPT-3
-        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+# 質問が入力された場合の処理
+if user_question:
+    # AIによる回答生成
+    answer = generate_answer(user_question)
 
-        # Add user's input to the message
-        message += f"\n{user_input}"
+    # 回答を表示
+    st.write("AIの回答:")
+    st.write(answer)
 
-       # Use OpenAI API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k-0613",
-            messages=[
-                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
-                {"role": "user", "content": message}
-            ]
-        )
-        # Show OpenAI's response
-        st.write(response['choices'][0]['message']['content'])
 
         
 # Show the cards
