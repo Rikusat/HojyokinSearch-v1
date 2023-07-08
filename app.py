@@ -25,7 +25,7 @@ df = pd.read_csv(url, dtype=str).fillna("")
 unique_地域 = df["地域"].unique()
 
 # Create a selectbox for 地域
-selected_地域 = st.selectbox('地域を選択してください', unique_地域, index=0)
+selected_地域 = st.selectbox('地域を選択', unique_地域, index=0)
 
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
@@ -34,7 +34,7 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
     filter_options.update(options)
 
 # Show the options as a selectbox
-selected_options = st.multiselect("当てはまる項目を選択してください :複数選択可", list(filter_options))
+selected_options = st.multiselect("当てはまる項目を選択 :複数選択可", list(filter_options))
 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
@@ -43,7 +43,7 @@ df_search = filter_data(selected_地域, selected_options)
 info_to_ask = f"地域:{selected_地域} 対象事業者:{', '.join(selected_options)} "
 
 # Get user's input
-user_input = st.text_input("AIに与える補足情報を入力してください", value=info_to_ask)
+user_input = st.text_input("AIに与える補足情報を入力", value=info_to_ask)
 
 if st.button("送信"):
     # Check if the dataframe is empty
