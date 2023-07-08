@@ -41,6 +41,32 @@ selected_options = st.multiselect("対象事業者を選択してください", 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
 
+# Get user's input
+user_input = st.text_input("あなたの質問を入力してください")
+
+if st.button("送信"):
+    # Filter the dataframe using the user's input
+    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
+
+
+    # Check if the dataframe is empty
+    if df_search.empty:
+        st.write("No matching data found.")
+    else:
+        # If not, use the data to generate a message for GPT-3
+        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+
+        # Use OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k-0613",
+            messages=[
+                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
+                {"role": "user", "content": message}
+            ]
+        )
+        # Show OpenAI's response
+        st.write(response['choices'][0]['message']['content'])
+
 # Show the cards
 if df_search.empty:
     st.write("No matching data found.")
