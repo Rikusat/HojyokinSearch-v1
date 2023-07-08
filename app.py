@@ -42,7 +42,7 @@ selected_options = st.multiselect("対象事業者を選択してください", 
 df_search = filter_data(selected_地域, selected_options)
 
 # Get user's input
-user_input = st.text_input("あなたの質問を入力してください")
+user_input = st.text_input("補足情報を入力してください")
 
 if st.button("送信"):
     # Filter the dataframe using the user's input
