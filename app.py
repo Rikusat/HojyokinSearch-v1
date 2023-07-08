@@ -42,8 +42,11 @@ selected_options = st.multiselect("対象事業者を選択してください", 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
 
+# Prepare the initial question
+info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} の対象事業者に関する情報を教えてください"
+
 # Get user's input
-user_input = st.text_input("補足情報を入力してください")
+user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
 
 if st.button("送信"):
     # Check if the dataframe is empty
@@ -51,23 +54,21 @@ if st.button("送信"):
         st.write("No matching data found.")
     else:
         # If not, use the data to generate a message for GPT-3
-        message = f"I found {len(df_search)} matches for the 地域 '{selected_地域}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
 
-        # Add AI instruction prompt
-        instruction_prompt = "AIに対して追加の指示を入力してください。"
-        message_with_prompt = f"{instruction_prompt}\n{message}"
+        # Add user's input to the message
+        message += f"\n{user_input}"
 
         # Use OpenAI API
         response = openai.Completion.create(
             engine="davinci",
-            prompt=message_with_prompt,
+            prompt=message,
             max_tokens=50,
             temperature=0.5
         )
 
         # Show OpenAI's response
         st.write(response.choices[0].text)
-
 # Show the cards
 N_cards_per_row = 3
 cols = st.columns(N_cards_per_row, gap="large")
