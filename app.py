@@ -40,7 +40,7 @@ selected_options = st.multiselect("対象事業者を選択してください", 
 df_search = filter_data(selected_地域, selected_options)
 
 # Prepare the initial question
-info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} の対象事業者に交付している補助金を教えてください"
+info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} の対象事業者に交付している補助金を教えてください。"
 
 # Get user's input
 user_input = st.text_input("AIに与える補足情報を入力してください", value=info_to_ask)
