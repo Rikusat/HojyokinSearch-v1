@@ -46,7 +46,7 @@ df_search = filter_data(selected_地域, selected_options)
 info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} の対象事業者に関する情報を教えてください"
 
 # Get user's input
-user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
+user_input = st.text_input("あなたの質問を入力してください", value="")
 
 if st.button("送信"):
     # Check if the dataframe is empty
