@@ -45,12 +45,10 @@ df_search = filter_data(selected_地域, selected_options)
 
 # AIによる回答生成
 def generate_answer(query):
- response = openai.Completion.create(
-    model="gpt-3.5-turbo",
-    prompt=query,
-    max_tokens=50
-)
-
+    response = openai.Completion.create(
+        model="gpt-3.5-turbo-0613",  # 使用するモデルを指定
+        prompt=query,
+        max_tokens=50
     )
     return response.choices[0].text.strip()
 
