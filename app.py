@@ -45,7 +45,7 @@ info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(se
 # Get user's input
 user_input = st.text_input("AIに与える補足情報を入力してください", value=info_to_ask)
 
-if st.button("送信"):
+if st.button("AIに聞く"):
     # Check if the dataframe is empty
     if df_search.empty:
         st.write("No matching data found.")
