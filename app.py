@@ -2,6 +2,10 @@ import pandas as pd
 import streamlit as st
 import openai
 
+import pandas as pd
+import streamlit as st
+import openai
+
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
@@ -17,11 +21,11 @@ sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
-# Function to filter data based on selected 地域, selected_options, and user_input
-def filter_data(selected_地域, selected_options, user_input):
+# Function to filter data based on selected 地域 and selected_options
+def filter_data(selected_地域, selected_options):
     df = pd.read_csv(url, dtype=str).fillna("")
     df_filtered = df[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options)))]
-    return df_filtered, user_input
+    return df_filtered
 
 # Get a list of unique 地域
 df = pd.read_csv(url, dtype=str).fillna("")
@@ -40,7 +44,13 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
 selected_options = st.multiselect("対象事業者を選択してください", list(filter_options))
 
 # フィルタリング
-df_search, user_input = filter_data(selected_地域, selected_options, user_input)
+df_search = filter_data(selected_地域, selected_options)
+
+# Prepare the initial question
+info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} の対象事業者に関する情報を教えてください"
+
+# Get user's input
+user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
 
 if st.button("送信"):
     # Check if the dataframe is empty
@@ -50,19 +60,19 @@ if st.button("送信"):
         # If not, use the data to generate a message for GPT-3
         message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
 
-        # Use OpenAI API
-        try:
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo-16k-0613",
-                messages=[
-                    {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
-                    {"role": "user", "content": message}
-                ]
-            )
-            # Show OpenAI's response
-            st.write(response['choices'][0]['message']['content'])
-        except Exception as e:
-            st.write(f"Error: {e}")
+        # Add user's input to the message
+        message += f"\n{user_input}"
+
+       # Use OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k-0613",
+            messages=[
+                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
+                {"role": "user", "content": message}
+            ]
+        )
+        # Show OpenAI's response
+        st.write(response['choices'][0]['message']['content'])
 
 # Show the cards
 N_cards_per_row = 3
