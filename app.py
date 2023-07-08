@@ -40,15 +40,18 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
 selected_options = st.multiselect("対象事業者を選択してください", list(filter_options))
 
 # フィルタリング
-df_search = filter_data(selected_地域, selected_options)
+df_search, user_input = filter_data(selected_地域, selected_options, "")
 
 # Prepare the initial question
 info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} の対象事業者に関する情報を教えてください"
 
 # Get user's input
-user_input = st.text_input("あなたの質問を入力してください", value=info_to_ask)
+user_input = st.text_input("あなたの質問を入力してください")
 
 if st.button("送信"):
+    # Filter the dataframe using the user's input
+    df_search, user_input = filter_data(selected_地域, selected_options, user_input)
+
     # Check if the dataframe is empty
     if df_search.empty:
         st.write("No matching data found.")
