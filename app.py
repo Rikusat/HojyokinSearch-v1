@@ -1,20 +1,21 @@
 import pandas as pd
 import streamlit as st
-import requests
 import openai
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets["OpenAIAPI"]["openai_api_key"]
+openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
 # Page setup
 st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
 st.title("補助金検索くん🎈")
 
+# Add additional text above the title
+st.markdown("**補助金を効率的に検索するツールです**")
+
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-df = pd.read_csv(url, dtype=str).fillna("")
 
 # Function to filter data based on selected 地域 and selected_options
 def filter_data(selected_地域, selected_options):
@@ -45,46 +46,24 @@ df_search = filter_data(selected_地域, selected_options)
 user_input = st.text_input("補足情報を入力してください")
 
 if st.button("送信"):
-    # Filter the dataframe using the user's input
-    df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
-
-
     # Check if the dataframe is empty
     if df_search.empty:
         st.write("No matching data found.")
     else:
         # If not, use the data to generate a message for GPT-3
-        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+        message = f"I found {len(df_search)} matches for the 地域 '{selected_地域}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+
+        # Add AI instruction prompt
+        instruction_prompt = "AIに対して追加の指示を入力してください。"
+        message_with_prompt = f"{instruction_prompt}\n{message}"
 
         # Use OpenAI API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k-0613",
-            messages=[
-                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
-                {"role": "user", "content": message}
-            ]
+        response = openai.Completion.create(
+            engine="davinci-codex",
+            prompt=message_with_prompt,
+            max_tokens=50,
+            temperature=0.5
         )
-        # Show OpenAI's response
-        st.write(response['choices'][0]['message']['content'])
 
-# Show the cards
-if df_search.empty:
-    st.write("No matching data found.")
-else:
-    N_cards_per_row = 3
-    cols = st.columns(N_cards_per_row, gap="large")
-    for n_row, row in df_search.iterrows():
-        i = n_row % N_cards_per_row
-        if i == 0:
-            st.write("---")
-        # draw the card
-        with cols[i]:
-            st.markdown(f"**{row['補助金名'].strip()}**")
-            st.caption(f"{row['申請期間'].strip()}")
-            st.markdown(f"{row['詳細'].strip()}")
-            st.markdown(f"{row['上限金額・助成額'].strip()}")
-            st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
-            st.markdown(f"地域: {row['地域'].strip()}")
-            st.markdown(f"実施機関: {row['実施機関'].strip()}")
-            st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
-            st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
+        # Show OpenAI's response
+        st.write(response.choices[0].text)
