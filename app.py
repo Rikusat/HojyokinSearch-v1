@@ -45,7 +45,7 @@ info_to_ask = f"地域:{selected_地域} 対象事業者:{', '.join(selected_opt
 # Get user's input
 user_input = st.text_input("AIに与える補足情報", value=info_to_ask)
 
-if st.button("送信"):
+if st.button("AIに聞く"):
     # Check if the dataframe is empty
     if df_search.empty:
         st.write("No matching data found.")
