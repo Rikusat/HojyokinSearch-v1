@@ -59,7 +59,7 @@ if st.button("送信"):
 
         # Use OpenAI API
         response = openai.Completion.create(
-            engine="davinci-codex",
+            engine="davinci",
             prompt=message_with_prompt,
             max_tokens=50,
             temperature=0.5
