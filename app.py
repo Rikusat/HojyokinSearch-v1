@@ -25,7 +25,7 @@ df = pd.read_csv(url, dtype=str).fillna("")
 unique_地域 = df["地域"].unique()
 
 # Create a selectbox for 地域
-selected_地域 = st.selectbox('地域を選択してください', unique_地域)
+selected_地域 = st.selectbox('地域を選択してください', unique_地域, index=0)
 
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
@@ -34,7 +34,7 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
     filter_options.update(options)
 
 # Show the options as a selectbox
-selected_options = st.multiselect("対象事業者を選択してください", list(filter_options))
+selected_options = st.multiselect("対象事業者を選択してください", list(filter_options), default=[filter_options.pop()])
 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
@@ -66,6 +66,7 @@ if st.button("送信"):
         )
         # Show OpenAI's response
         st.write(response['choices'][0]['message']['content'])
+
 
         
 # Show the cards
