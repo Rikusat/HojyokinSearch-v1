@@ -60,7 +60,7 @@ if st.button("送信"):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-16k-0613",
             messages=[
-                {"role": "system", "content": "与えられた情報に該当するデータを10個ほど箇条書きで書き出してください"},
+                {"role": "system", "content": "与えられた情報を元に該当するデータを10個ほど箇条書きで書き出してください"},
                 {"role": "user", "content": message}
             ]
         )
