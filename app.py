@@ -59,16 +59,17 @@ if st.button("送信"):
         # Add user's input to the message
         message += f"\n{user_input}"
 
-        # Use OpenAI API
-        response = openai.Completion.create(
-            engine="davinci",
-            prompt=message,
-            max_tokens=50,
-            temperature=0.5
+       # Use OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k-0613",
+            messages=[
+                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
+                {"role": "user", "content": message}
+            ]
         )
-
         # Show OpenAI's response
-        st.write(response.choices[0].text)
+        st.write(response['choices'][0]['message']['content'])
+
 # Show the cards
 N_cards_per_row = 3
 cols = st.columns(N_cards_per_row, gap="large")
