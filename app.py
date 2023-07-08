@@ -3,7 +3,7 @@ import streamlit as st
 import openai
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets["OpenAIAPI"]
+openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
 # スプレッドシートからデータをフェッチする関数
 def fetch_data_from_spreadsheet(sheet_id, sheet_name):
