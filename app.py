@@ -34,13 +34,13 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
     filter_options.update(options)
 
 # Show the options as a selectbox
-selected_options = st.multiselect("対象事業者を選択してください　:複数選択可", list(filter_options), default=[filter_options.pop()])
+selected_options = st.multiselect("対象事業者を選択してください", list(filter_options))
 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
 
 # Prepare the initial question
-info_to_ask = f"地域:{selected_地域} 対象事業者:{', '.join(selected_options)} "
+info_to_ask = f"{selected_地域} の補助金リストの中で、{', '.join(selected_options)} に交付している補助金を教えてください"
 
 # Get user's input
 user_input = st.text_input("AIに与える補足情報を入力してください", value=info_to_ask)
@@ -60,7 +60,7 @@ if st.button("送信"):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-16k-0613",
             messages=[
-                {"role": "system", "content": "与えられた情報に該当するデータを10個ほど箇条書きで書き出してください"},
+                {"role": "system", "content": "与えられたスプレッドシートを参照し、10個ほど箇条書きで書き出してください"},
                 {"role": "user", "content": message}
             ]
         )
