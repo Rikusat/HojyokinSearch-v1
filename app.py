@@ -38,20 +38,9 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
     options = item.split("／")
     filter_options.update(options)
 
-# フィルタリング用の選択ボックスを作成
-cols = 4  # 1行に表示するチェックボックスの数
-selected_options = []
-for i, option in enumerate(filter_options):
-    if i % cols == 0:
-        col = st.beta_columns(cols)
-    checkbox_key = f"checkbox_{option}"  # チェックボックスのキー
-    selected = col[i % cols].checkbox(option, key=checkbox_key, value=(option in selected_options))
-    if selected:
-        selected_options.append(option)
-
-# 選択されたオプションを表示
-selected_options = list(set(selected_options))  # 重複を削除
-st.write("選択されたオプション:", selected_options)
+# Show the options as a selectbox
+st.write("選択されたオプション:")
+selected_options = st.multiselect("対象事業者を選択してください", list(filter_options))
 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
