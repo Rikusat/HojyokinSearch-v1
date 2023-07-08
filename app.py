@@ -39,7 +39,6 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
     filter_options.update(options)
 
 # Show the options as a selectbox
-st.write("選択されたオプション:")
 selected_options = st.multiselect("対象事業者を選択してください", list(filter_options))
 
 # フィルタリング
