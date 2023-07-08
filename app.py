@@ -6,8 +6,8 @@ import openai
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
 # Page setup
-st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
-st.title("補助金検索くん🎈")
+st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
+st.title("関東圏：補助金検索くん🎈")
 
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
