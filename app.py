@@ -51,16 +51,18 @@ if st.button("送信"):
         message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
 
         # Use OpenAI API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k-0613",
-            messages=[
-                {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
-                {"role": "user", "content": message}
-            ]
-        )
-        # Show OpenAI's response
-        st.write(response['choices'][0]['message']['content'])
-
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo-16k-0613",
+                messages=[
+                    {"role": "system", "content": "あなたは優秀なデータサイエンティストです。全て日本語で返答してください."},
+                    {"role": "user", "content": message}
+                ]
+            )
+            # Show OpenAI's response
+            st.write(response['choices'][0]['message']['content'])
+        except Exception as e:
+            st.write(f"Error: {e}")
 
 # Show the cards
 N_cards_per_row = 3
