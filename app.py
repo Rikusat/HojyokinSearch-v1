@@ -43,7 +43,7 @@ df_search = filter_data(selected_地域, selected_options)
 info_to_ask = f"地域:{selected_地域} 対象事業者:{', '.join(selected_options)} "
 
 # Get user's input
-user_input = st.text_input("AIに与える補足情報", value=info_to_ask)
+user_input = st.text_input("AIに与える補足情報(自由に入力してください)", value=info_to_ask)
 
 if st.button("AIに聞く"):
     # Check if the dataframe is empty
