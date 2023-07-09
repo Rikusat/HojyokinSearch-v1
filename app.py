@@ -7,8 +7,13 @@ import openai
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
 # Page setup
-st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
-st.title("関東圏：補助金検索くん🎈")
+st.set_page_config(
+    page_title="関東圏：補助金検索くん",
+    page_icon="🎈",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+    background_color="#f8f8f8"
+)
 
 # Define CSS styles
 st.markdown(
