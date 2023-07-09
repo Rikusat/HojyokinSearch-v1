@@ -7,3 +7,4 @@ qrcode
 pillow
 openpyxl == 3.0.10
 openai==0.27.8
+unidecode
