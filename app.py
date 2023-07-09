@@ -86,7 +86,7 @@ for n_row, row in df_search.iterrows():
         st.markdown(
             f"<div style='background-color: #f9c88c; padding: 5px 10px; margin-bottom: 10px;'>"
             f"<h3 style='margin: 0; background-color: #f9c88c; padding: 5px;'>{row['補助金名'].strip()}</h3>"
-            f"<div style='background-color: #f2f2f2; padding: 10px;'>"
+            f"<div style='background-color: #f7ecd1; padding: 10px;'>"
             f"<p style='color: #666;'>"
             f"{row['詳細'].strip()}<br>"
             f"{row['上限金額・助成額'].strip()}<br>"
@@ -101,3 +101,4 @@ for n_row, row in df_search.iterrows():
             f"</div>",
             unsafe_allow_html=True
         )
+
