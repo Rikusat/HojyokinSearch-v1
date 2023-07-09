@@ -92,36 +92,3 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"対象事業者:{row['対象事業者'].strip()}")
         st.markdown(f"公式公募ページ:{row['公式公募ページ'].strip()}")
         st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
-
-
-# カードにCSSスタイルを追加する関数
-def add_card_style():
-    st.markdown(
-        """
-        <style>
-        .card {
-            border: 2px solid #E4F6F8;
-            padding: 10px;
-            border-radius: 10px;
-            transition: border-color 0.3s;
-        }
-        .card:hover {
-            border-color: red;
-        }
-        </style>
-        """
-    )
-
-# カードの内容リスト
-card_contents = [
-    "カード1",
-    "カード2",
-    "カード3"
-]
-
-# カードにCSSスタイルを追加
-add_card_style()
-
-# カードを表示
-for card_content in card_contents:
-    st.markdown(f'<div class="card">{card_content}</div>', unsafe_allow_html=True)
