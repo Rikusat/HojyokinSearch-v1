@@ -11,7 +11,7 @@ st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="�
 st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
-primary_color = "#B5EAEA"
+primary_color = "#F0D9C1"
 secondary_color = "#F0D9C1"
 background_color = "#FCEDEA"
 text_color = "#706677"
