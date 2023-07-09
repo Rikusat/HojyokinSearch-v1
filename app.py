@@ -84,19 +84,20 @@ for n_row, row in df_search.iterrows():
     # draw the card
     with cols[i]:
         st.markdown(
-            f"<div style='padding: 5px 10px; margin-bottom: 10px;'>"
-            f"<h3 style='margin: 0;'>{row['補助金名'].strip()}</h3>"
-            f"<div style='background-color: #f9c88c; height: 5px; margin-bottom: 10px;'></div>"
-            f"<p>"
-            f"<strong>詳細:</strong> {row['詳細'].strip()}<br>"
-            f"<strong>上限金額・助成額:</strong> {row['上限金額・助成額'].strip()}<br>"
-            f"<strong>申請期間:</strong> {row['申請期間'].strip()}<br>"
-            f"<strong>地域:</strong> {row['地域'].strip()}<br>"
-            f"<strong>実施機関:</strong> {row['実施機関'].strip()}<br>"
-            f"<strong>対象事業者:</strong> {row['対象事業者'].strip()}<br>"
-            f"<strong>公式公募ページ:</strong> <a href='{row['公式公募ページ'].strip()}' target='_blank'>{row['公式公募ページ'].strip()}</a><br>"
-            f"<strong>掲載元:</strong> <a href='{row['掲載元'].strip()}' target='_blank'>{row['掲載元'].strip()}</a>"
+            f"<div style='background-color: #f9c88c; padding: 5px 10px; margin-bottom: 10px;'>"
+            f"<h3 style='margin: 0; background-color: #f9c88c; padding: 5px;'>{row['補助金名'].strip()}</h3>"
+            f"<div style='background-color: #f2f2f2; padding: 10px;'>"
+            f"<p style='color: #666;'>"
+            f"{row['詳細'].strip()}<br>"
+            f"{row['上限金額・助成額'].strip()}<br>"
+            f"{row['申請期間'].strip()}<br>"
+            f"地域: {row['地域'].strip()}<br>"
+            f"実施機関: {row['実施機関'].strip()}<br>"
+            f"対象事業者: {row['対象事業者'].strip()}<br>"
+            f"公式公募ページ: <a href='{row['公式公募ページ'].strip()}' target='_blank'>{row['公式公募ページ'].strip()}</a><br>"
+            f"<strong><a href='{row['掲載元'].strip()}' target='_blank'>掲載元</a></strong>"
             f"</p>"
+            f"</div>"
             f"</div>",
             unsafe_allow_html=True
         )
