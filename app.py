@@ -54,6 +54,7 @@ card_class = "card"
 
 # Title and subtitle
 st.title("関東圏：補助金検索くん🎈")
+st.markdown("---")
 
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
@@ -120,7 +121,7 @@ cols = st.columns(N_cards_per_row, gap="large")
 for n_row, row in df_search.iterrows():
     i = n_row % N_cards_per_row
     if i == 0:
-        st.write("---")
+        st.markdown("---")
     # Draw the card
     with cols[i]:
         # Apply CSS class to highlight important information
@@ -135,4 +136,3 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"<p><a href='{row['掲載元'].strip()}' target='_blank'>掲載元</a></p>", unsafe_allow_html=True)
         # Apply CSS class to the entire card
         st.markdown(f"<div class='{card_class}'>", unsafe_allow_html=True)
-        st.markdown("---")
