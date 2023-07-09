@@ -75,21 +75,17 @@ if st.button("AIに聞く"):
 st.markdown("---")
     
 # Show the cards
-N_cards_per_row = 3
-cols = st.columns(N_cards_per_row, gap="large")
 for n_row, row in df_search.iterrows():
-    i = n_row % N_cards_per_row
-    if i == 0:
-        st.write("---")
-    # draw the card
-    with cols[i]:
-        st.markdown(f"**{row['補助金名'].strip()}**")
-        st.caption(f"{row['詳細'].strip()}")
-        st.markdown(f"{row['上限金額・助成額'].strip()}")
-        st.markdown(f"{row['申請期間'].strip()}")
-        st.markdown(f"地域: {row['地域'].strip()}")
-        st.markdown(f"実施機関: {row['実施機関'].strip()}")
-        st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
-        st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
-        st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
-        st.markdown("---")
+    st.markdown(
+        f"<div style='background-color: #f9c88c; padding: 10px;'><h3>{row['補助金名'].strip()}</h3></div>",
+        unsafe_allow_html=True
+    )
+    st.caption(f"{row['詳細'].strip()}")
+    st.markdown(f"{row['上限金額・助成額'].strip()}")
+    st.markdown(f"{row['申請期間'].strip()}")
+    st.markdown(f"地域:{row['地域'].strip()}")
+    st.markdown(f"実施機関:{row['実施機関'].strip()}")
+    st.markdown(f"対象事業者:{row['対象事業者'].strip()}")
+    st.markdown(f"公式公募ページ:[{row['公式公募ページ'].strip()}]({row['公式公募ページ'].strip()})")
+    st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
+    st.markdown("---")
