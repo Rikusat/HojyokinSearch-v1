@@ -11,11 +11,10 @@ st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="�
 st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
-primary_color = "#FFD700"  # パステルイエロー
+primary_color = "#FCE38A"  # パステルイエローに代わる別の色
 secondary_color = "#FFB6C1"  # パステルピンク
 background_color = "#FDF5E6"  # パステルオレンジ
 text_color = "#575A89"  # ダークパープル
-
 
 # Apply styles to page elements
 st.markdown(
@@ -42,6 +41,7 @@ st.markdown(
         }}
         .stMarkdown a {{
             color: {secondary_color} !important;
+            text-decoration: underline;
         }}
         .stMarkdown div, .stMarkdown p {{
             color: {text_color} !important;
@@ -138,7 +138,7 @@ for n_row, row in df_search.iterrows():
             f"地域: {row['地域'].strip()}<br>"
             f"実施機関: {row['実施機関'].strip()}<br>"
             f"対象事業者: {row['対象事業者'].strip()}<br>"
-            f"公式公募ページ: <a href='{row['公式公募ページ'].strip()}' target='_blank'>{row['公式公募ページ'].strip()}</a><br>"
+            f"公式公募ページ: <a href='{row['公式公募ページ'].strip()}' target='_blank' style='color: {secondary_color}; text-decoration: underline;'>{row['公式公募ページ'].strip()}</a><br>"
             f"<strong><a href='{row['掲載元'].strip()}' target='_blank'>掲載元</a></strong>"
             f"</p>"
             f"</div>"
