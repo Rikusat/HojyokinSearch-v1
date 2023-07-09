@@ -40,10 +40,6 @@ selected_options = st.multiselect("当てはまる項目を選択 : 複数可", 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
 
-# Show the results and balloons
-st.write(df_search)
-st.balloons()
-
 # Prepare the initial question
 info_to_ask = f"地域は{selected_地域}で、対象事業者は{', '.join(selected_options)} "
 
