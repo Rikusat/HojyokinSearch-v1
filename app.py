@@ -28,6 +28,8 @@ unique_地域 = df["地域"].unique()
 # Create a selectbox for 地域
 selected_地域 = st.selectbox('地域を選択', unique_地域, index=0)
 
+st.markdown("---")
+
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
 for item in df[df["地域"] == selected_地域]["対象事業者"]:
@@ -36,6 +38,8 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
 
 # Show the options as a selectbox
 selected_options = st.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
+
+st.markdown("---")
 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
@@ -67,8 +71,9 @@ if st.button("AIに聞く"):
         )
         # Show OpenAI's response
         st.write(response['choices'][0]['message']['content'])
-        
-        
+
+st.markdown("---")
+    
 # Show the cards
 N_cards_per_row = 3
 cols = st.columns(N_cards_per_row, gap="large")
