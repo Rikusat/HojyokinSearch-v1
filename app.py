@@ -11,10 +11,11 @@ st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="�
 st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
-primary_color = "#575A89"  # パステルイエロー
+primary_color = "#FFD700"  # パステルイエロー
 secondary_color = "#FFB6C1"  # パステルピンク
 background_color = "#FDF5E6"  # パステルオレンジ
 text_color = "#575A89"  # ダークパープル
+
 
 # Apply styles to page elements
 st.markdown(
