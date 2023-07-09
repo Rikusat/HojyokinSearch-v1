@@ -116,4 +116,3 @@ my_html = f"""
             """
 st.components.v1.html(my_html, height=0, width=0)
 
-return
