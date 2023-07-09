@@ -3,7 +3,6 @@ import pandas as pd
 import requests
 import openai
 
-
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
