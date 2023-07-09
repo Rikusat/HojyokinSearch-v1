@@ -12,7 +12,7 @@ st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
 primary_color = "#3D405B"
-secondary_color = "#FF8552"
+secondary_color = "#FFD700"
 background_color = "#F8F4E3"
 text_color = "#1F2D3D"
 
