@@ -11,10 +11,10 @@ st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="�
 st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
-primary_color = "#9C89B8"
-secondary_color = "#FAC8CD"
-background_color = "#F9F4F5"
-text_color = "#575A89"
+primary_color = "#B5EAEA"
+secondary_color = "#F0D9C1"
+background_color = "#FCEDEA"
+text_color = "#706677"
 
 # Apply styles to page elements
 st.markdown(
