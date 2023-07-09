@@ -12,8 +12,8 @@ st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
 primary_color = "#FCE38A"  # パステルイエローに代わる別の色
-secondary_color = "#FFB6C1"  # パステルピンク
-background_color = "#FDF5E6"  # パステルオレンジ
+secondary_color = "#FDF5E6"  # パステルピンク
+background_color = "#FFB6C1"  # パステルオレンジ
 text_color = "#575A89"  # ダークパープル
 
 # Apply styles to page elements
