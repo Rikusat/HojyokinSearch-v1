@@ -6,6 +6,14 @@ import openai
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
+import streamlit as st
+import pandas as pd
+import requests
+import openai
+
+# Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
+openai.api_key = st.secrets.OpenAIAPI.openai_api_key
+
 # Page setup
 st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
 
@@ -13,8 +21,12 @@ st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="�
 st.markdown(
     """
     <style>
+    body {
+        background-color: #f0f0f0;
+    }
+
     .highlight {
-        color: #ff6600;
+        color: #e4572e;
         font-weight: bold;
     }
 
@@ -23,7 +35,7 @@ st.markdown(
         border-radius: 5px;
         padding: 10px;
         margin-bottom: 20px;
-        background-color: #f8f8f8;
+        background-color: #ffffff;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         transition: box-shadow 0.3s;
     }
@@ -42,7 +54,6 @@ card_class = "card"
 
 # Title and subtitle
 st.title("関東圏：補助金検索くん🎈")
-st.markdown("---")
 
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
