@@ -10,6 +10,49 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
 st.title("関東圏：補助金検索くん🎈")
 
+# Define colors
+primary_color = "#3D405B"
+secondary_color = "#E07A5F"
+background_color = "#F4F1DE"
+text_color = "#1F2D3D"
+
+# Apply styles to page elements
+st.markdown(
+    f"""
+    <style>
+        body {{
+            color: {text_color};
+            background-color: {background_color};
+        }}
+        .stApp {{
+            max-width: 1200px;
+            margin: 0 auto;
+        }}
+        .stTextInput div[role="textbox"] {{
+            background-color: {secondary_color} !important;
+            color: {text_color} !important;
+        }}
+        .stButton button {{
+            background-color: {secondary_color} !important;
+            color: {background_color} !important;
+        }}
+        .stTable th, .stTable td {{
+            border: 1px solid {primary_color} !important;
+        }}
+        .stMarkdown a {{
+            color: {secondary_color} !important;
+        }}
+        .stMarkdown div, .stMarkdown p {{
+            color: {text_color} !important;
+        }}
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {{
+            color: {primary_color} !important;
+        }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
@@ -84,13 +127,13 @@ for n_row, row in df_search.iterrows():
     # draw the card
     with cols[i]:
         st.markdown(
-            f"<div style='background-color: #f9c88c; padding: 5px 10px; margin-bottom: 10px;'>"
-            f"<h3 style='margin: 0; background-color: #f9c88c; padding: 5px;'>{row['補助金名'].strip()}</h3>"
-            f"<div style='background-color: #f7ecd1; padding: 10px;'>"
-            f"<p style='color: #666;'>"
-            f"{row['詳細'].strip()}<br>"
-            f"{row['上限金額・助成額'].strip()}<br>"
-            f"{row['申請期間'].strip()}<br>"
+            f"<div style='background-color: {secondary_color}; padding: 10px; border-radius: 5px;'>"
+            f"<h3 style='margin: 0; color: {background_color};'>{row['補助金名'].strip()}</h3>"
+            f"<div style='background-color: {background_color}; padding: 10px; border-radius: 5px; margin-top: 10px;'>"
+            f"<p>"
+            f"<strong>詳細:</strong> {row['詳細'].strip()}<br>"
+            f"<strong>上限金額・助成額:</strong> {row['上限金額・助成額'].strip()}<br>"
+            f"<strong>申請期間:</strong> {row['申請期間'].strip()}<br>"
             f"地域: {row['地域'].strip()}<br>"
             f"実施機関: {row['実施機関'].strip()}<br>"
             f"対象事業者: {row['対象事業者'].strip()}<br>"
@@ -101,4 +144,3 @@ for n_row, row in df_search.iterrows():
             f"</div>",
             unsafe_allow_html=True
         )
-
