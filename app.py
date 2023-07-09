@@ -59,16 +59,15 @@ if st.button("AIに聞く"):
         message += f"\n{user_input}"
 
        # Use OpenAI API
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=message,
-            max_tokens=100,
-            n=1,
-            stop=None,
-            temperature=0.7
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k-0613",
+            messages=[
+                {"role": "system", "content": "与えられた情報に該当するデータを箇条書きで可能な限り書き出してください"},
+                {"role": "user", "content": message}
+            ]
         )
         # Show OpenAI's response
-        st.write(response.choices[0].text)
+        st.write(response['choices'][0]['message']['content'])
 
 st.markdown("---")
         
