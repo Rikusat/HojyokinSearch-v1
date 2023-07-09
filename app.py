@@ -15,13 +15,13 @@ sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
-# Function to filter data based on selected 地域 and selected_options
-def filter_data(selected_地域, selected_options, df):
-    df_filtered = df[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options)))]
-    return df_filtered
-
-# Read the data from the URL
+# Read the data from the URL and perform data cleaning
 df = pd.read_csv(url, dtype=str).fillna("")
+
+# Function to filter data based on selected 地域 and selected_options
+def filter_data(selected_地域, selected_options):
+    df_filtered = df.loc[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options))), :]
+    return df_filtered
 
 # Get a list of unique 地域
 unique_地域 = df["地域"].unique()
@@ -29,17 +29,17 @@ unique_地域 = df["地域"].unique()
 # Create a selectbox for 地域
 selected_地域 = st.selectbox('地域を選択', unique_地域, index=0)
 
-# 対象事業者の各文字列を取得して一意の値を生成
+# Filter options based on selected_地域
 filter_options = set()
-for item in df[df["地域"] == selected_地域]["対象事業者"]:
+for item in df.loc[df["地域"] == selected_地域, "対象事業者"]:
     options = item.split("／")
     filter_options.update(options)
 
 # Show the options as a selectbox
 selected_options = st.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
 
-# フィルタリング
-df_search = filter_data(selected_地域, selected_options, df)
+# Filter the data
+df_search = filter_data(selected_地域, selected_options)
 
 # Prepare the initial question
 info_to_ask = f"地域は{selected_地域}で、対象事業者は{', '.join(selected_options)} "
