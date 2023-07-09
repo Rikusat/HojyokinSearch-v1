@@ -96,7 +96,7 @@ for n_row, row in df_search.iterrows():
 
 # Add color to the cards
 my_js = """
-var cards = window.parent.document.getElementsByClassName("css-vhjbnf");
+var cards = window.parent.document.getElementsByClassName("css-2trqyj");
 for (var i = 0; i < cards.length; i++) {
     let card = cards[i];
     // See if there's content in the card
@@ -120,4 +120,3 @@ my_html = f"""
             </script>
             """
 st.components.v1.html(my_html, height=0, width=0)
-
