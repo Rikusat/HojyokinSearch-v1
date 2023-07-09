@@ -53,9 +53,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Title
-st.title("関東圏：補助金検索くん🎈")
-
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
