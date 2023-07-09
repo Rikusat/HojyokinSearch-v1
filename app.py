@@ -15,36 +15,6 @@ st.set_page_config(
     bgcolor="#f8f8f8"
 )
 
-# Define CSS styles
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #f8f8f8;
-    }
-
-    .highlight {
-        color: #e4572e;
-        font-weight: bold;
-    }
-
-    .card {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 20px;
-        background-color: #ffffff;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s;
-    }
-
-    .card:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # Custom CSS classes
 highlight_class = "highlight"
