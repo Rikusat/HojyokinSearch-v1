@@ -87,3 +87,4 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
         st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
         st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
+        st.markdown("---")
