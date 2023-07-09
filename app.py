@@ -12,8 +12,8 @@ st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
 primary_color = "#3D405B"
-secondary_color = "#E07A5F"
-background_color = "#F4F1DE"
+secondary_color = "#FF8552"
+background_color = "#F8F4E3"
 text_color = "#1F2D3D"
 
 # Apply styles to page elements
