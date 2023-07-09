@@ -16,13 +16,14 @@ sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
 # Function to filter data based on selected 地域 and selected_options
-def filter_data(selected_地域, selected_options):
-    df = pd.read_csv(url, dtype=str).fillna("")
+def filter_data(selected_地域, selected_options, df):
     df_filtered = df[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options)))]
     return df_filtered
 
-# Get a list of unique 地域
+# Read the data from the URL
 df = pd.read_csv(url, dtype=str).fillna("")
+
+# Get a list of unique 地域
 unique_地域 = df["地域"].unique()
 
 # Create a selectbox for 地域
@@ -38,7 +39,7 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
 selected_options = st.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
 
 # フィルタリング
-df_search = filter_data(selected_地域, selected_options)
+df_search = filter_data(selected_地域, selected_options, df)
 
 # Prepare the initial question
 info_to_ask = f"地域は{selected_地域}で、対象事業者は{', '.join(selected_options)} "
