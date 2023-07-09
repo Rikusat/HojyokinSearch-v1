@@ -41,7 +41,7 @@ selected_options = st.multiselect("当てはまる項目を選択 : 複数可", 
 df_search = filter_data(selected_地域, selected_options)
 
 # Prepare the initial question
-info_to_ask = f"地域:{selected_地域} 対象事業者:{', '.join(selected_options)} "
+info_to_ask = f"地域は{selected_地域}で、対象事業者は{', '.join(selected_options)} "
 
 # Get user's input
 user_input = st.text_input("補足情報を自由に入力してください", value=info_to_ask)
