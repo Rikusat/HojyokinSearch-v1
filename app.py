@@ -21,7 +21,9 @@ def filter_data(selected_地域, selected_options):
     df_filtered = df[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options)))]
     return df_filtered
 
-
+# Get a list of unique 地域
+df = pd.read_csv(url, dtype=str).fillna("")
+unique_地域 = df["地域"].unique()
 
 # Create a selectbox for 地域
 selected_地域 = st.selectbox('地域を選択', unique_地域, index=0)
