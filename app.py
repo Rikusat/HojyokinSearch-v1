@@ -120,8 +120,8 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"<p class='{highlight_class}'>地域: {row['地域'].strip()}</p>", unsafe_allow_html=True)
         st.markdown(f"<p class='{highlight_class}'>実施機関: {row['実施機関'].strip()}</p>", unsafe_allow_html=True)
         st.markdown(f"<p class='{highlight_class}'>対象事業者: {row['対象事業者'].strip()}</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='{highlight_class}'>公式公募ページ: {row['公式公募ページ'].strip()}</p>", unsafe_allow_html=True)
-        st.markdown(f"<p><a href='{row['掲載元'].strip()}'>掲載元</a></p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>公式公募ページ: <a href='{row['公式公募ページ'].strip()}' target='_blank'>{row['公式公募ページ'].strip()}</a></p>", unsafe_allow_html=True)
+        st.markdown(f"<p><a href='{row['掲載元'].strip()}' target='_blank'>掲載元</a></p>", unsafe_allow_html=True)
         # Apply CSS class to the entire card
         st.markdown(f"<div class='{card_class}'>", unsafe_allow_html=True)
         st.markdown("---")
