@@ -77,7 +77,7 @@ st.markdown("---")
 # Show the cards
 for n_row, row in df_search.iterrows():
     st.markdown(
-        f"<div style='background-color: #f9c88c; padding: 10px;'><h3>{row['補助金名'].strip()}</h3></div>",
+        f"<div style='background-color: #f9c88c; padding: 5px 10px; margin-bottom: 10px;'><h3 style='margin: 0;'>{row['補助金名'].strip()}</h3></div>",
         unsafe_allow_html=True
     )
     st.caption(f"{row['詳細'].strip()}")
