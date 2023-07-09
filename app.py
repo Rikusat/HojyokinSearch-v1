@@ -10,50 +10,6 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
 st.title("関東圏：補助金検索くん🎈")
 
-# Define colors
-primary_color = "#575A89"  # パステルイエローに代わる別の色
-secondary_color = "#FDF5E6"  # パステルピンク
-background_color = "#FFB6C1"  # パステルオレンジ
-text_color = "#FCE38A"  # ダークパープル
-
-# Apply styles to page elements
-st.markdown(
-    f"""
-    <style>
-        body {{
-            color: {text_color};
-            background-color: {background_color};
-        }}
-        .stApp {{
-            max-width: 1200px;
-            margin: 0 auto;
-        }}
-        .stTextInput div[role="textbox"] {{
-            background-color: {secondary_color} !important;
-            color: {text_color} !important;
-        }}
-        .stButton button {{
-            background-color: {secondary_color} !important;
-            color: {background_color} !important;
-        }}
-        .stTable th, .stTable td {{
-            border: 1px solid {primary_color} !important;
-        }}
-        .stMarkdown a {{
-            color: {secondary_color} !important;
-            text-decoration: underline;
-        }}
-        .stMarkdown div, .stMarkdown p {{
-            color: {text_color} !important;
-        }}
-        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {{
-            color: {primary_color} !important;
-        }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
@@ -72,8 +28,6 @@ unique_地域 = df["地域"].unique()
 # Create a selectbox for 地域
 selected_地域 = st.selectbox('地域を選択', unique_地域, index=0)
 
-st.markdown("---")
-
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
 for item in df[df["地域"] == selected_地域]["対象事業者"]:
@@ -82,8 +36,6 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
 
 # Show the options as a selectbox
 selected_options = st.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
-
-st.markdown("---")
 
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
@@ -115,33 +67,23 @@ if st.button("AIに聞く"):
         )
         # Show OpenAI's response
         st.write(response['choices'][0]['message']['content'])
-
-st.markdown("---")
-    
+        
+        
 # Show the cards
 N_cards_per_row = 3
 cols = st.columns(N_cards_per_row, gap="large")
 for n_row, row in df_search.iterrows():
     i = n_row % N_cards_per_row
     if i == 0:
-        st.markdown("---")
+        st.write("---")
     # draw the card
     with cols[i]:
-        st.markdown(
-            f"<div style='background-color: {secondary_color}; padding: 10px; border-radius: 5px;'>"
-            f"<h3 style='margin: 0; color: {primary_color};'>{row['補助金名'].strip()}</h3>"
-            f"<div style='background-color: {primary_color}; padding: 10px; border-radius: 5px; margin-top: 10px;'>"
-            f"<p style='color: {text_color};'>"
-            f"<strong>詳細:</strong> {row['詳細'].strip()}<br>"
-            f"<strong>上限金額・助成額:</strong> {row['上限金額・助成額'].strip()}<br>"
-            f"<strong>申請期間:</strong> {row['申請期間'].strip()}<br>"
-            f"地域: {row['地域'].strip()}<br>"
-            f"実施機関: {row['実施機関'].strip()}<br>"
-            f"対象事業者: {row['対象事業者'].strip()}<br>"
-            f"公式公募ページ: <a href='{row['公式公募ページ'].strip()}' target='_blank' style='color: {secondary_color}; text-decoration: underline;'>{row['公式公募ページ'].strip()}</a><br>"
-            f"<strong><a href='{row['掲載元'].strip()}' target='_blank'>掲載元</a></strong>"
-            f"</p>"
-            f"</div>"
-            f"</div>",
-            unsafe_allow_html=True
-        )
+        st.markdown(f"**{row['補助金名'].strip()}**")
+        st.caption(f"{row['詳細'].strip()}")
+        st.markdown(f"{row['上限金額・助成額'].strip()}")
+        st.markdown(f"{row['申請期間'].strip()}")
+        st.markdown(f"地域: {row['地域'].strip()}")
+        st.markdown(f"実施機関: {row['実施機関'].strip()}")
+        st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
+        st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
+        st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
