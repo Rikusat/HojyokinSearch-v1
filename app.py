@@ -8,7 +8,50 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
 # Page setup
 st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
+
+# Define CSS styles
+st.markdown(
+    """
+    <style>
+    .highlight {
+        background-color: yellow;
+        color: black;
+        padding: 5px;
+        border-radius: 5px;
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+        background-color: #f8f8f8;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s;
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Custom CSS classes
+highlight_class = "highlight"
+card_class = "card"
+
+# Title and subtitle
 st.title("関東圏：補助金検索くん🎈")
+st.markdown("---")
 
 # Correct the formation of the URL
 sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
@@ -76,14 +119,18 @@ for n_row, row in df_search.iterrows():
     i = n_row % N_cards_per_row
     if i == 0:
         st.write("---")
-    # draw the card
+    # Draw the card
     with cols[i]:
-        st.markdown(f"**{row['補助金名'].strip()}**")
-        st.caption(f"{row['詳細'].strip()}")
-        st.markdown(f"{row['上限金額・助成額'].strip()}")
-        st.markdown(f"{row['申請期間'].strip()}")
-        st.markdown(f"地域:{row['地域'].strip()}")
-        st.markdown(f"実施機関:{row['実施機関'].strip()}")
-        st.markdown(f"対象事業者:{row['対象事業者'].strip()}")
-        st.markdown(f"公式公募ページ:{row['公式公募ページ'].strip()}")
-        st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
+        # Apply CSS class to highlight important information
+        st.markdown(f"<h3 class='{highlight_class}'>{row['補助金名'].strip()}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>{row['詳細'].strip()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>{row['上限金額・助成額'].strip()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>{row['申請期間'].strip()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>地域: {row['地域'].strip()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>実施機関: {row['実施機関'].strip()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>対象事業者: {row['対象事業者'].strip()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'>公式公募ページ: {row['公式公募ページ'].strip()}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p class='{highlight_class}'><a href='{row['掲載元'].strip()}'>掲載元</a></p>", unsafe_allow_html=True)
+        # Apply CSS class to the entire card
+        st.markdown(f"<div class='{card_class}'>", unsafe_allow_html=True)
+        st.markdown("---")
