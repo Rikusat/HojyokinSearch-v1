@@ -11,10 +11,10 @@ st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="�
 st.title("関東圏：補助金検索くん🎈")
 
 # Define colors
-primary_color = "#3D405B"
-secondary_color = "#FFD700"
-background_color = "#F8F4E3"
-text_color = "#1F2D3D"
+primary_color = "#9C89B8"
+secondary_color = "#FAC8CD"
+background_color = "#F9F4F5"
+text_color = "#575A89"
 
 # Apply styles to page elements
 st.markdown(
@@ -128,8 +128,8 @@ for n_row, row in df_search.iterrows():
     with cols[i]:
         st.markdown(
             f"<div style='background-color: {secondary_color}; padding: 10px; border-radius: 5px;'>"
-            f"<h3 style='margin: 0; color: {background_color};'>{row['補助金名'].strip()}</h3>"
-            f"<div style='background-color: {background_color}; padding: 10px; border-radius: 5px; margin-top: 10px;'>"
+            f"<h3 style='margin: 0; color: {primary_color};'>{row['補助金名'].strip()}</h3>"
+            f"<div style='background-color: {primary_color}; padding: 10px; border-radius: 5px; margin-top: 10px;'>"
             f"<p>"
             f"<strong>詳細:</strong> {row['詳細'].strip()}<br>"
             f"<strong>上限金額・助成額:</strong> {row['上限金額・助成額'].strip()}<br>"
