@@ -2,6 +2,11 @@ import streamlit as st
 import pandas as pd
 import requests
 import openai
+import numpy as np
+from unidecode import unidecode
+import random
+from collections import defaultdict
+
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
 openai.api_key = st.secrets.OpenAIAPI.openai_api_key
