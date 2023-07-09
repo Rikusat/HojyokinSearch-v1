@@ -70,7 +70,8 @@ if st.button("AIに聞く"):
         )
         # Show OpenAI's response
         st.write(response['choices'][0]['message']['content'])
-        
+
+st.markdown("---")
         
 # Show the cards
 N_cards_per_row = 3
