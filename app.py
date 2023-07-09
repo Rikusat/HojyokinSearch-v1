@@ -15,7 +15,7 @@ st.markdown(
     """
     <style>
     body {
-        background-color: #f0f0f0;
+        background-color: #f8f8f8;
     }
 
     .highlight {
@@ -44,7 +44,6 @@ st.markdown(
 # Custom CSS classes
 highlight_class = "highlight"
 card_class = "card"
-
 
 
 
