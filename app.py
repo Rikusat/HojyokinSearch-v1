@@ -94,29 +94,34 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
 
 
-# Add color to the cards
-my_js = """
-var cards = window.parent.document.getElementsByClassName("css-2trqyj");
-for (var i = 0; i < cards.length; i++) {
-    let card = cards[i];
-    // See if there's content in the card
-    N_chars_in_cards = String(card.firstChild.innerHTML).length;
-    if (N_chars_in_cards >100){
-        card.style.border = "solid";
-        card.style.borderColor = "#E4F6F8";
-        card.style.borderWidth = "2px";
-        card.style.padding = "10px";
-        card.style.borderRadius = "10px";
-        card.style.borderRadius = "10px";
-        card.addEventListener("mouseover", function(event){card.style.borderColor = "red"})
-        card.addEventListener("mouseout",  function(event){card.style.borderColor = "#E4F6F8"})
-    }
-}    
-"""
+# カードにCSSスタイルを追加する関数
+def add_card_style():
+    st.markdown(
+        """
+        <style>
+        .card {
+            border: 2px solid #E4F6F8;
+            padding: 10px;
+            border-radius: 10px;
+            transition: border-color 0.3s;
+        }
+        .card:hover {
+            border-color: red;
+        }
+        </style>
+        """
+    )
 
-my_html = f"""
-            <script>
-            {my_js}
-            </script>
-            """
-st.components.v1.html(my_html, height=0, width=0)
+# カードの内容リスト
+card_contents = [
+    "カード1",
+    "カード2",
+    "カード3"
+]
+
+# カードにCSSスタイルを追加
+add_card_style()
+
+# カードを表示
+for card_content in card_contents:
+    st.markdown(f'<div class="card">{card_content}</div>', unsafe_allow_html=True)
