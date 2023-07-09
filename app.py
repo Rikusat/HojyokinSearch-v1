@@ -25,6 +25,11 @@ def filter_data(selected_地域, selected_options):
 df = pd.read_csv(url, dtype=str).fillna("")
 unique_地域 = df["地域"].unique()
 
+# Create a selectbox for 地域 and 対象事業者
+col1, col2 = st.beta_columns(2)
+
+selected_地域 = col1.selectbox('地域を選択', unique_地域, index=0)
+selected_options = col2.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
 
 # 対象事業者の各文字列を取得して一意の値を生成
 filter_options = set()
@@ -32,12 +37,6 @@ for item in df[df["地域"] == selected_地域]["対象事業者"]:
     options = item.split("／")
     filter_options.update(options)
     
-# Create a selectbox for 地域 and 対象事業者
-col1, col2 = st.beta_columns(2)
-
-selected_地域 = col1.selectbox('地域を選択', unique_地域, index=0)
-selected_options = col2.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
-
 # フィルタリング
 df_search = filter_data(selected_地域, selected_options)
 
