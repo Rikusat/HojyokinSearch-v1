@@ -12,7 +12,7 @@ st.set_page_config(
     page_icon="🎈",
     layout="wide",
     initial_sidebar_state="collapsed",
-    background_color="#f8f8f8"
+    bgcolor="#f8f8f8"
 )
 
 # Define CSS styles
