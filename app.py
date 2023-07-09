@@ -14,17 +14,8 @@ st.markdown(
     """
     <style>
     .highlight {
-        background-color: yellow;
-        color: black;
-        padding: 5px;
-        border-radius: 5px;
-        animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-        0% { opacity: 1; }
-        50% { opacity: 0; }
-        100% { opacity: 1; }
+        color: #ff6600;
+        font-weight: bold;
     }
 
     .card {
@@ -130,7 +121,7 @@ for n_row, row in df_search.iterrows():
         st.markdown(f"<p class='{highlight_class}'>実施機関: {row['実施機関'].strip()}</p>", unsafe_allow_html=True)
         st.markdown(f"<p class='{highlight_class}'>対象事業者: {row['対象事業者'].strip()}</p>", unsafe_allow_html=True)
         st.markdown(f"<p class='{highlight_class}'>公式公募ページ: {row['公式公募ページ'].strip()}</p>", unsafe_allow_html=True)
-        st.markdown(f"<p class='{highlight_class}'><a href='{row['掲載元'].strip()}'>掲載元</a></p>", unsafe_allow_html=True)
+        st.markdown(f"<p><a href='{row['掲載元'].strip()}'>掲載元</a></p>", unsafe_allow_html=True)
         # Apply CSS class to the entire card
         st.markdown(f"<div class='{card_class}'>", unsafe_allow_html=True)
         st.markdown("---")
