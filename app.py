@@ -15,12 +15,6 @@ sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
-# Function to filter data based on selected 地域 and selected_options
-def filter_data(selected_地域, selected_options):
-    df = pd.read_csv(url, dtype=str).fillna("")
-    df_filtered = df[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options)))]
-    return df_filtered
-
 # Get a list of unique 地域
 df = pd.read_csv(url, dtype=str).fillna("")
 unique_地域 = df["地域"].unique()
