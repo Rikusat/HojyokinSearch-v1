@@ -1,6 +1,6 @@
 import streamlit as st
 from openpyxl import load_workbook
-from docx import Document
+import pandas as pd
 import io
 
 def replace_text_in_word(input_word_file, output_word_file, replacements):
@@ -15,9 +15,10 @@ def replace_text_in_word(input_word_file, output_word_file, replacements):
     with open(output_word_file, 'wb') as file:
         file.write(doc_text.encode("utf-8"))
 
-def display_file_content(file):
-    content = file.getvalue().decode("utf-8")
-    st.code(content, language='plaintext')
+def display_excel_table(excel_file):
+    df = pd.read_excel(excel_file)
+    st.subheader("Excelファイルの内容:")
+    st.write(df)
 
 def main():
     st.title('Word書類の文字列置換アプリ')
@@ -31,16 +32,13 @@ def main():
     word_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
 
     if excel_file and word_file:
-        # ファイルのプレビュー
-        st.subheader("Excelファイルの内容:")
-        display_file_content(excel_file)
+        # Excelファイルの内容を表示
+        display_excel_table(excel_file)
 
-        st.subheader("Wordファイルの内容:")
-        display_file_content(word_file)
-
-        # 置換情報を取得して置換
+        # Excelファイルから置換情報を取得
         wb = load_workbook(excel_file)
         ws = wb.active
+
         replacements = {}
         max_col = ws.max_column
         max_row = ws.max_row
@@ -70,5 +68,6 @@ def get_binary_file_downloader_html(bin_file, file_name, button_text="Click here
 
 if __name__ == '__main__':
     main()
+
 
 
