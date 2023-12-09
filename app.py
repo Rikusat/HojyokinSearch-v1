@@ -1,7 +1,7 @@
 
 import streamlit as st
 import pandas as pd
-from docx import Document
+
 
 def replace_text_in_word_file(input_word_file, output_word_file, replacements):
     doc = Document(input_word_file)
