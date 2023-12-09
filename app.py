@@ -1,48 +1,35 @@
-
 import streamlit as st
-import pandas as pd
+import docx2txt
 
-
-def replace_text_in_word_file(input_word_file, output_word_file, replacements):
-    doc = Document(input_word_file)
-    for old_text, new_text in replacements.items():
-        for paragraph in doc.paragraphs:
-            if old_text in paragraph.text:
-                paragraph.text = paragraph.text.replace(old_text, new_text)
-    doc.save(output_word_file)
+def replace_text_in_word(input_word_file, output_word_file, old_text, new_text):
+    text = docx2txt.process(input_word_file)
+    new_text = text.replace(old_text, new_text)
+    with open(output_word_file, "w", encoding="utf-8") as file:
+        file.write(new_text)
 
 def main():
     st.title('Word書類の文字列置換アプリ')
 
-    # Excelファイルのアップロード
-    st.sidebar.header('Excelファイルをアップロード')
-    uploaded_file = st.sidebar.file_uploader("Excelファイルを選択してください", type=['xlsx'])
+    # Wordファイルのアップロード
+    st.sidebar.header('Wordファイルをアップロード')
+    uploaded_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
 
     if uploaded_file is not None:
-        excel_data = pd.read_excel(uploaded_file)
+        # アップロードされたファイルを一時保存
+        with open("temp.docx", "wb") as file:
+            file.write(uploaded_file.getvalue())
 
-        # 複数のセルから置換用文字列を取得
-        replacements = {}
-        for column in excel_data.columns:
-            for index, value in excel_data[column].items():
-                replacements[f'OLD_{column}_{index}'] = str(value)
+        # テキスト置換用の入力
+        old_text = st.sidebar.text_input("置換前のテキスト")
+        new_text = st.sidebar.text_input("置換後のテキスト")
 
-        # Wordファイルの選択
-        st.sidebar.header('Wordファイルを選択')
-        target_word_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
+        if old_text and new_text:
+            replace_text_in_word("temp.docx", "output.docx", old_text, new_text)
 
-        if target_word_file is not None:
-            replace_text_in_word_file(target_word_file, 'output.docx', replacements)
-
-            # 置換結果のプレビュー
+            # ダウンロードリンクの作成
             st.sidebar.markdown("[**ダウンロード新しいWordファイル**](./output.docx)", unsafe_allow_html=True)
-            st.success("置換が完了しました。以下は一部のプレビューです。")
-            
-            doc_preview = Document('output.docx')
-            preview_text = ""
-            for paragraph in doc_preview.paragraphs[:5]:  # 最初の5つの段落をプレビューとして表示
-                preview_text += paragraph.text + "\n"
-            st.text_area("置換後のプレビュー", value=preview_text, height=200)
+            st.success("置換が完了しました。")
 
 if __name__ == '__main__':
     main()
+
