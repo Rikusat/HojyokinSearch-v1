@@ -1,30 +1,44 @@
-
-from docx import Document
-from docx.shared import Inches
+import streamlit as st
+import pandas as pd
+from openpyxl import load_workbook
 from docxtpl import DocxTemplate
+import io
 
-def generate_document():
-    # テンプレートファイルの読み込み
-    doc = DocxTemplate("your_template.docx")
+def replace_text_in_word_template(input_word_file, output_word_file, replacements):
+    doc = DocxTemplate(input_word_file)
+    doc.render(replacements)
+    doc.save(output_word_file)
 
-    # テンプレートに変数を割り当てる
-    context = {
-        'variable1': 'Some text',
-        'variable2': 'More text'
-    }
+# これまでのコードが続きます（main()関数やその他の部分）
+# ...
 
-    # テンプレートに変数を挿入する
-    doc.render(context)
-    
-    # バイナリデータに変換
-    doc_buffer = io.BytesIO()
-    doc.save(doc_buffer)
-    doc_bytes = doc_buffer.getvalue()
+def main():
+    st.title('Word書類の文字列置換アプリ')
 
-    return doc_bytes
+    # 以下、Excelファイルのアップロードなどの部分を記述してください
+    # ...
 
-# 編集されたWordドキュメントの生成
-edited_doc = generate_document()
+    if excel_file and word_files:
+        # これまでの置換情報の取得部分
+        # ...
 
-# ダウンロードボタンの表示
-st.download_button(label='Download Edits', data=edited_doc, file_name='EDITED.docx', mime='application/octet-stream', key=321)
+        # Wordファイルごとに処理
+        for word_file in word_files:
+            # Wordファイルの一時保存
+            word_bytes = word_file.read()
+            word_path = f"temp_word_{word_file.name}"
+            with open(word_path, "wb") as temp_word:
+                temp_word.write(word_bytes)
+
+            # Wordファイルの置換
+            replace_text_in_word_template(word_path, f"output_{word_file.name}", replacements)
+
+            # ダウンロードリンクの作成
+            with open(f"output_{word_file.name}", "rb") as file:
+                file_contents = file.read()
+                st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name=f"output_{word_file.name}"), unsafe_allow_html=True)
+
+        st.success("置換が完了しました。")
+
+if __name__ == '__main__':
+    main()
