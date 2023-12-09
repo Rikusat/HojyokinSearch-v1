@@ -1,3 +1,4 @@
 streamlit
 pandas
 google-auth==2.3.3
+python-docx
