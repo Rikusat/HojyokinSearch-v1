@@ -4,17 +4,23 @@ import pandas as pd
 import io
 import os
 
-def replace_text_in_word(input_word_file, output_word_file, replacements):
-    with open(input_word_file, 'rb') as file:
-        doc_bytes = io.BytesIO(file.read())
+from docx import Document
 
-    doc_text = doc_bytes.getvalue().decode("utf-8")
+def replace_text_in_word(input_word_file, output_word_file, replacements):
+    doc = Document(input_word_file)
 
     for old_text, new_text in replacements.items():
-        doc_text = doc_text.replace(old_text, new_text)
+        for paragraph in doc.paragraphs:
+            if old_text in paragraph.text:
+                paragraph.text = paragraph.text.replace(old_text, new_text)
 
-    with open(output_word_file, 'wb') as file:
-        file.write(doc_text.encode("utf-8"))
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    if old_text in cell.text:
+                        cell.text = cell.text.replace(old_text, new_text)
+
+    doc.save(output_word_file)
 
 def display_excel_table(excel_file):
     df = pd.read_excel(excel_file)
