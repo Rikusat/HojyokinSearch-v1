@@ -1,58 +1,43 @@
 import streamlit as st
-import pandas as pd
 from docx import Document
+from docx.shared import Inches
 
-def replace_text_in_word(input_word_file, output_word_file, replacements):
+def add_text_to_word_file(input_word_file, output_word_file):
+    # Load the existing Word document
     doc = Document(input_word_file)
 
-    for old_text, new_text in replacements.items():
-        for paragraph in doc.paragraphs:
-            if old_text in paragraph.text:
-                paragraph.text = paragraph.text.replace(old_text, new_text)
+    # Add content to the Word document
+    doc.add_heading('New Content', level=1)
+    doc.add_paragraph('This is additional text added to the document.')
 
-        for table in doc.tables:
-            for row in table.rows:
-                for cell in row.cells:
-                    if old_text in cell.text:
-                        cell.text = cell.text.replace(old_text, new_text)
-
+    # Save the modified Word document
     doc.save(output_word_file)
 
 def main():
-    st.title('Wordファイルの文字列置換アプリ')
+    st.title('Word Document Editor')
 
-    # Excelファイルのアップロード
-    st.sidebar.header('Excelファイルをアップロード')
-    excel_file = st.sidebar.file_uploader("Excelファイルを選択してください", type=['csv'])
+    # Wordファイルのアップロード
+    st.sidebar.header('Upload Word File')
+    word_file = st.sidebar.file_uploader("Select a Word file", type=['docx'])
 
-    # Wordファイルのアップロード（複数ファイル）
-    st.sidebar.header('Wordファイルを複数選択してください')
-    word_files = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'], accept_multiple_files=True)
+    if word_file:
+        # ユーザーがアップロードしたWordファイルを一時保存
+        with open("temp_word.docx", "wb") as temp_word:
+            temp_word.write(word_file.read())
 
-    if excel_file and word_files:
-        # CSVファイルから置換情報を取得
-        df = pd.read_csv(excel_file)
-        replacements = dict(zip(df['Old Text'], df['New Text']))
+        st.success("Word file uploaded successfully.")
 
-        # Wordファイルごとに置換処理を実行
-        for word_file in word_files:
-            # Wordファイルの一時保存
-            word_path = f"./temp_word_{word_file.name}"
-            with open(word_path, "wb") as temp_word:
-                temp_word.write(word_file.read())
+        # 新しいコンテンツを追加して保存
+        output_file_path = "output.docx"
+        add_text_to_word_file("temp_word.docx", output_file_path)
 
-            # Wordファイルの置換処理
-            output_word_path = f"./output_{word_file.name}"
-            replace_text_in_word(word_path, output_word_path, replacements)
+        # ダウンロードリンクの作成
+        with open(output_file_path, "rb") as file:
+            file_contents = file.read()
+            st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name=output_file_path), unsafe_allow_html=True)
+            st.success("New content added and file saved successfully.")
 
-            # ダウンロードリンクの作成
-            with open(output_word_path, "rb") as file:
-                file_contents = file.read()
-                st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name=output_word_path), unsafe_allow_html=True)
-
-        st.sidebar.success("置換が完了しました。")
-
-def get_binary_file_downloader_html(bin_file, file_name, button_text="Click here to download"):
+def get_binary_file_downloader_html(bin_file, file_name, button_text="Download File"):
     import base64
     bin_str = base64.b64encode(bin_file).decode()
     href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{file_name}">{button_text}</a>'
