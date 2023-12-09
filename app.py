@@ -1,13 +1,16 @@
 import streamlit as st
 from openpyxl import load_workbook
-from docx import Document
+import io
 
 def replace_text_in_word(input_word_file, output_word_file, old_text, new_text):
-    doc = Document(input_word_file)
-    for paragraph in doc.paragraphs:
-        if old_text in paragraph.text:
-            paragraph.text = paragraph.text.replace(old_text, new_text)
-    doc.save(output_word_file)
+    with open(input_word_file, 'rb') as file:
+        doc_bytes = io.BytesIO(file.read())
+
+    doc_text = doc_bytes.getvalue().decode("utf-8")
+    replaced_text = doc_text.replace(old_text, new_text)
+
+    with open(output_word_file, 'wb') as file:
+        file.write(replaced_text.encode("utf-8"))
 
 def main():
     st.title('Word書類の文字列置換アプリ')
@@ -28,7 +31,7 @@ def main():
         new_text = ws['B2'].value
 
         # Wordファイルの置換
-        replace_text_in_word(word_file, "output.docx", old_text, new_text)
+        replace_text_in_word(word_file.name, "output.docx", old_text, new_text)
 
         # ダウンロードリンクの作成
         with open("output.docx", "rb") as file:
@@ -44,4 +47,3 @@ def get_binary_file_downloader_html(bin_file, file_name, button_text="Click here
 
 if __name__ == '__main__':
     main()
-
