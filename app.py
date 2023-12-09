@@ -3,6 +3,28 @@ from openpyxl import load_workbook
 import pandas as pd
 import io
 import os
+from docx import Document
+import io
+import streamlit as st
+
+def generate_document():
+    # 新しいWordドキュメントの作成
+    doc = Document()
+    doc.add_paragraph("Hello, World!")  # 例としてテキストを追加
+
+    # バイナリデータに変換
+    doc_buffer = io.BytesIO()
+    doc.save(doc_buffer)
+    doc_bytes = doc_buffer.getvalue()
+
+    return doc_bytes
+
+# 編集されたWordドキュメントの生成
+edited_doc = generate_document()
+
+# ダウンロードボタンの表示
+st.download_button(label='Download Edits', data=edited_doc, file_name='EDITED.docx', mime='application/octet-stream', key=321)
+
 
 def replace_text_in_word(input_word_file, output_word_file, replacements):
     with open(input_word_file, 'rb') as file:
