@@ -1,44 +1,71 @@
 import streamlit as st
-import pandas as pd
 from openpyxl import load_workbook
-from docxtpl import DocxTemplate
+from docx import Document
+from docx.shared import Pt
 import io
 
-def replace_text_in_word_template(input_word_file, output_word_file, replacements):
-    doc = DocxTemplate(input_word_file)
-    doc.render(replacements)
-    doc.save(output_word_file)
+def add_text_to_word_file(input_word_file, output_word_file, replacements):
+    # Wordファイルを開く
+    doc = Document(input_word_file)
 
-# これまでのコードが続きます（main()関数やその他の部分）
-# ...
+    # 置換処理
+    for old_text, new_text in replacements.items():
+        for paragraph in doc.paragraphs:
+            if old_text in paragraph.text:
+                for run in paragraph.runs:
+                    if old_text in run.text:
+                        run.text = run.text.replace(old_text, new_text)
+
+    # フォントサイズを変更
+    for paragraph in doc.paragraphs:
+        for run in paragraph.runs:
+            run.font.size = Pt(12)
+
+    # Wordファイルを保存
+    doc.save(output_word_file)
 
 def main():
     st.title('Word書類の文字列置換アプリ')
 
-    # 以下、Excelファイルのアップロードなどの部分を記述してください
-    # ...
+    # Excelファイルのアップロード
+    st.sidebar.header('Excelファイルをアップロード')
+    excel_file = st.sidebar.file_uploader("Excelファイルを選択してください", type=['xlsx'])
 
-    if excel_file and word_files:
-        # これまでの置換情報の取得部分
-        # ...
+    # Wordファイルのアップロード
+    st.sidebar.header('Wordファイルをアップロード')
+    word_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
 
-        # Wordファイルごとに処理
-        for word_file in word_files:
-            # Wordファイルの一時保存
-            word_bytes = word_file.read()
-            word_path = f"temp_word_{word_file.name}"
-            with open(word_path, "wb") as temp_word:
-                temp_word.write(word_bytes)
+    if excel_file and word_file:
+        # Excelファイルから置換情報を取得
+        wb = load_workbook(excel_file)
+        ws = wb.active
 
-            # Wordファイルの置換
-            replace_text_in_word_template(word_path, f"output_{word_file.name}", replacements)
+        replacements = {}
+        max_col = ws.max_column
+        max_row = ws.max_row
 
-            # ダウンロードリンクの作成
-            with open(f"output_{word_file.name}", "rb") as file:
-                file_contents = file.read()
-                st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name=f"output_{word_file.name}"), unsafe_allow_html=True)
+        for row in range(1, max_row + 1):
+            for col in range(1, max_col + 1):
+                old_text = ws.cell(row=row, column=col).value
+                new_text = ws.cell(row=row, column=col + 1).value
 
-        st.success("置換が完了しました。")
+                if old_text is not None and new_text is not None:
+                    replacements[old_text] = new_text
+
+        # Wordファイルの置換
+        add_text_to_word_file(word_file, "output.docx", replacements)
+
+        # ダウンロードリンクの作成
+        with open("output.docx", "rb") as file:
+            file_contents = file.read()
+            st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name="output.docx"), unsafe_allow_html=True)
+            st.success("置換が完了しました。")
+
+def get_binary_file_downloader_html(bin_file, file_name, button_text="Click here to download"):
+    import base64
+    bin_str = base64.b64encode(bin_file).decode()
+    href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{file_name}">{button_text}</a>'
+    return href
 
 if __name__ == '__main__':
     main()
