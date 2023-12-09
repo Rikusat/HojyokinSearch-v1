@@ -1,7 +1,6 @@
 import streamlit as st
-from google.oauth2 import service_account
-import gspread
-from docx import Document
+from openpyxl import load_workbook
+import pandas as pd
 import io
 
 def replace_text_in_word(input_word_file, output_word_file, replacements):
@@ -16,32 +15,44 @@ def replace_text_in_word(input_word_file, output_word_file, replacements):
     with open(output_word_file, 'wb') as file:
         file.write(doc_text.encode("utf-8"))
 
-def get_google_sheet_data(sheet_url):
-    creds = service_account.Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"]  # Streamlitのシークレットにサービスアカウント情報を登録してください
-    )
-    gc = gspread.authorize(creds)
-    sheet_id = sheet_url.split("/")[5]  # Google Sheets の URL からシートのIDを取得
-    sheet = gc.open_by_key(sheet_id).sheet1  # シート1を読み込み（シート名が異なる場合は変更してください）
-    cell_value = sheet.acell('B1').value
-    return cell_value
+def display_excel_table(excel_file):
+    df = pd.read_excel(excel_file)
+    st.subheader("Excelファイルの内容:")
+    st.write(df)
 
 def main():
     st.title('Word書類の文字列置換アプリ')
 
-    # Google Sheets の URL をアップロード
-    sheet_url = st.text_input("Google Sheets の共有可能なリンクを入力してください")
+    # Excelファイルのアップロード
+    st.sidebar.header('Excelファイルをアップロード')
+    excel_file = st.sidebar.file_uploader("Excelファイルを選択してください", type=['xlsx'])
 
     # Wordファイルのアップロード
     st.sidebar.header('Wordファイルをアップロード')
     word_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
 
-    if sheet_url and word_file:
-        # Google Sheets からセルの内容を取得
-        replacement_text = get_google_sheet_data(sheet_url)
+    if excel_file and word_file:
+        # Excelファイルの内容を表示
+        display_excel_table(excel_file)
+
+        # Excelファイルから置換情報を取得
+        wb = load_workbook(excel_file)
+        ws = wb.active
+
+        replacements = {}
+        max_col = ws.max_column
+        max_row = ws.max_row
+
+        for row in range(1, max_row + 1):
+            for col in range(1, max_col + 1):
+                old_text = ws.cell(row=row, column=col).value
+                new_text = ws.cell(row=row, column=col + 1).value
+
+                if old_text is not None and new_text is not None:
+                    replacements[old_text] = new_text
 
         # Wordファイルの置換
-        replace_text_in_word(word_file.name, "output.docx", {'ABCD': replacement_text})
+        replace_text_in_word(word_file.name, "output.docx", replacements)
 
         # ダウンロードリンクの作成
         with open("output.docx", "rb") as file:
