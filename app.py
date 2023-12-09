@@ -4,14 +4,22 @@ import pandas as pd
 import io
 import os
 from docx import Document
-import io
-import streamlit as st
+from docx.shared import Inches
+from docxtpl import DocxTemplate
 
 def generate_document():
-    # 新しいWordドキュメントの作成
-    doc = Document()
-    doc.add_paragraph("Hello, World!")  # 例としてテキストを追加
+    # テンプレートファイルの読み込み
+    doc = DocxTemplate("your_template.docx")
 
+    # テンプレートに変数を割り当てる
+    context = {
+        'variable1': 'Some text',
+        'variable2': 'More text'
+    }
+
+    # テンプレートに変数を挿入する
+    doc.render(context)
+    
     # バイナリデータに変換
     doc_buffer = io.BytesIO()
     doc.save(doc_buffer)
@@ -24,6 +32,7 @@ edited_doc = generate_document()
 
 # ダウンロードボタンの表示
 st.download_button(label='Download Edits', data=edited_doc, file_name='EDITED.docx', mime='application/octet-stream', key=321)
+
 
 
 def replace_text_in_word(input_word_file, output_word_file, replacements):
