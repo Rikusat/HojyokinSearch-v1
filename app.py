@@ -1,34 +1,32 @@
 import streamlit as st
+from docx import Document
+import io
 
-def replace_text_in_word(file_path, old_text, new_text):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        text = file.read()
-        new_text = text.replace(old_text, new_text)
-    with open('output.txt', 'w', encoding='utf-8') as output_file:
-        output_file.write(new_text)
+def create_word_file():
+    doc = Document()
+    doc.add_heading('Sample Document', level=1)
+    doc.add_paragraph('This is a sample paragraph.')
+
+    return doc
 
 def main():
-    st.title('Word書類の文字列置換アプリ')
+    st.title('Word書類の生成とダウンロード')
 
-    # テキストファイルのアップロード
-    st.sidebar.header('テキストファイルをアップロード')
-    uploaded_file = st.sidebar.file_uploader("テキストファイルを選択してください", type=['txt'])
+    if st.button('Click here to generate and download'):
+        # Wordファイルの作成
+        doc = create_word_file()
 
-    if uploaded_file is not None:
-        # アップロードされたファイルを一時保存
-        with open("temp.txt", "wb") as file:
-            file.write(uploaded_file.getvalue())
+        # ダウンロード可能なリンクの作成
+        bio = io.BytesIO()
+        doc.save(bio)
+        bio.seek(0)
 
-        # テキスト置換用の入力
-        old_text = st.sidebar.text_input("置換前のテキスト")
-        new_text = st.sidebar.text_input("置換後のテキスト")
-
-        if old_text and new_text:
-            replace_text_in_word("temp.txt", old_text, new_text)
-
-            # ダウンロードリンクの作成
-            st.sidebar.markdown("[**ダウンロード新しいテキストファイル**](./output.txt)", unsafe_allow_html=True)
-            st.success("置換が完了しました。")
+        st.download_button(
+            label="Click here to download",
+            data=bio,
+            file_name="Sample_Document.docx",
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
 
 if __name__ == '__main__':
     main()
