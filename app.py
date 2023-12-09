@@ -1,11 +1,12 @@
 import streamlit as st
-import docx2txt
+import docx
 
 def replace_text_in_word(input_word_file, output_word_file, old_text, new_text):
-    text = docx2txt.process(input_word_file)
-    new_text = text.replace(old_text, new_text)
-    with open(output_word_file, "w", encoding="utf-8") as file:
-        file.write(new_text)
+    doc = docx.Document(input_word_file)
+    for paragraph in doc.paragraphs:
+        if old_text in paragraph.text:
+            paragraph.text = paragraph.text.replace(old_text, new_text)
+    doc.save(output_word_file)
 
 def main():
     st.title('Word書類の文字列置換アプリ')
