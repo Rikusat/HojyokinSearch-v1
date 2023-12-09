@@ -11,3 +11,5 @@ unidecode
 streamlit
 pandas
 python-docx
+streamlit
+docx2txt
