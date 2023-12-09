@@ -23,17 +23,8 @@ def get_google_sheet_data(sheet_url):
     gc = gspread.authorize(creds)
     sheet_id = sheet_url.split("/")[5]  # Google Sheets の URL からシートのIDを取得
     sheet = gc.open_by_key(sheet_id).sheet1  # シート1を読み込み（シート名が異なる場合は変更してください）
-
-    replacements = {}
-    data = sheet.get_all_values()
-
-    for row in data:
-        if len(row) >= 2:
-            old_text = row[0]
-            new_text = row[1]
-            replacements[old_text] = new_text
-
-    return replacements
+    cell_value = sheet.acell('B1').value
+    return cell_value
 
 def main():
     st.title('Word書類の文字列置換アプリ')
@@ -46,11 +37,11 @@ def main():
     word_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
 
     if sheet_url and word_file:
-        # Google Sheets から置換情報を取得
-        replacements = get_google_sheet_data(sheet_url)
+        # Google Sheets からセルの内容を取得
+        replacement_text = get_google_sheet_data(sheet_url)
 
         # Wordファイルの置換
-        replace_text_in_word(word_file.name, "output.docx", replacements)
+        replace_text_in_word(word_file.name, "output.docx", {'ABCD': replacement_text})
 
         # ダウンロードリンクの作成
         with open("output.docx", "rb") as file:
@@ -66,6 +57,4 @@ def get_binary_file_downloader_html(bin_file, file_name, button_text="Click here
 
 if __name__ == '__main__':
     main()
-
-
 
