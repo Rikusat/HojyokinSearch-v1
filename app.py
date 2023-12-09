@@ -1,6 +1,7 @@
 import streamlit as st
-from openpyxl import load_workbook
-import pandas as pd
+from google.oauth2 import service_account
+import gspread
+from docx import Document
 import io
 
 def replace_text_in_word(input_word_file, output_word_file, replacements):
@@ -15,50 +16,55 @@ def replace_text_in_word(input_word_file, output_word_file, replacements):
     with open(output_word_file, 'wb') as file:
         file.write(doc_text.encode("utf-8"))
 
-def display_excel_table(excel_file):
-    df = pd.read_excel(excel_file)
-    st.subheader("Excelファイルの内容:")
-    st.write(df)
+def get_google_sheet_data(sheet_url):
+    creds = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"]  # Streamlitのシークレットにサービスアカウント情報を登録してください
+    )
+    gc = gspread.authorize(creds)
+    sheet_id = sheet_url.split("/")[5]  # Google Sheets の URL からシートのIDを取得
+    sheet = gc.open_by_key(sheet_id).sheet1  # シート1を読み込み（シート名が異なる場合は変更してください）
+
+    data = sheet.get_all_values()
+    headers = data[0]
+    values = data[1:]
+
+    return headers, values
 
 def main():
     st.title('Word書類の文字列置換アプリ')
 
-    # Excelファイルのアップロード
-    st.sidebar.header('Excelファイルをアップロード')
-    excel_file = st.sidebar.file_uploader("Excelファイルを選択してください", type=['xlsx'])
+    # Google Sheets の URL をアップロード
+    sheet_url = st.text_input("Google Sheets の共有可能なリンクを入力してください")
 
-    # Wordファイルのアップロード
-    st.sidebar.header('Wordファイルをアップロード')
-    word_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
+    if sheet_url:
+        headers, values = get_google_sheet_data(sheet_url)
 
-    if excel_file and word_file:
-        # Excelファイルの内容を表示
-        display_excel_table(excel_file)
+        # Google Sheets の内容をテーブル形式で表示
+        st.subheader("Google Sheets の内容:")
+        df = pd.DataFrame(values, columns=headers)
+        editable_table = st.table(df)
 
-        # Excelファイルから置換情報を取得
-        wb = load_workbook(excel_file)
-        ws = wb.active
+        if st.button('セルの変更を適用'):
+            new_values = editable_table.value
 
-        replacements = {}
-        max_col = ws.max_column
-        max_row = ws.max_row
+            # 置換情報の作成
+            replacements = {}
+            for index, row in new_values.iterrows():
+                replacements[row[headers[0]]] = row[headers[1]]
 
-        for row in range(1, max_row + 1):
-            for col in range(1, max_col + 1):
-                old_text = ws.cell(row=row, column=col).value
-                new_text = ws.cell(row=row, column=col + 1).value
+            # Wordファイルのアップロード
+            st.sidebar.header('Wordファイルをアップロード')
+            word_file = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'])
 
-                if old_text is not None and new_text is not None:
-                    replacements[old_text] = new_text
+            if word_file:
+                # Wordファイルの置換
+                replace_text_in_word(word_file.name, "output.docx", replacements)
 
-        # Wordファイルの置換
-        replace_text_in_word(word_file.name, "output.docx", replacements)
-
-        # ダウンロードリンクの作成
-        with open("output.docx", "rb") as file:
-            file_contents = file.read()
-            st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name="output.docx"), unsafe_allow_html=True)
-            st.success("置換が完了しました。")
+                # ダウンロードリンクの作成
+                with open("output.docx", "rb") as file:
+                    file_contents = file.read()
+                    st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name="output.docx"), unsafe_allow_html=True)
+                    st.success("置換が完了しました。")
 
 def get_binary_file_downloader_html(bin_file, file_name, button_text="Click here to download"):
     import base64
