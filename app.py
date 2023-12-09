@@ -1,92 +1,80 @@
 import streamlit as st
+from openpyxl import load_workbook
 import pandas as pd
-import requests
-import openai
+import io
+import os
 
-# Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets.OpenAIAPI.openai_api_key
+def replace_text_in_word(input_word_file, output_word_file, replacements):
+    with open(input_word_file, 'rb') as file:
+        doc_bytes = io.BytesIO(file.read())
 
-# Page setup
-st.set_page_config(page_title="補助金検索くん　関東圏", page_icon="🎈", layout="wide")
-st.title("補助金検索くん　関東圏🎈")
+    doc_text = doc_bytes.getvalue().decode("utf-8")
 
-# Correct the formation of the URL
-sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
-sheet_name = "charlas"
-url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+    for old_text, new_text in replacements.items():
+        doc_text = doc_text.replace(old_text, new_text)
 
-# Read the data from the URL and perform data cleaning
-df = pd.read_csv(url, dtype=str).fillna("")
+    with open(output_word_file, 'wb') as file:
+        file.write(doc_text.encode("utf-8"))
 
-# Function to filter data based on selected 地域 and selected_options
-def filter_data(selected_地域, selected_options):
-    df_filtered = df.loc[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options))), :]
-    return df_filtered
+def display_excel_table(excel_file):
+    df = pd.read_excel(excel_file)
+    st.subheader("Excelファイルの内容:")
+    st.write(df)
 
-# Get a list of unique 地域
-unique_地域 = df["地域"].unique()
+def main():
+    st.title('Word書類の文字列置換アプリ')
 
-# Create a selectbox for 地域
-selected_地域 = st.selectbox('地域を選択', unique_地域, index=0)
+    # Excelファイルのアップロード
+    st.sidebar.header('Excelファイルをアップロード')
+    excel_file = st.sidebar.file_uploader("Excelファイルを選択してください", type=['xlsx'])
 
-# Filter options based on selected_地域
-filter_options = set()
-for item in df.loc[df["地域"] == selected_地域, "対象事業者"]:
-    options = item.split("／")
-    filter_options.update(options)
+    # Wordファイルのアップロード
+    st.sidebar.header('Wordファイルをアップロード')
+    word_files = st.sidebar.file_uploader("Wordファイルを選択してください", type=['docx'], accept_multiple_files=True)
 
-# Show the options as a selectbox
-selected_options = st.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
+    if excel_file and word_files:
+        # Excelファイルの一時保存
+        excel_bytes = excel_file.read()
+        excel_path = os.path.join("./", "temp_excel.xlsx")
+        with open(excel_path, "wb") as temp_excel:
+            temp_excel.write(excel_bytes)
 
-# Filter the data
-df_search = filter_data(selected_地域, selected_options)
+        # Excelファイルから置換情報を取得
+        wb = load_workbook(excel_path)
+        ws = wb.active
 
-# Prepare the initial question
-info_to_ask = f"地域は{selected_地域}で、対象事業者は{', '.join(selected_options)} "
+        replacements = {}
+        max_col = ws.max_column
+        max_row = ws.max_row
 
-# Get user's input
-user_input = st.text_input("補足情報を自由に入力してください", value=info_to_ask)
+        for row in range(1, max_row + 1):
+            for col in range(1, max_col + 1):
+                old_text = ws.cell(row=row, column=col).value
+                new_text = ws.cell(row=row, column=col + 1).value
 
-if st.button("AIに聞く"):
-    # Check if the dataframe is empty
-    if df_search.empty:
-        st.write("No matching data found.")
-    else:
-        # If not, use the data to generate a message for GPT-3
-        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+                if old_text is not None and new_text is not None:
+                    replacements[old_text] = new_text
 
-        # Add user's input to the message
-        message += f"\n{user_input}"
+        # Wordファイルごとに処理
+        for word_file in word_files:
+            # Wordファイルの一時保存
+            word_bytes = word_file.read()
+            word_path = os.path.join("./", f"temp_word_{word_file.name}")
+            with open(word_path, "wb") as temp_word:
+                temp_word.write(word_bytes)
 
-       # Use OpenAI API
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-16k-0613",
-            messages=[
-                {"role": "system", "content": "与えられた情報に該当するデータを箇条書きで可能な限り書き出してください"},
-                {"role": "user", "content": message}
-            ]
-        )
-        # Show OpenAI's response
-        st.write(response['choices'][0]['message']['content'])
+            # Wordファイルの置換
+            replace_text_in_word(word_path, f"output_{word_file.name}", replacements)
 
-st.markdown("---")
-        
-# Show the cards
-N_cards_per_row = 3
-cols = st.columns(N_cards_per_row, gap="large")
-for n_row, row in df_search.iterrows():
-    i = n_row % N_cards_per_row
-    if i == 0:
-        st.write("---")
-    # draw the card
-    with cols[i]:
-        st.markdown(f"**{row['補助金名'].strip()}**")
-        st.caption(f"{row['詳細'].strip()}")
-        st.markdown(f"{row['上限金額・助成額'].strip()}")
-        st.markdown(f"{row['申請期間'].strip()}")
-        st.markdown(f"地域: {row['地域'].strip()}")
-        st.markdown(f"実施機関: {row['実施機関'].strip()}")
-        st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
-        st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
-        st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
-        st.markdown("---")
+            # ダウンロードリンクの作成
+            with open(f"output_{word_file.name}", "rb") as file:
+                file_contents = file.read()
+                st.sidebar.markdown(get_binary_file_downloader_html(file_contents, file_name=f"output_{word_file.name}"), unsafe_allow_html=True)
+
+        st.success("置換が完了しました。")
+
+# 他の関数もそのまま残す...
+
+if __name__ == '__main__':
+    main()
+
