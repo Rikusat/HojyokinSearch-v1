@@ -11,9 +11,9 @@ st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="�
 st.title("関東圏：補助金検索くん🎈")
 
 # Correct the formation of the URL
-sheet_id = "1LjzIi0fido4Xaaqz4Aw3awB6KjJhw2mi4axgIA8PT_4"
+sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
-url = f"https://docs.google.com/spreadsheets/d/1LjzIi0fido4Xaaqz4Aw3awB6KjJhw2mi4axgIA8PT_4/edit?usp=sharing"
+url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
 
 # Function to filter data based on selected 地域 and selected_options
 def filter_data(selected_地域, selected_options):
