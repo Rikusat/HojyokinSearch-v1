@@ -1,36 +1,89 @@
 import streamlit as st
 import pandas as pd
-from docx import Document
+import requests
+import openai
 
-def replace_text_in_word_file(input_word_file, output_word_file, old_text, new_text):
-    doc = Document(input_word_file)
-    for paragraph in doc.paragraphs:
-        if old_text in paragraph.text:
-            paragraph.text = paragraph.text.replace(old_text, new_text)
-    doc.save(output_word_file)
+# Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
+openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
-def main():
-    st.title('Word書類の文字列置換アプリ')
+# Page setup
+st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
+st.title("関東圏：補助金検索くん🎈")
 
-    # Excelファイルのアップロード
-    st.sidebar.header('Excelファイルをアップロード')
-    uploaded_file = st.sidebar.file_uploader("Excelファイルを選択してください", type=['xlsx'])
+# Correct the formation of the URL
+sheet_id = "1LjzIi0fido4Xaaqz4Aw3awB6KjJhw2mi4axgIA8PT_4"
+sheet_name = "charlas"
+url = f"https://docs.google.com/spreadsheets/d/1LjzIi0fido4Xaaqz4Aw3awB6KjJhw2mi4axgIA8PT_4/edit?usp=sharing"
 
-    if uploaded_file is not None:
-        excel_data = pd.read_excel(uploaded_file)
-        target_word_file = 'sample.docx'  # ここに対象のWordファイルを指定
+# Function to filter data based on selected 地域 and selected_options
+def filter_data(selected_地域, selected_options):
+    df = pd.read_csv(url, dtype=str).fillna("")
+    df_filtered = df[(df["地域"] == selected_地域) & (df["対象事業者"].str.contains("|".join(selected_options)))]
+    return df_filtered
 
-        # Excelから文字列を取得
-        if 'B1' in excel_data:
-            text_to_replace = str(excel_data.loc[0, 'B1'])
+# Get a list of unique 地域
+df = pd.read_csv(url, dtype=str).fillna("")
+unique_地域 = df["地域"].unique()
 
-            # Wordファイルの置換
-            replace_text_in_word_file(target_word_file, 'output.docx', 'OLD_TEXT', text_to_replace)
+# Create a selectbox for 地域
+selected_地域 = st.selectbox('地域を選択', unique_地域, index=0)
 
-            # ダウンロードリンクの作成
-            st.sidebar.markdown("[**ダウンロード新しいWordファイル**](./output.docx)", unsafe_allow_html=True)
-            st.success("置換が完了しました。")
+# 対象事業者の各文字列を取得して一意の値を生成
+filter_options = set()
+for item in df[df["地域"] == selected_地域]["対象事業者"]:
+    options = item.split("／")
+    filter_options.update(options)
 
-if __name__ == '__main__':
-    main()
+# Show the options as a selectbox
+selected_options = st.multiselect("当てはまる項目を選択 : 複数可", list(filter_options))
 
+# フィルタリング
+df_search = filter_data(selected_地域, selected_options)
+
+# Prepare the initial question
+info_to_ask = f"地域:{selected_地域} 対象事業者:{', '.join(selected_options)} "
+
+# Get user's input
+user_input = st.text_input("補足情報を自由に入力してください", value=info_to_ask)
+
+if st.button("AIに聞く"):
+    # Check if the dataframe is empty
+    if df_search.empty:
+        st.write("No matching data found.")
+    else:
+        # If not, use the data to generate a message for GPT-3
+        message = f"I found {len(df_search)} matches for the 地域 '{user_input}'. Here's the first one: {df_search.iloc[0].to_dict()}"
+
+        # Add user's input to the message
+        message += f"\n{user_input}"
+
+       # Use OpenAI API
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k-0613",
+            messages=[
+                {"role": "system", "content": "与えられた情報を元に該当するデータを10個ほど箇条書きで書き出してください"},
+                {"role": "user", "content": message}
+            ]
+        )
+        # Show OpenAI's response
+        st.write(response['choices'][0]['message']['content'])
+        
+        
+# Show the cards
+N_cards_per_row = 3
+cols = st.columns(N_cards_per_row, gap="large")
+for n_row, row in df_search.iterrows():
+    i = n_row % N_cards_per_row
+    if i == 0:
+        st.write("---")
+    # draw the card
+    with cols[i]:
+        st.markdown(f"**{row['補助金名'].strip()}**")
+        st.caption(f"{row['詳細'].strip()}")
+        st.markdown(f"{row['上限金額・助成額'].strip()}")
+        st.markdown(f"{row['申請期間'].strip()}")
+        st.markdown(f"地域: {row['地域'].strip()}")
+        st.markdown(f"実施機関: {row['実施機関'].strip()}")
+        st.markdown(f"対象事業者: {row['対象事業者'].strip()}")
+        st.markdown(f"公式公募ページ: {row['公式公募ページ'].strip()}")
+        st.markdown(f"**[掲載元]({row['掲載元'].strip()})**")
