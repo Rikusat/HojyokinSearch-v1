@@ -11,13 +11,6 @@ st.title("関東圏：補助金検索くん🎈")
 sheet_id = "1s-LHhUIa-SgYJFHggP94LyG-KXqaNr_Xx7SPROtTaSI"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-
-# Get a list of unique question
-df = pd.read_csv(url, dtype=str).fillna("")
-unique_question = df["question"].unique()
-
-# Create a selectbox for question
-selected_question = st.selectbox('地域を選択', unique_question, index=0)
         
         
 # Show the cards
