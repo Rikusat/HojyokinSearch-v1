@@ -1,34 +1,72 @@
+# Import libraries
 import streamlit as st
 import pandas as pd
-import requests
+import openai
 
+# Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
+openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 
 # Page setup
-st.set_page_config(page_title="関東圏：補助金検索くん", page_icon="🎈", layout="wide")
-st.title("関東圏：補助金検索くん🎈")
+st.set_page_config(page_title="補助金検索くん", page_icon="🎈", layout="wide")
+st.title("補助金検索くん🎈")
+
 
 # Correct the formation of the URL
-sheet_id = "1s-LHhUIa-SgYJFHggP94LyG-KXqaNr_Xx7SPROtTaSI"
+sheet_id = "1PmOf1bjCpLGm7DiF7dJsuKBne2XWkmHyo20BS4xgizw"
 sheet_name = "charlas"
 url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-df = pd.read_csv(url, dtype=str)
+df = pd.read_csv(url, dtype=str).fillna("")
 
-# Show the dataframe (we'll delete this later)
-st.write(df)
+# Get a list of unique 地域
+unique_地域 = df["地域"].unique()
 
+# Create a selectbox for 地域 in the sidebar
+selected_地域 = st.sidebar.selectbox('地域を選択してください', unique_地域)
 
+# Filter the 対象事業者 based on selected 地域
+unique_対象事業者 = df[df["地域"] == selected_地域]["対象事業者"].unique()
 
-# Another way to show the filtered results
+# Create a selectbox for 対象事業者 in the sidebar
+selected_対象事業者 = st.sidebar.selectbox('対象事業者を選択してください', unique_対象事業者)
+
+# Filter the dataframe using selected 地域 and 対象事業者
+df_search = df[(df["地域"] == selected_地域) & (df["対象事業者"] == selected_対象事業者)]
+
+# Show the results and balloons
+st.write(df_search)
+st.balloons()
+
+# Get the information to ask OpenAI
+info_to_ask = f"The selected region is {selected_地域} and the selected business is {selected_対象事業者}. There are {len(df_search)} items in the filtered list."
+
+# Define the message input for OpenAI
+message = st.text_input("ユーザーからのメッセージ:", value=info_to_ask)
+
+if st.button("送信"):
+    # Use OpenAI API
+    response = openai.ChatCompletion.create(
+      model="gpt-3.5-turbo",
+      messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": message}
+        ]
+    )
+    # Show OpenAI's response
+    st.write(response['choices'][0]['message']['content'])
+
 # Show the cards
 N_cards_per_row = 3
-if text_search:
-    for n_row, row in df_search.reset_index().iterrows():
-        i = n_row%N_cards_per_row
-        if i==0:
-            st.write("---")
-            cols = st.columns(N_cards_per_row, gap="large")
-        # draw the card
-        with cols[n_row%N_cards_per_row]:
-            st.caption(f"{row['question']
-            st.markdown(f"**{row['answer'].strip()}**")
-            st.markdown(f"*{row['sources'].strip()}*")
+for n_row, row in df_search.reset_index().iterrows():
+    i = n_row % N_cards_per_row
+    if i == 0:
+        st.write("---")
+        cols = st.columns(N_cards_per_row, gap="large")
+    # draw the card
+    with cols[n_row % N_cards_per_row]:
+        st.caption(f"{row['地域'].strip()} - {row['対象事業者'].strip()} - {row['補助金名'].strip()}")
+        st.markdown(f"**申請期間: {row['申請期間'].strip()}**")
+        st.markdown(f"*上限金額・助成額: {row['上限金額・助成額'].strip()}*")
+        st.markdown(f"補助率: {row['補助率'].strip()}")
+        st.markdown(f"目的: {row['目的'].strip()}")
+        st.markdown(f"対象経費: {row['対象経費'].strip()}")
+        st.markdown(f"**[リンク]({row['リンク'].strip()})**")
