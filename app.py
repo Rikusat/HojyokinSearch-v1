@@ -16,15 +16,19 @@ df = pd.read_csv(url, dtype=str)
 # Show the dataframe (we'll delete this later)
 st.write(df)
 
+
+
+# Another way to show the filtered results
 # Show the cards
 N_cards_per_row = 3
-cols = st.columns(N_cards_per_row, gap="large")
-for n_row, row in df_search.iterrows():
-    i = n_row % N_cards_per_row
-    if i == 0:
-        st.write("---")
-    # draw the card
-    with cols[i]:
-        st.markdown(f"**{row['question'].strip()}**")
-        st.caption(f"{row['answer'].strip()}")
-        st.markdown(f"{row['sources'].strip()}")
+if text_search:
+    for n_row, row in df_search.reset_index().iterrows():
+        i = n_row%N_cards_per_row
+        if i==0:
+            st.write("---")
+            cols = st.columns(N_cards_per_row, gap="large")
+        # draw the card
+        with cols[n_row%N_cards_per_row]:
+            st.caption(f"{row['question'].strip()} - {row['Lugar'].strip()} - {row['Fecha'].strip()} ")
+            st.markdown(f"**{row['answer'].strip()}**")
+            st.markdown(f"*{row['sources'].strip()}*")
