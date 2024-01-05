@@ -29,6 +29,6 @@ if text_search:
             cols = st.columns(N_cards_per_row, gap="large")
         # draw the card
         with cols[n_row%N_cards_per_row]:
-            st.caption(f"{row['question'].strip()} - {row['Lugar'].strip()} - {row['Fecha'].strip()} ")
+            st.caption(f"{row['question']
             st.markdown(f"**{row['answer'].strip()}**")
             st.markdown(f"*{row['sources'].strip()}*")
